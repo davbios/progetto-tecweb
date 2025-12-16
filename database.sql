@@ -58,6 +58,7 @@ CREATE TABLE ingredients (
 CREATE TABLE drinks_ingredients (
     drink_id INT NOT NULL REFERENCES drinks(id),
     ingredient_id INT NOT NULL REFERENCES ingredients(id),
+    quantity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

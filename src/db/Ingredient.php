@@ -5,10 +5,13 @@ class Ingredient extends BaseModel
 {
     public string $name;
 
-    public function __construct(string $name, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
+    public ?int $quantity;
+
+    public function __construct(string $name, ?int $quantity, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
     {
         parent::__construct($id, $created_at, $updated_at);
         $this->name = $name;
+        $this->quantity = $quantity;
     }
 }
 
@@ -17,7 +20,7 @@ interface IngredientDao
     public function getAll(): array;
     public function getAllForDrink(int $drinkId): array;
     public function findById(int $id): ?Ingredient;
-    public function addToDrink(int $drinkId, int $ingredientId): void;
+    public function addToDrink(int $drinkId, int $ingredientId, int $quanity): void;
     public function removeFromDrink(int $drinkId, int $ingredientId): void;
     public function insert(Ingredient $ingredient): Ingredient;
     public function update(Ingredient $ingredient): Ingredient;
@@ -37,6 +40,7 @@ class PdoIngredientDao implements IngredientDao
     {
         return new Ingredient(
             $row["name"],
+            isset($row["quantity"]) ? (int) $row["quantity"] : null,
             (int) $row["id"],
             new DateTime($row["created_at"]),
             new DateTime($row["updated_at"]),
@@ -56,10 +60,11 @@ class PdoIngredientDao implements IngredientDao
 
     public function getAllForDrink(int $drinkId): array
     {
-        $stmt = $this->pdo->prepare("SELECT I.name AS name, I.id AS id, I.created_at AS created_at, I.updated_at AS updated_at 
-                FROM drinks_ingredients DI
-                JOIN ingrediens I ON DI.ingredient_id = I.id
-                WHERE DI.drink_id = :id");
+        $stmt = $this->pdo->prepare("SELECT I.name AS name, I.id AS id, I.created_at AS created_at, 
+        I.updated_at AS updated_at, DI.quantity AS quantity 
+        FROM drinks_ingredients DI
+        JOIN ingrediens I ON DI.ingredient_id = I.id
+        WHERE DI.drink_id = :id");
         $stmt->bindParam("id", $drinkId, PDO::PARAM_INT);
         $stmt->execute();
         $ingredients = [];
@@ -81,11 +86,12 @@ class PdoIngredientDao implements IngredientDao
         }
     }
 
-    public function addToDrink(int $drinkId, int $ingredientId): void
+    public function addToDrink(int $drinkId, int $ingredientId, int $quantity): void
     {
-        $insertStmt = $this->pdo->prepare("INSERT INTO drinks_ingredients (drink_id, ingredient_id) VALUES (:drink_id, :ingredient_id);");
+        $insertStmt = $this->pdo->prepare("INSERT INTO drinks_ingredients (drink_id, ingredient_id, quantity) VALUES (:drink_id, :ingredient_id, :quantity);");
         $insertStmt->bindParam("drink_id", $drinkId, PDO::PARAM_INT);
         $insertStmt->bindParam("ingredient_id", $ingredientId, PDO::PARAM_INT);
+        $insertStmt->bindParam("quantity", $quantity, PDO::PARAM_INT);
         $insertStmt->execute();
     }
 
