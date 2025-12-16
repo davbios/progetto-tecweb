@@ -1,0 +1,61 @@
+name: tecweb
+
+x-environment: &default-env
+  PUID: 1000
+  PGID: 1000
+  TZ: Europe/Rome
+
+services:
+  db:
+    image: mariadb:latest
+    restart: unless-stopped
+    volumes:
+      - tecweb_db_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--su=root",
+          "--connect",
+          "--innodb_initialized",
+        ]
+      start_period: 10s
+    environment:
+      <<: *default-env
+      MARIADB_ROOT_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    links:
+      - db:db
+    environment:
+      <<: *default-env
+
+  # web:
+  #   image: trafex/php-nginx:3.9.0
+  #   restart: unless-stopped
+  #   volumes:
+  #     - tecweb_web_data:/var/www/html
+  #   configs:
+  #     - source: php_config
+  #       target: /etc/php84/conf.d/settings.ini
+  #   links:
+  #     - db:database
+  #   ports:
+  #     - 8000:80
+  #   environment: *default-env
+
+volumes:
+  tecweb_db_data:
+  tecweb_web_data:
+  tecweb_acr_runner_data:
+
+configs:
+  php_config:
+    file: /home/debian/php-setting.ini
