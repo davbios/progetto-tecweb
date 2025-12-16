@@ -6,15 +6,17 @@ class Drink extends BaseModel
     public string $name;
     public string $description;
     public string $poster;
+    public string $preparation;
     private User $creator;
     private ?Category $category;
 
-    public function __construct(string $name, string $description, string $poster, User $creator, ?Category $category, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
+    public function __construct(string $name, string $description, string $poster, string $preparation, User $creator, ?Category $category, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
     {
         parent::__construct($id, $created_at, $updated_at);
         $this->name = $name;
         $this->description = $description;
         $this->poster = $poster;
+        $this->preparation = $preparation;
         $this->creator = $creator;
         $this->category = $category;
     }
@@ -64,6 +66,7 @@ class PdoDrinkDao implements DrinkDao
             $row["name"],
             $row["description"],
             $row["poster"],
+            $row["preparation"],
             new User(
                 $row["creator__username"],
                 $row["creator__email"],
@@ -89,11 +92,11 @@ class PdoDrinkDao implements DrinkDao
     public function getAllInCategory(int $categoryId, int $limit = 10, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
-        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, D.updated_at AS updated_at, 
-        U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, U.password AS creator__password, 
-        U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.updated_at AS creator__updated_at, 
-        C.id AS category__id, C.name AS category__name, C.poster AS category__poster, C.created_at AS category__create_at, 
-        C.updated_at AS category__updated_at
+        D.preparation AS preparation, D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
+        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
+        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN category ON C.id = D.category_id 
@@ -112,11 +115,11 @@ class PdoDrinkDao implements DrinkDao
     public function getAllOfficial(int $limit = 10, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
-        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, D.updated_at AS updated_at, 
-        U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, U.password AS creator__password, 
-        U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.updated_at AS creator__updated_at, 
-        C.id AS category__id, C.name AS category__name, C.poster AS category__poster, C.created_at AS category__create_at, 
-        C.updated_at AS category__updated_at
+        D.preparation AS preparation, D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
+        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
+        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN category ON C.id = D.category_id 
@@ -134,11 +137,11 @@ class PdoDrinkDao implements DrinkDao
     public function getAllByUser(int $userId, int $limit = 10, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
-        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, D.updated_at AS updated_at, 
-        U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, U.password AS creator__password, 
-        U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.updated_at AS creator__updated_at, 
-        C.id AS category__id, C.name AS category__name, C.poster AS category__poster, C.created_at AS category__create_at, 
-        C.updated_at AS category__updated_at
+        D.preparation AS preparation, D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
+        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
+        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN category ON C.id = D.category_id 
@@ -157,11 +160,11 @@ class PdoDrinkDao implements DrinkDao
     public function getUserFavourites(int $userId, int $limit = 10, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
-        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, D.updated_at AS updated_at, 
-        U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, U.password AS creator__password, 
-        U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.updated_at AS creator__updated_at, 
-        C.id AS category__id, C.name AS category__name, C.poster AS category__poster, C.created_at AS category__create_at, 
-        C.updated_at AS category__updated_at
+        D.preparation AS preparation, D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
+        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
+        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
         FROM users_fav_drinks UD 
         JOIN drinks D ON D.id = UD.drink_id 
         JOIN users U ON U.id = D.creator_id 
@@ -197,11 +200,11 @@ class PdoDrinkDao implements DrinkDao
     public function findById(int $id): ?Drink
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
-        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, D.updated_at AS updated_at, 
-        U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, U.password AS creator__password, 
-        U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.updated_at AS creator__updated_at, 
-        C.id AS category__id, C.name AS category__name, C.poster AS category__poster, C.created_at AS category__create_at, 
-        C.updated_at AS category__updated_at
+        D.preparation AS preparation, D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
+        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
+        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN category ON C.id = D.category_id 
@@ -220,10 +223,11 @@ class PdoDrinkDao implements DrinkDao
         try {
             $this->pdo->beginTransaction();
 
-            $insertStmt = $this->pdo->prepare("INSERT INTO drinks (name, description, poster, creator_id, category_id) VALUES (:name, :description, :poster, :creator_id, :category_id);");
+            $insertStmt = $this->pdo->prepare("INSERT INTO drinks (name, description, poster, preparation, creator_id, category_id) VALUES (:name, :description, :poster, :preparation, :creator_id, :category_id);");
             $insertStmt->bindParam("name", $drink->name, PDO::PARAM_STR);
             $insertStmt->bindParam("description", $drink->description, PDO::PARAM_STR);
             $insertStmt->bindParam("poster", $drink->poster, PDO::PARAM_STR);
+            $insertStmt->bindParam("preparation", $drink->preparation, PDO::PARAM_STR);
             $creatorId = $drink->getCreator()->getId();
             $insertStmt->bindParam("creator_id", $creatorId, PDO::PARAM_INT);
             $categoryId = $drink->getCategory()?->getId();
@@ -248,10 +252,11 @@ class PdoDrinkDao implements DrinkDao
         try {
             $this->pdo->beginTransaction();
 
-            $updateStmt = $this->pdo->prepare("UPDATE drinks SET name = :name, description = :description, poster = :poster, category_id = :category_id WHERE id = :id");
+            $updateStmt = $this->pdo->prepare("UPDATE drinks SET name = :name, description = :description, poster = :poster, preparation = :preparation, category_id = :category_id WHERE id = :id");
             $updateStmt->bindParam("name", $drink->name, PDO::PARAM_STR);
             $updateStmt->bindParam("description", $drink->description, PDO::PARAM_STR);
             $updateStmt->bindParam("poster", $drink->poster, PDO::PARAM_STR);
+            $updateStmt->bindParam("preparation", $drink->preparation, PDO::PARAM_STR);
             $categoryId = $drink->getCategory()?->getId();
             $updateStmt->bindParam("category_id", $categoryId, PDO::PARAM_INT | PDO::PARAM_NULL);
             $id = $drink->getId();

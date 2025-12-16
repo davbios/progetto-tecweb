@@ -108,7 +108,12 @@ class PdoReviewDao implements ReviewDao
 
     public function findByUserId(int $userId): ?Review
     {
-        $stmt = $this->pdo->prepare("SELECT id, text, rate, user_id, created_at, updated_at, user__username, user__email, user__password, user__is_admin, user__created_at, user__updated_at FROM reviews R JOIN users U ON R.user_id = U.id WHERE user_id = :id");
+        $stmt = $this->pdo->prepare("SELECT R.id AS id, R.text AS text, R.rate AS rate, 
+        R.user_id AS user_id, R.created_at AS created_at, R.updated_at AS updated_at, 
+        R.drink_id AS drink_id, U.username AS user__username, U.email AS user__email, 
+        U.password AS user__password, U.is_admin AS user__is_admin, 
+        U.created_at AS user__created_at, U.updated_at AS user__updated_at 
+        FROM reviews R JOIN users U ON R.user_id = U.id WHERE user_id = :id");
         $stmt->bindParam("id", $userId, PDO::PARAM_INT);
         $stmt->execute();
         if ($stmt->rowCount() === 1) {

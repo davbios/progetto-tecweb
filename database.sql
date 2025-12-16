@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS drinks;
 DROP TABLE IF EXISTS reviews;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS users_fav_drinks;
+DROP TABLE IF EXISTS drinks_ingredients;
+DROP TABLE IF EXISTS ingredients;
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -39,10 +41,27 @@ CREATE TABLE drinks (
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     poster VARCHAR(400) NOT NULL,
+    preparation TEXT NOT NULL,
     creator_id INT NOT NULL REFERENCES users(id),
     category_id INT REFERENCES categories(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ingredients (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(400) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE drinks_ingredients (
+    drink_id INT NOT NULL REFERENCES drinks(id),
+    ingredient_id INT NOT NULL REFERENCES ingredients(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (drink_id, ingredient_id)
 );
 
 CREATE TABLE users_fav_drinks (
