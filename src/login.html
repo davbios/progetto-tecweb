@@ -3,27 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Log-in</title>
     <link rel="stylesheet" href="css/login.css">
-</head>
+    
 <body>
+    <header>
+        <h1>Titolo del sito</h1>
+    </header>
     <main class="container">
-        <form action="">
-            <h1>Log-in</h1>
-            <section class="un">
-                <label for="input">
-                    <input type="text" name="Username" placeholder="Username">
-                </label>
-            </section>
-            <section class="psw">
-                <label for="input">
-                    <input type="password" name="Password" placeholder="Password">
-                </label>
-            </section>
-            <section class="login">
-                <button id="accedi">Accedi</button>
-            </section>
-        </form>
+        <div class="box login">
+            <form action="">
+                <h2><span lang="en">Log-in</span></h2>
+                <section class="input">
+                        <input type="text" name="Username" placeholder="Username" required>
+                        <img src="img/user.svg">
+                </section>
+                <section class="input">
+                        <input type="password" name="Password" placeholder="Password" required>
+                        <img src="img/lock.svg">
+                </section>
+                    <button type="submit" class="btn">Accedi</button>
+            </form>
+        </div>
+        <div class="box register">
+            <form action="">
+                <h2>Registrati</h2>
+                <!-- possibilità di mettere un paragrafo con le istruzioni -->
+                <section class="input">
+                        <input type="email" name="Email" placeholder="Email" required>
+                        <img src="img/mail.svg">
+                </section>
+                <section class="input">
+                        <input type="text" name="Username" placeholder="Username" required>
+                        <img src="img/user.svg">
+                </section>
+                <section class="input">
+                        <input type="password" name="Password" placeholder="Password" required>
+                        <img src="img/lock.svg">
+                </section>
+                <p>Riscrivi la Password : </p>
+                <section class="input">
+                        <input type="password" name="Password" placeholder="Password" required>
+                        <img src="img/lock.svg">
+                </section>
+
+                    <button type="submit" class="btn">Crea un account</button>
+            </form>
+        </div>
+        <div class="curtain-box">
+            <div class="curtain left">
+                <h2><span lang="en">Welcome!</span></h2>
+                <p>Non hai un <span lang="en">account</span>?</p>
+                <p>Nessun problema, crea un nuovo <span lang="en">account</span> ora!</p>
+                <button type="button" class="btn reg-btn">Registrati</button>
+            </div>
+            <div class="curtain right">
+                <h2><span lang="en">Welcome Back!</span></h2>
+                <p>Hai già un <span lang="en">account</span>?</p>
+                <p>Siamo felici di rivederti. Accedi ora al tuo <span lang="en">account</span></p>
+                <button type="button" class="btn login-btn">Accedi</button>
+            </div>
+        </div>
     </main>
+    <script src="js/login.js"></script>
+</head>
 </body>
 </html>
