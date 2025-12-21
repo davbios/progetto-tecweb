@@ -5,6 +5,11 @@
     font-style: normal;
 }
 
+:focus-visible {
+    outline: 3px solid #8B6FB5;
+    outline-offset: 3px;
+}
+
 *{
     font-family: "Comfortaa";
     margin: 0;
@@ -43,6 +48,10 @@ header{
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
     overflow: hidden; 
 }
+.container label{
+    position: absolute;
+    left: 9999px;
+}
 
 .container h2{
     font-size: 2.7em;
@@ -60,25 +69,31 @@ header{
     align-items: center;
     text-align: center;
     z-index: 1;
-    transition: .1s ease-in-out 1s, visibility 0s 1s;
+    transition: .5s ease-in-out 1s, visibility 0s 1s;
 }
 
 .container.active .box{
     right: 50%;
 }
 
-
-
 .box p{
     font-weight: bold;
 }
 
 .box.register{
-    visibility: hidden;
+    display: none;
 }
 
 .container.active .box.register{
-    visibility: visible;
+    display: flex;
+}
+
+.box.login{
+    display: flex;
+}
+
+.container.active .box.login {
+    display: none;
 }
 
 form{
