@@ -23,7 +23,7 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(90deg, #fff, #8B6FB5);
+    background-color: #8B6FB5;
 }
 
 /*  

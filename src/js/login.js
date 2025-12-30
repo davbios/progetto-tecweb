@@ -1,3 +1,4 @@
+
 const container = document.querySelector('.container');
 const regbtn = document.querySelector('.reg-btn');
 const loginbtn = document.querySelector('.login-btn');
@@ -8,7 +9,7 @@ regbtn.addEventListener('click', function(){
     if (RegisterInput) {
         RegisterInput.focus();
     }
-} )
+} );
 
 loginbtn.addEventListener('click', function(){
     container.classList.remove('active');
@@ -16,4 +17,4 @@ loginbtn.addEventListener('click', function(){
     if (LoginInput) {
         LoginInput.focus();
     }
-} )
+} );
