@@ -76,7 +76,7 @@ class PdoIngredientDao implements IngredientDao
 
     public function findById(int $id): ?Ingredient
     {
-        $stmt = $this->pdo->prepare("SELECT name, id, created_at, updated_at WHERE id = :id");
+        $stmt = $this->pdo->prepare("SELECT name, id, created_at, updated_at FROM ingredients WHERE id = :id");
         $stmt->bindParam("id", $id, PDO::PARAM_INT);
         $stmt->execute();
         if ($stmt->rowCount() === 1) {

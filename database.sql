@@ -1,13 +1,14 @@
 USE progetto;
 
 DROP TABLE IF EXISTS users_fav_drinks;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS drinks;
+DROP TABLE IF EXISTS steps;
 DROP TABLE IF EXISTS reviews;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS users_fav_drinks;
 DROP TABLE IF EXISTS drinks_ingredients;
 DROP TABLE IF EXISTS ingredients;
+DROP TABLE IF EXISTS drinks;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users_fav_drinks;
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -63,6 +64,15 @@ CREATE TABLE drinks_ingredients (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (drink_id, ingredient_id)
+);
+
+CREATE TABLE steps (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    drink_id INT NOT NULL REFERENCES drinks(id),
+    num INT NOT NULL,
+    description TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE users_fav_drinks (
