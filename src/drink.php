@@ -1,10 +1,25 @@
+<?php
+require_once dirname(__FILE__) . "/db/db.php";
+
+if (empty($_GET["id"])) {
+    header("Location /");
+    exit;
+}
+
+$drink = $drinkDao->findById($_GET["id"]);
+if (empty($drink)) {
+    header("Location /");
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5 Big Booms</title>
+    <title><?php echo $drink->name; ?></title>
     <link rel="stylesheet" href="css/drink.css">
 </head>
 
@@ -12,10 +27,10 @@
     <main class="container">
         <div class="row">
             <section class="drink-image">
-                <img src="img/rum-cola.png" alt="Drink rum cola">
+                <img src="<?php echo $drink->poster; ?>" alt="<?php echo $drink->name; ?>">
             </section>
             <section class="drink-info">
-                <h2>Rum Cola</h2>
+                <h2><?php echo $drink->name; ?></h2>
                 <button type="submit" class="btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -26,26 +41,31 @@
                     </svg>
                     Aggiungi ai preferiti
                 </button>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim vero dolor reiciendis nam est,
-                    voluptate, optio quam, eveniet ab iure nostrum maiores quos fugit! Excepturi tenetur maxime numquam
-                    ullam porro!</p>
+                <p><?php echo $drink->description; ?></p>
             </section>
         </div>
-        <section class="drink-ingredients">
-            <h3>Ingredienti</h3>
-            <ul>
-                <li>Rum</li>
-                <li>Coca Cola</li>
-            </ul>
-        </section>
-        <section class="drink-prep">
-            <h3>Preparazione</h3>
-            <ol>
-                <li>Raffredda il bicchere con il ghiaccio</li>
-                <li>30 ml Rum</li>
-                <li>Coca cola</li>
-            </ol>
-        </section>
+        <div class="row">
+            <section class="drink-ingredients">
+                <h3>Ingredienti</h3>
+                <ul>
+                    <?php
+                    foreach ($ingredientDao->getAllForDrink($drink->getId()) as $ingredient) {
+                        echo "<li>" . $ingredient->quantity . " " . $ingredient->name . "</li>";
+                    }
+                    ?>
+                </ul>
+            </section>
+            <section class="drink-prep">
+                <h3>Preparazione</h3>
+                <ol>
+                    <?php
+                    foreach ($stepDao->getAllForDrink($drink->getId()) as $step) {
+                        echo "<li>" . $step->description . "</li>";
+                    }
+                    ?>
+                </ol>
+            </section>
+        </div>
 
         <section>
             <h3>Recensioni</h3>

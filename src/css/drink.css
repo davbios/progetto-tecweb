@@ -10,11 +10,12 @@
   --color-1: #edeaea;
   --color-2: #23022e;
   --color-3: #8b6fb5;
+  --color-4: #360347;
 
-  --text-color: var(--color-1);
+  --text-color: var(--color-2);
   --bg-color-1: var(--color-2);
-  --bg-color-2: #360347;
-  --heading-color: var(--color-3);
+  --bg-color-2: var(--color-4);
+  --heading-color: var(--color-4);
   --btn-bg: #906fc2;
   --btn-bg-hover: #6940a8;
   --btn-text: var(--text-color);
@@ -27,7 +28,8 @@ body {
   width: 100%;
   height: 100%;
   font-family: "Comfortaa";
-  background-color: var(--bg-color-1);
+  background: var(--color-3);
+  line-height: 1.5;
 }
 
 * {
@@ -78,12 +80,51 @@ section {
   display: flex;
 }
 
+.col-1 {
+  width: 8.333333% !important;
+}
+.col-2 {
+  width: 16.666666% !important;
+}
+.col-3 {
+  width: 25% !important;
+}
+.col-4 {
+  width: 33.333333% !important;
+}
+.col-5 {
+  width: 41.666666% !important;
+}
+.col-6 {
+  width: 50% !important;
+}
+.col-7 {
+  width: 58.333333% !important;
+}
+.col-8 {
+  width: 66.666666% !important;
+}
+.col-9 {
+  width: 75% !important;
+}
+.col-10 {
+  width: 83.333333% !important;
+}
+.col-11 {
+  width: 91.666666% !important;
+}
+.col-12,
+.col-full {
+  width: 100% !important;
+}
+
 .container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 2em;
-  background-color: var(--bg-color-2);
+  background-color: var(--color-1);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 
 .drink-image {
@@ -110,6 +151,10 @@ section {
   margin: 0.75em 0;
 }
 
+.drink-ingredients,
+.drink-prep {
+  width: 50%;
+}
 .drink-ingredients li,
 .drink-prep li {
   margin-bottom: 0.75em;
@@ -130,11 +175,130 @@ section {
   border-radius: 50%;
 }
 
-.review-body strong, .review-body p {
+.review-body .review-author,
+.review-body .review-text {
   display: block;
   margin: 0.5em 0;
+}
+.review textarea {
+  width: 100%;
 }
 
 .review-body svg {
   width: 1em;
 }
+
+@media only screen and (max-width: 1200px) {
+  .container {
+    padding: 0.5em;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .row {
+    display: block;
+  }
+  .drink-ingredients,
+  .drink-prep {
+    width: 100%;
+  }
+}
+
+.drink-form select,
+.drink-form input,
+.drink-form textarea,
+.drink-form label {
+  display: block;
+  width: calc(100% - 1.25em);
+}
+
+.drink-form label {
+  margin-bottom: 0.5em;
+  font-size: 11pt;
+}
+
+.drink-form select,
+.drink-form input,
+.drink-form textarea {
+  font-size: 12pt;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+.drink-form .form-group {
+  margin-bottom: 1em;
+}
+
+.drink-form textarea {
+  resize: vertical;
+}
+
+.form-group li {
+  margin-bottom: 0.75em;
+}
+
+.drink-form .btn-submit {
+  padding: 0.5em 1em;
+  background-color: lime;
+}
+
+.ingredients-list .row .ingredient-quantity {
+  width: 18em;
+  margin-right: 1em;
+}
+
+.ingredients-list .row .ingredient-name {
+  margin-right: 1em;
+}
+
+/*
+.drink-form .form-group > * {
+  display: block;
+  margin: 0 -0.5em;
+}
+
+.drink-form .form-group textarea {
+  resize: vertical;
+}
+
+.drink-form .form-group {
+  margin: 1em 0;
+  padding: 0 0.5em;
+}
+
+.drink-form .form-group fieldset input,
+.drink-form .form-group fieldset textarea {
+  width: auto;
+  margin: 0;
+}
+
+.drink-form .form-group .row > * {
+  margin: 0 0.5em;
+}
+
+.drink-form .form-group li {
+  margin-bottom: 1em;
+}
+.drink-form .form-group .row .ingredient-quantity {
+  width: 12em;
+}
+.drink-form .form-group .row .ingredient-name {
+  width: 100%;
+}
+.drink-form .form-group .row .preparation-step {
+  width: 100%;
+}
+
+.drink-form .btn-remove {
+  padding: 0.5em 1em;
+}
+
+.drink-form .form-group input,
+.drink-form .form-group textarea,
+.drink-form .form-group section {
+  font-size: 1.15em;
+  padding: 0.25em 0.5em;
+  border-radius: 5px;
+  width: 100%;
+}
+*/
