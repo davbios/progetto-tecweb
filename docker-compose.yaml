@@ -11,6 +11,8 @@ services:
     restart: unless-stopped
     volumes:
       - tecweb_db_data:/var/lib/mysql
+      - ./setup-testenv.sql:/docker-entrypoint-initdb.d/1-setup.sql
+      - ./database.sql:/docker-entrypoint-initdb.d/2-init.sql
     healthcheck:
       test:
         [

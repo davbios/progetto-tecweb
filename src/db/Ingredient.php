@@ -5,23 +5,31 @@ class Ingredient extends BaseModel
 {
     public string $name;
 
-    public ?int $quantity;
+    public int $quantity;
 
-    public function __construct(string $name, ?int $quantity, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
+    // N.B.:
+    // vedi Review#$drinkId
+    private int $drinkId;
+
+    public function __construct(string $name, int $quantity, int $drinkId, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
     {
         parent::__construct($id, $created_at, $updated_at);
         $this->name = $name;
         $this->quantity = $quantity;
+        $this->drinkId = $drinkId;
+    }
+
+    public function getDrinkId(): int
+    {
+        return $this->drinkId;
     }
 }
 
 interface IngredientDao
 {
-    public function getAll(): array;
+    /** @return Ingredient[] */
     public function getAllForDrink(int $drinkId): array;
     public function findById(int $id): ?Ingredient;
-    public function addToDrink(int $drinkId, int $ingredientId, int $quanity): void;
-    public function removeFromDrink(int $drinkId, int $ingredientId): void;
     public function insert(Ingredient $ingredient): Ingredient;
     public function update(Ingredient $ingredient): Ingredient;
     public function delete(Ingredient $ingredient): Ingredient;
@@ -40,32 +48,19 @@ class PdoIngredientDao implements IngredientDao
     {
         return new Ingredient(
             $row["name"],
-            isset($row["quantity"]) ? (int) $row["quantity"] : null,
+            (int) $row["quantity"],
+            (int) $row["drink_id"],
             (int) $row["id"],
             new DateTime($row["created_at"]),
             new DateTime($row["updated_at"]),
         );
     }
 
-    public function getAll(): array
-    {
-        $stmt = $this->pdo->prepare("SELECT name, id, created_at, updated_at FROM ingredients");
-        $stmt->execute();
-        $ingredients = [];
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            array_push($ingredients, $this->mapRowToIngredient($row));
-        }
-        return $ingredients;
-    }
-
+    /** @return Ingredient[] */
     public function getAllForDrink(int $drinkId): array
     {
-        $stmt = $this->pdo->prepare("SELECT I.name AS name, I.id AS id, I.created_at AS created_at, 
-        I.updated_at AS updated_at, DI.quantity AS quantity 
-        FROM drinks_ingredients DI
-        JOIN ingrediens I ON DI.ingredient_id = I.id
-        WHERE DI.drink_id = :id");
-        $stmt->bindParam("id", $drinkId, PDO::PARAM_INT);
+        $stmt = $this->pdo->prepare("SELECT id, name, quantity, drink_id, created_at, updated_at FROM ingredients WHERE drink_id = :drinkId");
+        $stmt->bindParam("drinkId", $drinkId, PDO::PARAM_INT);
         $stmt->execute();
         $ingredients = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -86,30 +81,16 @@ class PdoIngredientDao implements IngredientDao
         }
     }
 
-    public function addToDrink(int $drinkId, int $ingredientId, int $quantity): void
-    {
-        $insertStmt = $this->pdo->prepare("INSERT INTO drinks_ingredients (drink_id, ingredient_id, quantity) VALUES (:drink_id, :ingredient_id, :quantity);");
-        $insertStmt->bindParam("drink_id", $drinkId, PDO::PARAM_INT);
-        $insertStmt->bindParam("ingredient_id", $ingredientId, PDO::PARAM_INT);
-        $insertStmt->bindParam("quantity", $quantity, PDO::PARAM_INT);
-        $insertStmt->execute();
-    }
-
-    public function removeFromDrink(int $drinkId, int $ingredientId): void
-    {
-        $insertStmt = $this->pdo->prepare("DELETE FROM drinks_ingredients WHERE drink_id = :drink_id AND ingredient_id = :ingredient_id;");
-        $insertStmt->bindParam("drink_id", $drinkId, PDO::PARAM_INT);
-        $insertStmt->bindParam("ingredient_id", $ingredientId, PDO::PARAM_INT);
-        $insertStmt->execute();
-    }
-
     public function insert(Ingredient $ingredient): Ingredient
     {
         try {
             $this->pdo->beginTransaction();
 
-            $insertStmt = $this->pdo->prepare("INSERT INTO ingredients (name) VALUES (:name);");
+            $insertStmt = $this->pdo->prepare("INSERT INTO ingredients (name, quantity, drink_id) VALUES (:name, :quantity, :drinkId);");
             $insertStmt->bindParam("name", $ingredient->name, PDO::PARAM_STR);
+            $insertStmt->bindParam("quantity", $ingredient->quantity, PDO::PARAM_INT);
+            $drinkId = $ingredient->getDrinkId();
+            $insertStmt->bindParam("drinkId", $drinkId, PDO::PARAM_INT);
             $insertStmt->execute();
 
             $id = $this->pdo->lastInsertId();
@@ -130,8 +111,9 @@ class PdoIngredientDao implements IngredientDao
         try {
             $this->pdo->beginTransaction();
 
-            $updateStmt = $this->pdo->prepare("UPDATE ingredients SET name = :name WHERE id = :id");
+            $updateStmt = $this->pdo->prepare("UPDATE ingredients SET name = :name, quantity = :quantity WHERE id = :id");
             $updateStmt->bindParam("name", $ingredient->name, PDO::PARAM_STR);
+            $updateStmt->bindParam("quantity", $ingredient->quantity, PDO::PARAM_INT);
             $id = $ingredient->getId();
             $updateStmt->bindParam("id", $id, PDO::PARAM_INT);
             $updateStmt->execute();

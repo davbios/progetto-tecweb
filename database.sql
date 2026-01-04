@@ -3,7 +3,6 @@ USE progetto;
 DROP TABLE IF EXISTS users_fav_drinks;
 DROP TABLE IF EXISTS steps;
 DROP TABLE IF EXISTS reviews;
-DROP TABLE IF EXISTS drinks_ingredients;
 DROP TABLE IF EXISTS ingredients;
 DROP TABLE IF EXISTS drinks;
 DROP TABLE IF EXISTS categories;
@@ -39,10 +38,9 @@ CREATE TABLE categories (
 
 CREATE TABLE drinks (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT NOT NULL,
     poster VARCHAR(400) NOT NULL,
-    preparation TEXT NOT NULL,
     creator_id INT NOT NULL REFERENCES users(id),
     category_id INT REFERENCES categories(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
@@ -52,18 +50,10 @@ CREATE TABLE drinks (
 CREATE TABLE ingredients (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(400) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE drinks_ingredients (
     drink_id INT NOT NULL REFERENCES drinks(id),
-    ingredient_id INT NOT NULL REFERENCES ingredients(id),
     quantity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (drink_id, ingredient_id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE steps (
@@ -83,3 +73,7 @@ CREATE TABLE users_fav_drinks (
 
     PRIMARY KEY (user_id, drink_id)
 );
+
+-- Dati di test
+INSERT INTO categories (name, poster) VALUES ('Energetici', NULL), ('Rilassanti', NULL), ('Musicali', NULL);
+INSERT INTO users (username, email, password, is_admin) VALUES ('admin', 'admin@example.com', '$argon2id$v=19$m=65536,t=4,p=1$OVRla1FGRFRDQWtFVzJBZA$JUCcuYDWYHu44Ft3kdcHYL59hR5G7ARuGNniy+E0FgE', 1); -- psw: admin

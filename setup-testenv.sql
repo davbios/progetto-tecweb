@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS progetto;
+CREATE USER 'progetto'@'%' IDENTIFIED BY 'progetto';
+GRANT ALL PRIVILEGES ON `progetto`.* TO 'progetto'@'%';
+FLUSH PRIVILEGES;

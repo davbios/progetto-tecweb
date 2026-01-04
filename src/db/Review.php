@@ -34,6 +34,7 @@ class Review extends BaseModel
 
 interface ReviewDao
 {
+    /** @return Review[] */
     public function getAllForDrink(int $drinkId): array;
     public function findById(int $id): ?Review;
     public function findByUserId(int $userId): ?Review;
@@ -72,6 +73,7 @@ class PdoReviewDao implements ReviewDao
         );
     }
 
+    /** @return Review[] */
     public function getAllForDrink(int $drinkId): array
     {
         $stmt = $this->pdo->prepare("SELECT R.id AS id, R.text AS text, R.rate AS rate, 
