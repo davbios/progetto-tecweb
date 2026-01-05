@@ -1,3 +1,88 @@
+<?php
+require_once dirname(__FILE__) . "/db/db.php";
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $action = $_POST["action"] ?? null;
+
+    // accesso utente
+    if ($action === "login") {
+
+        $username = $_POST["username"] ?? null;
+        $password = $_POST["password"] ?? null;
+
+        if (!$username || !$password) {
+            die("Dati mancanti");
+        }
+
+        $user = $userDao->findByUsername($username);
+        if (!$user || !password_verify($password, $user->getPassword())) {
+            die("Username o password errati");
+        }
+
+        $_SESSION["user_id"]  = $user->getId();
+        $_SESSION["username"] = $user->getUsername();
+        $_SESSION["is_admin"] = $user->isAdmin();
+
+        header("Location: index.php");
+        exit;
+    }
+    // registrazione
+    if ($action === "register") {
+
+        $email        = $_POST["email"] ?? null;
+        $username     = $_POST["username"] ?? null;
+        $password     = $_POST["password"] ?? null;
+
+        if (!$email || !$username || !$password) {
+            die("Dati mancanti");
+        }
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $user = new User($username, $email, $passwordHash, false);
+        $user = $userDao->insert($user);
+
+        $_SESSION["user_id"]  = $user->getId();
+        $_SESSION["username"] = $user->getUsername();
+        $_SESSION["is_admin"] = false;
+
+        header("Location: index.php");
+        exit;
+    }
+    // accesso admin
+    if ($action === "admin_login") {
+
+        $username = $_POST["username"] ?? null;
+        $password = $_POST["password"] ?? null;
+
+        if (!$username || !$password) {
+            die("Dati mancanti");
+        }
+
+        $user = $userDao->findByUsername($username);
+
+        if (
+            !$user ||
+            !$user->isAdmin() ||
+            !password_verify($password, $user->getPassword())
+        ) {
+            die("Accesso negato");
+        }
+
+        $_SESSION["user_id"]  = $user->getId();
+        $_SESSION["username"] = $user->getUsername();
+        $_SESSION["is_admin"] = true;
+
+        header("Location: admin.php");
+        exit;
+    }
+}
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,7 +97,8 @@
         <section class="admin-area">
             <button id="admin-btn" class="btn">Area Amministratore</button>
             <section class="admin-login">
-                <form class="admin-form" action="">
+                <form class="admin-form" action="login.php" method="POST">
+                    <input type="hidden" name="action" value="admin_login">
                     <input id="admin-username" type="text" name="username" placeholder="Username" required>
                     <img id="usr" src="img/user.svg" alt="" aria-hidden="true">
                     <input id="admin-password" type="password" name="password" placeholder="Password" required>
@@ -24,7 +110,8 @@
     </header>
     <main class="container">
         <div class="box login">
-            <form action="">
+            <form action="login.php" method="POST">
+                <input type="hidden" name="action" value="login">
                 <h2><span lang="en">Log-in</span></h2>
                 <section class="input">
                     <label for="login-username">Username</label>
@@ -40,12 +127,13 @@
             </form>
         </div>
         <div class="box register">
-            <form action="">
+            <form action="login.php" method="POST">
+                <input type="hidden" name="action" value="register">
                 <h2>Registrati</h2>
                 <!-- possibilità di mettere un paragrafo con le istruzioni -->
                 <section class="input">
                     <label for="reg-email">Email</label>
-                    <input id="reg-email" type="email" name="Email" placeholder="email" required>
+                    <input id="reg-email" type="email" name="email" placeholder="email" required>
                     <img src="img/mail.svg" alt="" aria-hidden="true">
                 </section>
                 <section class="input">
@@ -56,12 +144,6 @@
                 <section class="input">
                     <label for="reg-password">Password</label>
                     <input id="reg-password" type="password" name="password" placeholder="Password" required>
-                    <img src="img/lock.svg" alt="" aria-hidden="true">
-                </section>
-                <p>Riscrivi la Password : </p>
-                <section class="input">
-                    <label for="reg-password_conf">Password</label>
-                    <input id="reg-password_conf" type="password" name="password_conf" placeholder="Password" required>
                     <img src="img/lock.svg" alt="" aria-hidden="true">
                 </section>
                 <button type="submit" class="btn">Crea un <span lang="en">account</span></button>

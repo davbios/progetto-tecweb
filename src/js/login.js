@@ -28,7 +28,7 @@ adminBtn.addEventListener("click", (event) => {
 });
 
 document.addEventListener("click", (event) => {
-  if (adminForm.style.display !== "block") return;
-  if (event.target.closest(".admin-area")) return;
-  adminForm.style.display = "none";
+if (adminForm.style.display !== "block") return;
+if (event.target.closest(".admin-area")) return;
+adminForm.style.display = "none";
 });
