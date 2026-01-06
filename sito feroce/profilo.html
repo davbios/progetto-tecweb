@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>Feroce - Home</title> <meta charset="UTF-8">
+    <title>Feroce</title> <meta charset="UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Il ricettario social per i tuoi drink. Cerca ispirazione tra le creazioni degli utenti.">
@@ -15,11 +15,15 @@
 <body>
 
     <header>
-        <img src="../images/logo.png" id="logo" alt="Logo Feroce"> 
+        <div class="logo-wrapper">
+            <img src="../images/logo.png" class="logo-normal" alt="Logo Feroce">
+            <img src="../images/logo_rovesciato.png" class="logo-hover" alt="Logo Feroce Animation">
+        </div> 
+        
         <h1>FEROCE</h1>
         
         <nav id="breadcrumb" aria-label="Percorso di navigazione">
-            <p>Ti trovi in: <span lang="en">Profilo</span></p>
+            <p>Ti trovi in: Profilo</p>
         </nav>
 
         <nav id="menu" aria-label="Menu principale">
@@ -27,15 +31,26 @@
                 <li><a href="home.html"><span lang="en">Home</span></a></li>
                 <li><a href="creazioni.html">Creazioni</a></li>
                 <li><a href="categorie.html">Categorie</a></li>
+                <li><a href="esplora.html">Esplora</a></li>
                 <li id="currentlink" aria-current="page">Profilo</li>
             </ul>
         </nav>
 
-    <button id="theme-toggle" class="theme-btn" aria-label="Cambia tema colore">
-        <img id="theme-icon" src="../images/sole.jpg" alt="Icona modalità chiara">
-    </button>
+        <div class="header-actions">
+            <div class="search-container" role="search">
+                <form action="cerca.html" method="GET">
+                    <label for="site-search" class="visually-hidden">Cerca un drink</label>
+                    <input type="search" id="site-search" name="q" placeholder="Cerca..." autocomplete="off">
+                    <button type="submit" class="search-btn" aria-label="Avvia ricerca">
+                        <span aria-hidden="true"><img src="../images/search.png" alt=""></span>
+                    </button>
+                </form>
+            </div>
 
-    </div>
+            <button id="theme-toggle" class="theme-btn" aria-label="Cambia tema colore">
+                <img id="theme-icon" src="../images/brightness.png" alt="Icona modalità chiara">
+            </button>
+        </div>
     </header>
 
     <main>
