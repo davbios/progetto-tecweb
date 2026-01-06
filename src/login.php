@@ -49,33 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: index.php");
         exit;
     }
-    // accesso admin
-    if ($action === "admin_login") {
-
-        $username = $_POST["username"] ?? null;
-        $password = $_POST["password"] ?? null;
-
-        if (!$username || !$password) {
-            die("Dati mancanti");
-        }
-
-        $user = $userDao->findByUsername($username);
-
-        if (
-            !$user ||
-            !$user->isAdmin() ||
-            !password_verify($password, $user->getPassword())
-        ) {
-            die("Accesso negato");
-        }
-
-        $_SESSION["user_id"]  = $user->getId();
-        $_SESSION["username"] = $user->getUsername();
-        $_SESSION["is_admin"] = true;
-
-        header("Location: admin.php");
-        exit;
-    }
 }
 ?>
 
@@ -94,19 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
     <header>    
         <h1>Titolo del sito</h1>
-        <section class="admin-area">
-            <button id="admin-btn" class="btn">Area Amministratore</button>
-            <section class="admin-login">
-                <form class="admin-form" action="login.php" method="POST">
-                    <input type="hidden" name="action" value="admin_login">
-                    <input id="admin-username" type="text" name="username" placeholder="Username" required>
-                    <img id="usr" src="img/user.svg" alt="" aria-hidden="true">
-                    <input id="admin-password" type="password" name="password" placeholder="Password" required>
-                    <img id="psw" src="img/lock.svg" alt="" aria-hidden="true">
-                    <button type="submit" class="btn admin-btn">Accedi</button>
-                </form>
-            </section>
-        </section>
     </header>
     <main class="container">
         <div class="box login">

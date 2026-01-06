@@ -18,17 +18,3 @@ loginbtn.addEventListener('click', function(){
         LoginInput.focus();
     }
 } );
-
-const adminBtn = document.getElementById("admin-btn");
-const adminForm = document.querySelector(".admin-form");
-
-adminBtn.addEventListener("click", (event) => {
-    event.stopPropagation();
-    adminForm.style.display = adminForm.style.display === "block" ? "none" : "block";
-});
-
-document.addEventListener("click", (event) => {
-if (adminForm.style.display !== "block") return;
-if (event.target.closest(".admin-area")) return;
-adminForm.style.display = "none";
-});

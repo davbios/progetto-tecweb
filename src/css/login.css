@@ -50,50 +50,6 @@ header h1{
     left: -9999px;
 }
 
-/* Form per il login area amministratore */
-.admin-area {
-    position: absolute;
-    top: 0;
-    right: 30px;
-}
-
-.admin-login{
-    z-index: 10;
-    position: relative;
-    width: min(350px, 40vw);
-    height: min(250px, 35vh);
-}
-
-.admin-form{
-    display: none;
-    padding: 20px;
-    margin-top: 10px;
-    background: #EDEAEA;
-    border-radius: 4px;
-    border: 3px solid #23022E;
-}
-
-.admin-form input{
-    width: 80%;
-    padding: 8px;
-    outline: 0;
-    background: #fff;
-    font-weight: 100;
-    border-radius: 2px;
-}
-
-.admin-form #usr{
-    position: absolute;
-    right: 90px;
-    top: 70px;
-}
-.admin-form #psw{
-    position: absolute;
-    right: 90px;
-    top: 150px;
-}
-
-
 /*  Form per il login area utente */
 
 .container{
