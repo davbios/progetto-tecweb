@@ -6,8 +6,8 @@ const themeIcon = document.getElementById('theme-icon');
 const body = document.body;
 
 // Percorsi delle tue icone (Assicurati che siano corretti!)
-const iconaSole = "../images/sole.png"; 
-const iconaLuna = "../images/luna.png";
+const iconaSole = "../images/brightness.png"; 
+const iconaLuna = "../images/moon.png";
 
 // 1. Al caricamento della pagina: controlliamo la memoria
 const currentTheme = localStorage.getItem('theme');
