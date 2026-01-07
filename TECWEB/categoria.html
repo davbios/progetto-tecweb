@@ -7,6 +7,7 @@
 
   <link rel="stylesheet" href="catprod.css">
   <script src="theme.js" defer></script>
+  <script src="categoria.js" defer></script>
 </head>
 
 <body>
@@ -42,36 +43,125 @@
     <h2>Le categorie</h2>
   </div>
 
-  <ul class="prodcards">
-    <li>
-      <img src="images/categorie/1.png" alt="Drink felici">
-      <h3>Drink felici</h3>
-      <a href="#" aria-label="Scopri i drink felici">Scopri</a>
+  <ul class="prodcards" aria-label="Categorie di drink">
+    <!-- 1 -->
+    <li class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="images/categorie/1.png" alt="Drink felici">
+          <h3>Drink felici</h3>
+          <button class="scopri-btn" type="button" data-cat="felici" aria-label="Scopri i drink felici">
+            Scopri
+          </button>
+        </div>
+
+        <div class="flip-back" aria-label="Lista drink felici">
+          <h3>Drink felici</h3>
+          <p class="drink-subtitle">Una lista di drink che ti mettono subito di buon umore 🍹</p>
+          <ul class="drink-list"></ul>
+          <button class="chiudi-btn" type="button" aria-label="Chiudi lista drink felici">Chiudi</button>
+        </div>
+      </div>
     </li>
-    <li>
-      <img src="images/categorie/2.png" alt="Drink classici">
-      <h3>Drink classici</h3>
-      <a href="#" aria-label="Scopri i drink classici">Scopri</a>
+
+    <!-- 2 -->
+    <li class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="images/categorie/2.png" alt="Drink classici">
+          <h3>Drink classici</h3>
+          <button class="scopri-btn" type="button" data-cat="classici" aria-label="Scopri i drink classici">
+            Scopri
+          </button>
+        </div>
+
+        <div class="flip-back" aria-label="Lista drink classici">
+          <h3>Drink classici</h3>
+          <p class="drink-subtitle">I grandi classici intramontabili.</p>
+          <ul class="drink-list"></ul>
+          <button class="chiudi-btn" type="button" aria-label="Chiudi lista drink classici">Chiudi</button>
+        </div>
+      </div>
     </li>
-    <li>
-      <img src="images/categorie/3.png" alt="Drink arrabbiati">
-      <h3>Drink arrabbiati</h3>
-      <a href="#" aria-label="Scopri i drink arrabbiati">Scopri</a>
+
+    <!-- 3 -->
+    <li class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="images/categorie/3.png" alt="Drink arrabbiati">
+          <h3>Drink arrabbiati</h3>
+          <button class="scopri-btn" type="button" data-cat="arrabbiati" aria-label="Scopri i drink arrabbiati">
+            Scopri
+          </button>
+        </div>
+
+        <div class="flip-back" aria-label="Lista drink arrabbiati">
+          <h3>Drink arrabbiati</h3>
+          <p class="drink-subtitle">Più forti, più decisi, più “cattivi”.</p>
+          <ul class="drink-list"></ul>
+          <button class="chiudi-btn" type="button" aria-label="Chiudi lista drink arrabbiati">Chiudi</button>
+        </div>
+      </div>
     </li>
-    <li>
-      <img src="images/categorie/4.png" alt="Drink playlist">
-      <h3>Drink playlist</h3>
-      <a href="#" aria-label="Scopri i drink playlist">Scopri</a>
+
+    <!-- 4 -->
+    <li class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="images/categorie/4.png" alt="Drink playlist">
+          <h3>Drink playlist</h3>
+          <button class="scopri-btn" type="button" data-cat="playlist" aria-label="Scopri i drink playlist">
+            Scopri
+          </button>
+        </div>
+
+        <div class="flip-back" aria-label="Lista drink playlist">
+          <h3>Drink playlist</h3>
+          <p class="drink-subtitle">Completa la playlist: un drink per ogni step 🎧</p>
+          <ul class="drink-list"></ul>
+          <button class="chiudi-btn" type="button" aria-label="Chiudi lista drink playlist">Chiudi</button>
+        </div>
+      </div>
     </li>
-    <li>
-      <img src="images/categorie/5.png" alt="Drink festa">
-      <h3>Drink festa</h3>
-      <a href="#" aria-label="Scopri i drink da festa">Scopri</a>
+
+    <!-- 5 -->
+    <li class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="images/categorie/5.png" alt="Drink festa">
+          <h3>Drink festa</h3>
+          <button class="scopri-btn" type="button" data-cat="festa" aria-label="Scopri i drink da festa">
+            Scopri
+          </button>
+        </div>
+
+        <div class="flip-back" aria-label="Lista drink festa">
+          <h3>Drink festa</h3>
+          <p class="drink-subtitle">Perfetti per una serata con amici 🥳</p>
+          <ul class="drink-list"></ul>
+          <button class="chiudi-btn" type="button" aria-label="Chiudi lista drink festa">Chiudi</button>
+        </div>
+      </div>
     </li>
-    <li>
-      <img src="images/categorie/6.png" alt="Drink assurdi">
-      <h3>Drink assurdi</h3>
-      <a href="#" aria-label="Scopri i drink assurdi">Scopri</a>
+
+    <!-- 6 -->
+    <li class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="images/categorie/6.png" alt="Drink assurdi">
+          <h3>Drink assurdi</h3>
+          <button class="scopri-btn" type="button" data-cat="assurdi" aria-label="Scopri i drink assurdi">
+            Scopri
+          </button>
+        </div>
+
+        <div class="flip-back" aria-label="Lista drink assurdi">
+          <h3>Drink assurdi</h3>
+          <p class="drink-subtitle">Strani, divertenti, fuori di testa 😵‍💫</p>
+          <ul class="drink-list"></ul>
+          <button class="chiudi-btn" type="button" aria-label="Chiudi lista drink assurdi">Chiudi</button>
+        </div>
+      </div>
     </li>
   </ul>
 </main>
