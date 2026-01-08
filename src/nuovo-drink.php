@@ -2,6 +2,13 @@
 require_once dirname(__FILE__) . "/db/db.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST"):
+    $uploaddir = '/var/www/uploads/';
+    $uploadfile = $uploaddir . basename($_FILES['file']['name']);
+
+    if (!move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+        die("Possible file upload attack!");
+    }
+
     $category = $categoryDao->findById($_POST["category"]);
     if ($category === null) {
         die("Categoria non trovata");
@@ -50,9 +57,11 @@ else:
     <body>
         <main class="container">
             <h1>Nuovo drink</h1>
-            <form action="nuovo-drink.php" method="POST" class="drink-form">
-                <div class="row">
-                    <div class="form-group col-4">
+            <form enctype="multipart/form-data" action="__URL__" method="POST" class="drink-form">
+                <fieldset class="info-fieldset">
+                    <legend>Informazioni generali</legend>
+
+                    <div class="form-group input-category">
                         <label for="category">Categoria</label>
                         <select name="category" id="category" required>
                             <option disabled selected>Nessuna</option>
@@ -64,71 +73,76 @@ else:
                             ?>
                         </select>
                     </div>
-                    <div class="form-group col-8">
+
+                    <div class="form-group input-name">
                         <label for="name">Nome</label>
                         <input type="text" id="name" name="name" placeholder="es. Gin Tonic" required>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="description">Descrizione</label>
-                    <textarea id="description" name="description" placeholder="es. Un grande classico" required></textarea>
-                </div>
-                <div class="form-group">
-                    <fieldset>
-                        <legend>Immagine</legend>
-                        <input type="file" id="poster" name="poster" required>
-                    </fieldset>
-                </div>
-                <div class="form-group">
-                    <fieldset>
-                        <legend>Ingredienti</legend>
-                        <ul id="ingredients-list">
-                            <li>
-                                <div class="row">
+
+                    <div class="form-group input-description">
+                        <label for="description">Descrizione</label>
+                        <textarea id="description" name="description" placeholder="es. Un grande classico"
+                            required></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Immagine</legend>
+
+                    <label for="poster">Carica un file</label>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+                    <input type="file" id="poster" name="poster" accept="image/jpeg,image/png" required>
+                </fieldset>
+
+                <fieldset class="list-fieldset">
+                    <legend>Ingredienti</legend>
+
+                    <ul id="ingredients-list" class="form-list">
+                        <li>
+                            <div class="form-row">
+                                <div class="form-group input-quantity">
+                                    <label for="ingredient-quanity-1">Quantità</label>
                                     <input type="text" class="ingredient-quantity" id="ingredient-quanity-1"
-                                        name="ingredient-quantities[]" placeholder="Quantità" required>
-                                    <input type="text" class="ingredient-name" id="ingredient-name-1"
-                                        name="ingredient-names[]" placeholder="Nome" required>
-                                    <button type="button" class="btn-remove" onclick="removeIngredient(1)"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" class="feather feather-trash">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path
-                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                            </path>
-                                        </svg>
-                                    </button>
+                                        name="ingredient-quantities[]" placeholder="es. 12oz" required>
                                 </div>
-                            </li>
-                        </ul>
-                        <button type="button" class="btn-add" onclick="addIngredient()">Aggiungi</button>
-                    </fieldset>
-                </div>
-                <div class="form-group">
-                    <fieldset>
-                        <legend>Preparazione</legend>
-                        <ol id="steps-list">
-                            <li>
-                                <div class="row">
+                                <div class="form-group">
+                                    <label for="ingredient-name-1">Nome</label>
+                                    <input type="text" class="ingredient-name" id="ingredient-name-1"
+                                        name="ingredient-names[]" placeholder="es. Vodka" required>
+                                </div>
+
+                                <button type="button" class="btn-remove" onclick="removeIngredient(1)">
+                                    <img src="img/trash.svg" alt="Rimuovi ingrediente">
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <button type="button" class="btn-add" onclick="addIngredient()">Aggiungi</button>
+                </fieldset>
+
+                <fieldset class="list-fieldset">
+                    <legend>Preparazione</legend>
+
+                    <ol id="steps-list" class="form-list">
+                        <li>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="preparation-1">Procedimento</label>
                                     <textarea class="preparation-step" id="preparation-1" name="steps[]"
                                         placeholder="Procedimento" required></textarea>
-                                    <div><button type="button" class="btn-remove" onclick="removeStep(1)"><svg
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-trash">
-                                                <polyline points="3 6 5 6 21 6"></polyline>
-                                                <path
-                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                </path>
-                                            </svg></button></div>
                                 </div>
-                            </li>
-                        </ol>
-                        <button type="button" class="btn-add" onclick="addStep()">Aggiungi</button>
-                    </fieldset>
-                </div>
+
+                                <button type="button" class="btn-remove" onclick="removeStep(1)">
+                                    <img src="img/trash.svg" alt="Rimuovi passo di preparazione">
+                                </button>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <button type="button" class="btn-add" onclick="addStep()">Aggiungi</button>
+                </fieldset>
+
                 <button type="submit" class="btn-submit">Crea</button>
             </form>
         </main>
@@ -138,11 +152,21 @@ else:
                 var list = document.getElementById('ingredients-list');
                 var fieldId = list.childElementCount + 1;
                 var item = document.createElement('li');
-                item.innerHTML += '<div class="row">' +
-                    `<input type="text" class="ingredient-quantity" id="ingredient-quanity-${fieldId}" name="ingredient-quantities[]" placeholder="Quantità" required>` +
-                    `<input type="text" class="ingredient-name" id="ingredient-name-${fieldId}" name="ingredient-names[]" placeholder="Nome" required>` +
-                    `<button type="button" class="btn-remove" onclick="removeIngredient(${fieldId})"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>` +
-                    '</div>';
+                item.innerHTML = '<div class="form-row">' +
+                    '<div class="form-group input-quantity">' +
+                    `<label for="ingredient-quanity-${fieldId}">Quantità</label>` +
+                    `<input type="text" class="ingredient-quantity" id="ingredient-quanity-${fieldId}" ` +
+                    ' name="ingredient-quantities[]" placeholder="es. 12oz" required>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    `<label for="ingredient-name-${fieldId}">Nome</label>` +
+                    `<input type="text" class="ingredient-name" id="ingredient-name-${fieldId}" ` +
+                    ' name="ingredient-names[]" placeholder="es. Vodka" required>' +
+                    '</div>' +
+                    `<button type="button" class="btn-remove" onclick="removeIngredient(${fieldId})">` +
+                    '<img src="img/trash.svg" alt="Rimuovi ingrediente">' +
+                    '</button>' +
+                    '</div>'
                 list.appendChild(item);
             }
 
@@ -150,22 +174,28 @@ else:
                 var list = document.getElementById('steps-list');
                 var fieldId = list.childElementCount + 1;
                 var item = document.createElement('li');
-                item.innerHTML = `<div class="row">` +
-                    `<textarea class="preparation-step" id="preparation-${fieldId}" name="steps[]" placeholder="Procedimento" required></textarea>` +
-                    `<div><button type="button" class="btn-remove" onclick="removeStep(${fieldId})"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div>` +
-                    '</div>';
+                item.innerHTML = '<div class="row">' +
+                    '<div class="form-group">' +
+                    `<label for="preparation-${fieldId}">Procedimento</label>` +
+                    `<textarea class="preparation-step" id="preparation-${fieldId}" name="steps[]" ` +
+                    ` placeholder="Procedimento" required></textarea>` +
+                    '</div>' +
+                    `<button type="button" class="btn-remove" onclick="removeStep(${fieldId})">` +
+                    '<img src="img/trash.svg" alt="Rimuovi passo di preparazione">' +
+                    '</button>' +
+                    '</div>'
                 list.appendChild(item)
             }
 
             function removeIngredient(id) {
                 var list = document.getElementById('ingredients-list');
-                var el = document.getElementById('ingredient-name-' + id).parentNode.parentNode;
+                var el = document.getElementById('ingredient-name-' + id).parentNode.parentNode.parentNode;
                 list.removeChild(el);
             }
 
             function removeStep(id) {
                 var list = document.getElementById('steps-list');
-                var el = document.getElementById('preparation-' + id).parentNode.parentNode;
+                var el = document.getElementById('preparation-' + id).parentNode.parentNode.parentNode;
                 list.removeChild(el);
             }
         </script>
