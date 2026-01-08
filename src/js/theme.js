@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!toggleBtn || !themeIcon) return;
 
-  const iconaSole = "images/sole.svg";
-  const iconaLuna = "images/luna.svg";
+  const iconaSole = "img/sole.svg";
+  const iconaLuna = "img/luna.svg";
 
   const apply = (mode) => {
     const isLight = mode === "light";

@@ -26,12 +26,6 @@ body{
     background-color: #8B6FB5;
 }
 
-/*  
-    L'header oltre a contenere il titolo contiene anche il pulsante per l'accesso come amministratore.
-    Si è deciso di avere l'accesso admin in una pagina diversa dall'accesso e registrazione degli utenti per emulare
-    il layout dei classici siti.
-*/
-
 header{
     position: relative;
     width: 100%;
