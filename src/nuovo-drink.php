@@ -1,7 +1,14 @@
 <?php
 require_once dirname(__FILE__) . "/db/db.php";
+require_once dirname(__FILE__) . "/app/navbar.php";
+session_start();
 
-if ($_SERVER["REQUEST_METHOD"] === "POST"):
+if (!isset($_SESSION["user_id"])) {
+    header("Location: /");
+    exit;
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $uploaddir = '/var/www/uploads/';
     $uploadfile = $uploaddir . basename($_FILES['file']['name']);
 
@@ -42,21 +49,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"):
         // }
     }
     header("Location: drink.php?id=" . $drink->getId());
-else:
-    ?>
-    <!DOCTYPE html>
-    <html lang="en">
+} elseif ($_SERVER["REQUEST_METHOD"] === "GET") {
+    $template = file_get_contents(dirname(__FILE__) . "/templates/layout.html");
+    $template = str_replace("[title]", "Nuovo drink", $template);
+    $template = str_replace("[description]", "Il ricettario social per i tuoi drink. Cerca ispirazione tra il nostro catalogo e le creazioni degli altri utenti.", $template);
+    $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
+    $template = str_replace("[navbar]", getNavbar("nuovo", true), $template);
+    $template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » Nuovo drink', $template);
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nuovo drink</title>
-        <link rel="stylesheet" href="css/drink.css">
-    </head>
-
-    <body>
-        <main class="container">
-            <h1>Nuovo drink</h1>
+    $content = '<section class="title">
+                <h2>Nuovo drink</h2>
+            </section>
             <form enctype="multipart/form-data" action="__URL__" method="POST" class="drink-form">
                 <fieldset class="info-fieldset">
                     <legend>Informazioni generali</legend>
@@ -64,14 +67,14 @@ else:
                     <div class="form-group input-category">
                         <label for="category">Categoria</label>
                         <select name="category" id="category" required>
-                            <option disabled selected>Nessuna</option>
-                            <?php
-                            $categories = $categoryDao->getAll(100, 0);
-                            foreach ($categories as $category) {
-                                echo "<option value=\"" . $category->getId() . "\">" . $category->name . "</option>";
-                            }
-                            ?>
-                        </select>
+                            <option disabled selected>Nessuna</option>';
+
+    $categories = $categoryDao->getAll(100, 0);
+    foreach ($categories as $category) {
+        $content .= '<option value="' . $category->getId() . '">' . $category->name . "</option>\n";
+    }
+
+    $content .= '</select>
                     </div>
 
                     <div class="form-group input-name">
@@ -144,64 +147,12 @@ else:
                 </fieldset>
 
                 <button type="submit" class="btn-submit">Crea</button>
-            </form>
-        </main>
+            </form>';
 
-        <script defer>
-            function addIngredient() {
-                var list = document.getElementById('ingredients-list');
-                var fieldId = list.childElementCount + 1;
-                var item = document.createElement('li');
-                item.innerHTML = '<div class="form-row">' +
-                    '<div class="form-group input-quantity">' +
-                    `<label for="ingredient-quanity-${fieldId}">Quantità</label>` +
-                    `<input type="text" class="ingredient-quantity" id="ingredient-quanity-${fieldId}" ` +
-                    ' name="ingredient-quantities[]" placeholder="es. 12oz" required>' +
-                    '</div>' +
-                    '<div class="form-group">' +
-                    `<label for="ingredient-name-${fieldId}">Nome</label>` +
-                    `<input type="text" class="ingredient-name" id="ingredient-name-${fieldId}" ` +
-                    ' name="ingredient-names[]" placeholder="es. Vodka" required>' +
-                    '</div>' +
-                    `<button type="button" class="btn-remove" onclick="removeIngredient(${fieldId})">` +
-                    '<img src="img/trash.svg" alt="Rimuovi ingrediente">' +
-                    '</button>' +
-                    '</div>'
-                list.appendChild(item);
-            }
+    $template = str_replace("[content]", $content, $template);
 
-            function addStep() {
-                var list = document.getElementById('steps-list');
-                var fieldId = list.childElementCount + 1;
-                var item = document.createElement('li');
-                item.innerHTML = '<div class="row">' +
-                    '<div class="form-group">' +
-                    `<label for="preparation-${fieldId}">Procedimento</label>` +
-                    `<textarea class="preparation-step" id="preparation-${fieldId}" name="steps[]" ` +
-                    ` placeholder="Procedimento" required></textarea>` +
-                    '</div>' +
-                    `<button type="button" class="btn-remove" onclick="removeStep(${fieldId})">` +
-                    '<img src="img/trash.svg" alt="Rimuovi passo di preparazione">' +
-                    '</button>' +
-                    '</div>'
-                list.appendChild(item)
-            }
-
-            function removeIngredient(id) {
-                var list = document.getElementById('ingredients-list');
-                var el = document.getElementById('ingredient-name-' + id).parentNode.parentNode.parentNode;
-                list.removeChild(el);
-            }
-
-            function removeStep(id) {
-                var list = document.getElementById('steps-list');
-                var el = document.getElementById('preparation-' + id).parentNode.parentNode.parentNode;
-                list.removeChild(el);
-            }
-        </script>
-    </body>
-
-    </html>
-    <?php
-endif;
+    echo $template;
+} else {
+    header("Location: /");
+}
 ?>

@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = $user->isAdmin();
 
-            header("Location: index.html");
+            header("Location: index.php");
             exit;
         }
         else {
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = false;
 
-            header("Location: index.html");
+            header("Location: index.php");
             exit;
         }
         if (!empty($errori)) {
