@@ -5,9 +5,18 @@
     font-style: normal;
 }
 
+:focus {
+    outline: 3px solid #8B6FB5;
+    outline-offset: 3px;
+}
+
 :focus-visible {
     outline: 3px solid #8B6FB5;
     outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+    outline: 3px solid #8B6FB5;
 }
 
 *{
@@ -25,6 +34,7 @@ body{
     min-height: 100vh;
     background-color: #8B6FB5;
 }
+
 
 header{
     position: relative;
@@ -299,5 +309,28 @@ form{
         height: 2.5em;
         font-size: 1rem;
         border: 2px solid #EDEAEA;
+    }
+}
+
+@media (pointer: coarse) {
+    .btn, .input input {
+        min-height: 44px; 
+    }
+}
+
+/* riduzione animazioni per i megadown */
+@media (prefers-reduced-motion: reduce) {
+    .box,
+    .curtain-box::before,
+    .curtain,
+    .container.active .curtain-box::before,
+    .container.active .curtain.left,
+    .container.active .curtain.right {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .box {
+        transition: visibility 0s !important;
     }
 }
