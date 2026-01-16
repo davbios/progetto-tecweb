@@ -96,22 +96,22 @@ if(isset($_SESSION['active_form'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accesso e Registrazione - NomeSito</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="login-page" >
     <header>    
         <h1>Titolo del sito</h1>
     </header>
 
     <?php if (!empty($errori)): ?>
-        <div class="error-messages" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="error-messages" class="error-messages" role="alert" aria-live="assertive" aria-atomic="true">
             <?php foreach ($errori as $errore): ?>
                 <p><?php echo htmlspecialchars($errore); ?> </p>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
 
-    <main class="container <?php echo ($activeForm === 'register') ? 'active' : ''; ?>">
+    <main id="container" class="container <?php echo ($activeForm === 'register') ? 'active' : ''; ?>">
         <div class="box login">
             <form action="login.php" method="POST" aria-labelledby="login-heading">
                 <input type="hidden" name="action" value="login">
@@ -126,7 +126,7 @@ if(isset($_SESSION['active_form'])) {
                     <input id="login-password" type="password" name="password" placeholder="Password" required>
                     <img src="img/lock.svg" alt="" aria-hidden="true">
                 </section>
-                <button type="submit" class="btn">Accedi</button>
+                <button type="submit" class="btn" id="login-submit" >Accedi</button>
             </form>
         </div>
         <div class="box register">
@@ -149,7 +149,7 @@ if(isset($_SESSION['active_form'])) {
                     <input id="reg-password" type="password" name="password" placeholder="Password" required>
                     <img src="img/lock.svg" alt="" aria-hidden="true">
                 </section>
-                <button type="submit" class="btn">Crea un <span lang="en">account</span></button>
+                <button type="submit" class="btn" id="reg-submit">Crea un nuovo profilo </button>
             </form>
         </div>
         <div class="curtain-box">
@@ -157,7 +157,7 @@ if(isset($_SESSION['active_form'])) {
                 <h2><span lang="en">Welcome!</span></h2>
                 <p>Non hai un <span lang="en">account</span>?</p>
                 <p>Nessun problema, crea un nuovo <span lang="en">account</span> ora!</p>
-                <button type="button" class="btn reg-btn" aria-label="Passa al form di registrazione"
+                <button type="button" id="reg-btn" class="btn reg-btn" aria-label="Passa al form di registrazione"
                  <?php echo ($activeForm === 'register') ? 'tabindex="-1"' : ''; ?>>
                     Registrati
                 </button>
@@ -167,13 +167,13 @@ if(isset($_SESSION['active_form'])) {
                 <p>Hai già un <span lang="en">account</span>?</p>
                 <p>Siamo felici di rivederti 😊 </p> 
                 <p>Accedi ora al tuo <span lang="en">account</span>:</p>
-                <button type="button" class="btn login-btn" aria-label="Passa al form di login"
+                <button type="button" id="login-btn" class="btn login-btn" aria-label="Passa al form di login"
                  <?php echo ($activeForm === 'login') ? 'tabindex="-1"' : ''; ?>>
                     Accedi
                 </button>
             </div>
         </div> 
     </main>
-    <script src="js/login.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

@@ -1,52 +1,80 @@
+// 
+//  Utilities per pagina di login/registrazione
+//
+
+document.addEventListener("DOMContentLoaded", onLoad);
 
 function onLoad() {
-    const container = document.querySelector('.container');
-    const regbtn = document.querySelector('.reg-btn');
-    const loginbtn = document.querySelector('.login-btn');
-
+    const container = document.getElementById('container');
+    const regbtn = document.getElementById('reg-btn');
+    const loginbtn = document.getElementById('login-btn');
     function Tab_Index() {
         const isRegisterActive = container.classList.contains('active');
+        const loginUsername = document.getElementById('login-username');
+        const loginPassword = document.getElementById('login-password');
+        const loginSubmit = document.getElementById('login-submit');
+
+        const regEmail = document.getElementById('reg-email');
+        const regUsername = document.getElementById('reg-username');
+        const regPassword = document.getElementById('reg-password');
+        const regSubmit = document.getElementById('reg-submit');
         if (isRegisterActive) {
-            document.querySelectorAll('.login input, .login button').forEach(el => {
-                el.setAttribute('tabindex', '-1');
+            const elements = [
+                { element: loginUsername, tabIndex: -1 },
+                { element: loginPassword, tabIndex: -1 },
+                { element: loginSubmit, tabIndex: -1 },
+                { element: regEmail, tabIndex: 0 },
+                { element: regUsername, tabIndex: 0 },
+                { element: regPassword, tabIndex: 0 },
+                { element: regSubmit, tabIndex: 0 },
+                { element: regbtn, tabIndex: -1 }
+            ];
+
+            elements.forEach(({ element, tabIndex }) => {
+                if (element) element.tabIndex = tabIndex;
             });
-            document.querySelectorAll('.register input, .register button').forEach(el => {
-                el.removeAttribute('tabindex');
-            });
-            regbtn.setAttribute('tabindex', '-1');
-            loginbtn.removeAttribute('tabindex');
-            loginbtn.removeAttribute('disabled');
+
+            if (loginbtn) {
+                loginbtn.tabIndex = 0;
+                loginbtn.disabled = false;
+            }
         }
         else {
-            document.querySelectorAll('.register input, .register button').forEach(el => {
-                el.setAttribute('tabindex', '-1');
+            const elements = [
+                {element: regEmail, tabIndex: -1},
+                { element: regUsername, tabIndex: -1 },
+                { element: regPassword, tabIndex: -1 },
+                { element: regSubmit, tabIndex: -1 },
+                { element: regEmail, tabIndex: 0 },
+                { element: loginUsername, tabIndex: 0 },
+                { element: loginPassword, tabIndex: 0 },
+                { element: loginSubmit, tabIndex: 0 },
+                { element: loginbtn, tabIndex: -1 }
+            ];
+
+            elements.forEach(({ element, tabIndex }) => {
+                if (element) element.tabIndex = tabIndex;
             });
-            document.querySelectorAll('.login input, .login button').forEach(el => {
-                el.removeAttribute('tabindex');
-            });
-            loginbtn.setAttribute('tabindex', '-1');
-            regbtn.removeAttribute('tabindex');
-            regbtn.removeAttribute('disabled');
+
+            if (regbtn) {
+                regbtn.tabIndex = 0;
+                regbtn.disabled = false;
+            }
         }
     }
-
-    window.addEventListener('DOMContentLoaded', function () {
-        Tab_Index();
-
-        const errorMessages = document.querySelector('.error-messages');
-        if (errorMessages) {
-            setTimeout(function () {
-                if (container.classList.contains('active')) {
-                    const registerInput = document.querySelector('#reg-email');
-                    if (registerInput) registerInput.focus();
-                } else {
-                    const loginInput = document.querySelector('#login-username');
-                    if (loginInput) loginInput.focus();
-                }
-            }, 100);
-        }
-    });
-
+    Tab_Index();
+    const errorMessages = document.getElementById('error-messages');
+    if (errorMessages) {
+        setTimeout(function () {
+            if (container.classList.contains('active')) {
+                const registerInput = document.getElementById('reg-email');
+                if (registerInput) registerInput.focus();
+            } else {
+                const loginInput = document.getElementById('login-username');
+                if (loginInput) loginInput.focus();
+            }
+        }, 100);
+    }
     function messaggioScreenReader(message) {
         const ann = document.createElement('div');
         ann.setAttribute('aria-live', 'polite');
@@ -54,91 +82,97 @@ function onLoad() {
         ann.className = 'visually-hidden';
         ann.textContent = message;
         document.body.appendChild(ann);
-
         setTimeout(() => {
             document.body.removeChild(ann);
         }, 1000);
     }
-
-    regbtn.addEventListener('click', function () {
-        container.classList.add('active');
-        Tab_Index();
-        messaggioScreenReader('Ti trovi nel form per una nuova registrazione. Compila i campi per creare un account.');
-        setTimeout(() => {
-            const registerInput = document.querySelector('#reg-email');
-            if (registerInput) {
-                registerInput.focus();
-                registerInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }, 50);
-    });
-
-    loginbtn.addEventListener('click', function () {
-        container.classList.remove('active');
-        Tab_Index();
-        messaggioScreenReader('Ti trovi nel form di accesso. Inserisci username e password per accedere.');
-        setTimeout(() => {
-            const loginInput = document.querySelector('#login-username');
-            if (loginInput) {
-                loginInput.focus();
-                loginInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }, 50);
-    });
-
-    [regbtn, loginbtn].forEach(btn => {
-        btn.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.click();
-            }
+    if (regbtn) {
+        regbtn.addEventListener('click', function () {
+            container.classList.add('active');
+            Tab_Index();
+            messaggioScreenReader('Ti trovi nel form per una nuova registrazione. Compila i campi per creare un account.');
+            setTimeout(() => {
+                const registerInput = document.getElementById('reg-email');
+                if (registerInput) {
+                    registerInput.focus();
+                    registerInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 50);
         });
+    }
+    if (loginbtn) {
+        loginbtn.addEventListener('click', function () {
+            container.classList.remove('active');
+            Tab_Index();
+            messaggioScreenReader('Ti trovi nel form di accesso. Inserisci username e password per accedere.');
+            setTimeout(() => {
+                const loginInput = document.getElementById('login-username');
+                if (loginInput) {
+                    loginInput.focus();
+                    loginInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 50);
+        });
+    }
+    [regbtn, loginbtn].forEach(btn => {
+        if (btn) {
+            btn.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        }
     });
-
-
     document.addEventListener('keydown', function (e) {
         if (e.key !== 'Tab') return;
-
         const isRegisterActive = container.classList.contains('active');
         const activeElement = document.activeElement;
-
         if (isRegisterActive) {
-            const focusableInRegister = Array.from(
-                document.querySelectorAll('.register input, .register button[type="submit"]')
-            ).filter(el => el.getAttribute('tabindex') !== '-1');
-            const loginCurtainBtn = document.querySelector('.login-btn');
-            const isLoginBtnFocusable = loginCurtainBtn && loginCurtainBtn.getAttribute('tabindex') !== '-1';
-            if (activeElement === focusableInRegister[focusableInRegister.length - 1] && !e.shiftKey) {
-                if (isLoginBtnFocusable) {
-                    e.preventDefault();
-                    loginCurtainBtn.focus();
-                } else {
-                    e.preventDefault();
-                    focusableInRegister[0].focus();
+            const focusableInRegister = [];
+            const regEmail = document.getElementById('reg-email');
+            const regUsername = document.getElementById('reg-username');
+            const regPassword = document.getElementById('reg-password');
+            const regSubmit = document.getElementById('reg-submit');   
+            if (regEmail && regEmail.tabIndex !== -1) focusableInRegister.push(regEmail);
+            if (regUsername && regUsername.tabIndex !== -1) focusableInRegister.push(regUsername);
+            if (regPassword && regPassword.tabIndex !== -1) focusableInRegister.push(regPassword);
+            if (regSubmit && regSubmit.tabIndex !== -1) focusableInRegister.push(regSubmit);
+            const loginCurtainBtn = document.getElementById('login-btn');
+            const isLoginBtnFocusable = loginCurtainBtn && loginCurtainBtn.tabIndex !== -1;
+            if (focusableInRegister.length > 0) {
+                if (activeElement === focusableInRegister[focusableInRegister.length - 1] && !e.shiftKey) {
+                    if (isLoginBtnFocusable) {
+                        e.preventDefault();
+                        loginCurtainBtn.focus();
+                    }
                 }
-            }
-            if (activeElement === loginCurtainBtn && e.shiftKey && isLoginBtnFocusable) {
-                e.preventDefault();
-                focusableInRegister[focusableInRegister.length - 1].focus();
+                if (activeElement === loginCurtainBtn && e.shiftKey && isLoginBtnFocusable) {
+                    e.preventDefault();
+                    focusableInRegister[focusableInRegister.length - 1].focus();
+                }
             }
         } else {
-            const focusableInLogin = Array.from(
-                document.querySelectorAll('.login input, .login button[type="submit"]')
-            ).filter(el => el.getAttribute('tabindex') !== '-1');
-            const registerCurtainBtn = document.querySelector('.reg-btn');
-            const isRegBtnFocusable = registerCurtainBtn && registerCurtainBtn.getAttribute('tabindex') !== '-1';
-            if (activeElement === focusableInLogin[focusableInLogin.length - 1] && !e.shiftKey) {
-                if (isRegBtnFocusable) {
-                    e.preventDefault();
-                    registerCurtainBtn.focus();
-                } else {
-                    e.preventDefault();
-                    focusableInLogin[0].focus();
+            const focusableInLogin = [];
+            const loginUsername = document.getElementById('login-username');
+            const loginPassword = document.getElementById('login-password');
+            const loginSubmit = document.getElementById('login-submit');
+            if (loginUsername && loginUsername.tabIndex !== -1) focusableInLogin.push(loginUsername);
+            if (loginPassword && loginPassword.tabIndex !== -1) focusableInLogin.push(loginPassword);
+            if (loginSubmit && loginSubmit.tabIndex !== -1) focusableInLogin.push(loginSubmit);
+            const registerCurtainBtn = document.getElementById('reg-btn');
+            const isRegBtnFocusable = registerCurtainBtn && registerCurtainBtn.tabIndex !== -1;
+            if (focusableInLogin.length > 0) {
+                if (activeElement === focusableInLogin[focusableInLogin.length - 1] && !e.shiftKey) {
+                    if (isRegBtnFocusable) {
+                        e.preventDefault();
+                        registerCurtainBtn.focus();
+                    }
                 }
-            }
-            if (activeElement === registerCurtainBtn && e.shiftKey && isRegBtnFocusable) {
-                e.preventDefault();
-                focusableInLogin[focusableInLogin.length - 1].focus();
+                if (activeElement === registerCurtainBtn && e.shiftKey && isRegBtnFocusable) {
+                    e.preventDefault();
+                    focusableInLogin[focusableInLogin.length - 1].focus();
+                }
             }
         }
     });
