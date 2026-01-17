@@ -466,20 +466,10 @@ button:hover {
 
 /*  PAGINA LOGIN / REGISTRAZIONE     */
 
-/* Aggiungi queste regole CSS DOPO tutte le regole esistenti in style.css */
-
-/* 
-   =============================================
-   STILI PER PAGINA DI LOGIN/REGISTRAZIONE
-   =============================================
-*/
-
-/* Font per pagina login (se diverso da quello principale) */
 .login-font {
     font-family: "Montserrat", 'Comfortaa', sans-serif;
 }
 
-/* Focus styles per pagina login */
 .login-page :focus {
     outline: 3px solid #8B6FB5;
     outline-offset: 3px;
@@ -494,7 +484,6 @@ button:hover {
     outline: 3px solid #8B6FB5;
 }
 
-/* Visually hidden utility class */
 .visually-hidden{
     position: absolute;
     width: 1px;
@@ -507,7 +496,7 @@ button:hover {
     border: 0;
 }
 
-/* Error messages specifici per login */
+
 .login-page #error-messages p{
     font-size: large;
     font-weight: 900;
@@ -704,7 +693,6 @@ button:hover {
     right: 0;
 }
 
-/* Touch device optimization */
 @media (pointer: coarse) {
     .login-page .btn, 
     .login-page .input input {
@@ -712,7 +700,7 @@ button:hover {
     }
 }
 
-/* Riduzione animazioni per preferenze utente */
+/* Animazioni ridotte */
 @media (prefers-reduced-motion: reduce) {
     .login-page .box,
     .login-page .curtain-box::before,
@@ -728,3 +716,42 @@ button:hover {
         transition: visibility 0s !important;
     }
 }
+
+/* PAGINE DI ERRORI */
+.error-header  h1{
+    font-size: 3em;
+    text-align: center;
+    margin-top: 0;
+}
+
+#content h1{
+    margin: 0.5em 0;
+    font-size: 3em;
+    text-align: center;
+    line-height: 1;
+}
+
+#content h2{
+    margin: 0.4em 0;
+    font-size: 2em;
+    text-align: center;
+    line-height: 1;
+}
+
+#content h3{
+    font-size: 1.5em;
+    text-align: center;
+    padding: 0.3em;
+    line-height: 1.5em;
+    font-weight: normal;
+}
+
+.errorImg {
+    display: block;
+    margin: auto;
+    max-width: 40%;
+    height: auto;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+}
+
