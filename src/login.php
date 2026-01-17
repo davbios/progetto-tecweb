@@ -95,12 +95,12 @@ if(isset($_SESSION['active_form'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accesso e Registrazione - NomeSito</title>
+    <title>Accesso e Registrazione - Arte del Cocktail</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="login-page" >
     <header>    
-        <h1>Titolo del sito</h1>
+        <h1>Arte del Cocktail</h1>
     </header>
 
     <?php if (!empty($errori)): ?>
