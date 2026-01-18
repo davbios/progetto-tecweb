@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » Nuovo drink', $template);
 
     $content = '<section class="title">
-                <h2>Nuovo drink</h2>
+                <h1>Nuovo drink</h1>
             </section>
             <form enctype="multipart/form-data" action="__URL__" method="POST" class="drink-form">
                 <fieldset class="info-fieldset">

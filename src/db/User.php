@@ -51,7 +51,7 @@ interface UserDao
 {
     public function findById(int $id): ?User;
     public function findByUsername(string $username): ?User;
-    public function findByEmailAndPassword(string $email, string $password): ?User;
+    public function findByUsernameAndPassword(string $username, string $password): ?User;
     public function insert(User $user): User;
     public function update(User $user): User;
     public function delete(User $user): User;
@@ -116,9 +116,13 @@ class PdoUserDao implements UserDao
         }
     }
 
-    public function findByEmailAndPassword(string $email, string $password): ?User
+    public function findByUsernameAndPassword(string $username, string $password): ?User
     {
-
+        $user = $this->findByUsername($username);
+        if (!$user || !password_verify($password, $user->getPassword())) {
+            return NULL;
+        }
+        return $user;
     }
 
     public function insert(User $user): User

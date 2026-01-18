@@ -7,15 +7,17 @@ class Drink extends BaseModel
     public string $description;
     public string $poster;
     private User $creator;
+    private ?float $avgRating;
     private ?Category $category;
 
-    public function __construct(string $name, string $description, string $poster, User $creator, ?Category $category, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
+    public function __construct(string $name, string $description, string $poster, User $creator, ?float $avgRating, ?Category $category, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
     {
         parent::__construct($id, $created_at, $updated_at);
         $this->name = $name;
         $this->description = $description;
         $this->poster = $poster;
         $this->creator = $creator;
+        $this->avgRating = $avgRating;
         $this->category = $category;
     }
 
@@ -24,7 +26,11 @@ class Drink extends BaseModel
         return $this->creator;
     }
 
-    public function getCategory(): Category
+    public function getAvgRating(): ?float {
+        return $this->avgRating;
+    }
+
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
@@ -77,6 +83,7 @@ class PdoDrinkDao implements DrinkDao
                 new DateTime($row["creator__created_at"]),
                 new DateTime($row["creator__updated_at"])
             ),
+            $row["avg_rating"] !== null ? (float) $row["avg_rating"] : null,
             $row["category_id"] !== null ? new Category(
                 $row["category__name"],
                 $row["category__poster"],
