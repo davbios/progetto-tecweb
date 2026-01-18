@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/app/navbar.php";
 session_start();
 
 $template = file_get_contents(dirname(__FILE__) . "/templates/layout.html");
-$template = str_replace("[title]", "Drinks | Esplora", $template);
+$template = str_replace("[title]", "Arte del Cocktail | Esplora", $template);
 $template = str_replace("[description]", "Il ricettario social per i tuoi drink. Cerca ispirazione tra il nostro catalogo e le creazioni degli altri utenti.", $template);
 $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
 $template = str_replace("[navbar]", getNavbar("esplora", isset($_SESSION["user_id"])), $template);

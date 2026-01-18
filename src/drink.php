@@ -15,7 +15,7 @@ if (empty($drink)) {
 }
 
 $template = file_get_contents(dirname(__FILE__) . "/templates/layout.html");
-$template = str_replace("[title]", $drink->name, $template);
+$template = str_replace("[title]", "Arte del Cocktail | " . $drink->name, $template);
 $template = str_replace("[description]", $drink->description, $template);
 $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
 $template = str_replace("[navbar]", getNavbar("", isset($_SESSION["user_id"])), $template);

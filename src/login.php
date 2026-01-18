@@ -95,7 +95,7 @@ if(isset($_SESSION['active_form'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accesso e Registrazione - Arte del Cocktail</title>
+    <title>Arte del Cocktail | Accesso e Registrazione</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="login-page" >
