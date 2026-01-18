@@ -21,44 +21,36 @@ if(isset($_SESSION['form_data'])) {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $action = $_POST["action"] ?? null;
-    // accesso utente
+    $redirectTo = "login.php";
     if ($action === "login") {
-
+        // accesso utente
         $username = trim($_POST["username"]) ?? null;
-        $password = trim($_POST["password"]) ?? null;       
-        $user = $userDao->findByUsername($username);
-        if (!$user || !password_verify($password, $user->getPassword())) {
-            $errori[] ="L'username e/o password inseriti sono errati. Si prega di riprovare.";
-        }
-        if(empty($errori)){
-            $_SESSION["user_id"]  = $user->getId();
-            $_SESSION["username"] = $user->getUsername();
-            $_SESSION["is_admin"] = $user->isAdmin();
-
-            header("Location: index.php");
-            exit;
-        }
-        else {
+        $password = trim($_POST["password"]) ?? null;
+        $user = $userDao->findByUsernameAndPassword($username, $password);
+        if ($user === NULL) {
             $_SESSION['login_errors'] = $errori;
             $_SESSION['form_data']['login']['username'] = htmlspecialchars($username);
             $_SESSION['active_form'] = 'login';
-            header("Location: login.php");
-            exit;
+        } else {
+            $errori[] ="L'username e/o password inseriti sono errati. Si prega di riprovare.";
+            $_SESSION["user_id"]  = $user->getId();
+            $_SESSION["username"] = $user->getUsername();
+            $_SESSION["is_admin"] = $user->isAdmin();
+            $redirectTo = "index.php";
         }
-    }
-
-
-    // registrazione
-    if ($action === "register") {
-
+    } elseif ($action === "register") {
+        // registrazione
         $email        = trim($_POST["email"]) ?? null;
         $username     = trim($_POST["username"]) ?? null;
         $password     = trim($_POST["password"]) ?? null;
         $existingUser = $userDao->findByUsername($username);
         if ($existingUser) {
             $errori[] = "L'username è già utilizzato da un altro utente. Scegli un altro username.";
-        } 
-        else {
+            $_SESSION['login_errors'] = $errori;
+            $_SESSION['form_data']['register']['email'] = htmlspecialchars($email);
+            $_SESSION['form_data']['register']['username'] = htmlspecialchars($username);
+            $_SESSION['active_form'] = 'register';
+        } else {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
             $user = new User($username, $email, $passwordHash, false);
             $user = $userDao->insert($user);
@@ -66,19 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["user_id"]  = $user->getId();
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = false;
-
-            header("Location: index.php");
-            exit;
-        }
-        if (!empty($errori)) {
-            $_SESSION['login_errors'] = $errori;
-            $_SESSION['form_data']['register']['email'] = htmlspecialchars($email);
-            $_SESSION['form_data']['register']['username'] = htmlspecialchars($username);
-            $_SESSION['active_form'] = 'register';
-            header("Location: login.php");
-            exit;
+            $redirectTo = "index.php";
         }
     }
+    header("Location: " . $redirectTo);
+    exit;
 }
 $activeForm = $_SESSION['active_form'] ?? 'login';
 if(isset($_SESSION['active_form'])) {
