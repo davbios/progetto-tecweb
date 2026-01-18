@@ -27,16 +27,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $username = trim($_POST["username"]) ?? null;
         $password = trim($_POST["password"]) ?? null;
         $user = $userDao->findByUsernameAndPassword($username, $password);
-        if ($user === NULL) {
-            $_SESSION['login_errors'] = $errori;
-            $_SESSION['form_data']['login']['username'] = htmlspecialchars($username);
-            $_SESSION['active_form'] = 'login';
-        } else {
-            $errori[] ="L'username e/o password inseriti sono errati. Si prega di riprovare.";
+        if ($user) {
             $_SESSION["user_id"]  = $user->getId();
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = $user->isAdmin();
             $redirectTo = "index.php";
+        } else {
+            $errori[] ="L'username e/o password inseriti sono errati. Si prega di riprovare.";
+            $_SESSION['login_errors'] = $errori;
+            $_SESSION['form_data']['login']['username'] = htmlspecialchars($username);
+            $_SESSION['active_form'] = 'login';
         }
     } elseif ($action === "register") {
         // registrazione
