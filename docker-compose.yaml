@@ -7,7 +7,7 @@ x-environment: &default-env
 
 services:
   db:
-    image: mariadb:latest
+    image: mariadb:11.8.3
     restart: unless-stopped
     volumes:
       - tecweb_db_data:/var/lib/mysql
@@ -39,25 +39,22 @@ services:
     environment:
       <<: *default-env
 
-  # web:
-  #   image: trafex/php-nginx:3.9.0
-  #   restart: unless-stopped
-  #   volumes:
-  #     - tecweb_web_data:/var/www/html
-  #   configs:
-  #     - source: php_config
-  #       target: /etc/php84/conf.d/settings.ini
-  #   links:
-  #     - db:database
-  #   ports:
-  #     - 8000:80
-  #   environment: *default-env
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./src/:/var/www/html
+    links:
+      - db:db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: progetto
+      MYSQL_USER: progetto
+      MYSQL_PASSWORD: progetto
 
 volumes:
   tecweb_db_data:
-  tecweb_web_data:
-  tecweb_acr_runner_data:
-
-configs:
-  php_config:
-    file: /home/debian/php-setting.ini

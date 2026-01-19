@@ -41,7 +41,7 @@ CREATE TABLE drinks (
 CREATE TABLE reviews (
     id INT PRIMARY KEY AUTO_INCREMENT,
     text TEXT NOT NULL,
-    rate INT NOT NULL,
+    rate REAL NOT NULL,
     user_id INT NOT NULL REFERENCES users (id),
     drink_id INT NOT NULL REFERENCES drinks (id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
@@ -77,4 +77,5 @@ CREATE TABLE users_fav_drinks (
 
 -- Dati di test
 INSERT INTO categories (name, poster) VALUES ('Energetici', NULL), ('Rilassanti', NULL), ('Musicali', NULL);
-INSERT INTO users (username, email, password, is_admin) VALUES ('admin', 'admin@example.com', '$argon2id$v=19$m=65536,t=4,p=1$OVRla1FGRFRDQWtFVzJBZA$JUCcuYDWYHu44Ft3kdcHYL59hR5G7ARuGNniy+E0FgE', 1); -- psw: admin
+INSERT INTO users (username, email, password, is_admin) VALUES ('admin', 'admin@example.com', '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1); -- psw: admin
+INSERT INTO users (username, email, password, is_admin) VALUES ('user', 'user@example.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0); -- psw: user

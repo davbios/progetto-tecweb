@@ -10,7 +10,7 @@ require_once dirname(__FILE__) . "/Review.php";
 $pdo = null;
 try {
     $pdo = new PDO(
-        "mysql:host=127.0.0.1;port=3306;dbname=progetto",
+        "mysql:host=db;port=3306;dbname=progetto",
         "progetto",
         "progetto",
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]

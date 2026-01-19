@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (empty($_POST["text"]) || !is_numeric($_POST["rating"])) {
             setPageError(__FILE__, 'Recensione non valida.');
         } else {
-            $review = new Review($_POST["text"], floatval($_POST["rating"]), $user, $queryDrinkId, null, null, null);
+            $rate = intval(floatval($_POST["rating"]) * 2);
+            $review = new Review($_POST["text"], $rate, $user, $queryDrinkId, null, null, null);
             try {
                 $reviewDao->insert($review);
             } catch (PDOException $e) {
@@ -144,7 +145,7 @@ if ($user !== null) {
 
 foreach ($reviewDao->getAllForDrink($drink->getId()) as $review) {
     $reviewCard = file_get_contents(dirname(__FILE__) . "/templates/review.html");
-    $reviewCard = str_replace("[rating]", $review->rate, $reviewCard);
+    $reviewCard = str_replace("[rating]", $review->rate / 2.0, $reviewCard);
     $reviewCard = str_replace("[text]", $review->text, $reviewCard);
     $reviewCard = str_replace("[username]", $review->getAuthor()->username, $reviewCard);
     $reviewCard = str_replace("[user_icon]", "img/user-icon.png", $reviewCard);
