@@ -1,8 +1,9 @@
 <?php
-require_once dirname(__FILE__) . "/db/db.php";
 require_once dirname(__FILE__) . "/app/global.php";
 
-if (!isset($_SESSION["user_id"])) {
+$user = getLoggedUser();
+
+if (!isset($user)) {
     header("Location: /");
     exit;
 }
@@ -24,12 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($_POST["name"]) || empty($_POST["description"]) || empty($_POST["poster"])) {
         setPageError(__FILE__, 'Form incompleto.');
-        exit;
-    }
-
-    $user = $userDao->findById($_SESSION["user_id"]);
-    if ($user === null) {
-        setPageError(__FILE__, 'Impossibile trovare l\'utente loggato.');
         exit;
     }
 

@@ -1,5 +1,4 @@
 <?php
-require_once dirname(__FILE__) . "/db/db.php";
 require_once dirname(__FILE__) . "/app/global.php";
 
 $template = file_get_contents(dirname(__FILE__) . "/templates/layout.html");
@@ -10,7 +9,7 @@ $template = str_replace("[navbar]", getNavbar("esplora", isset($_SESSION["user_i
 $template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » Esplora', $template);
 
 $content = '<section class="title">
-<h2>Esplora</h2>
+<h1>Esplora</h1>
 </section>
 <ul class="drink-list">';
 

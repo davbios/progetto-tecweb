@@ -1,5 +1,4 @@
 <?php
-require_once dirname(__FILE__) . "/db/db.php";
 require_once dirname(__FILE__) . "/app/global.php";
 
 if (empty($_GET["id"]) || !is_numeric($_GET["id"])) {
@@ -8,10 +7,7 @@ if (empty($_GET["id"]) || !is_numeric($_GET["id"])) {
 }
 $queryDrinkId = intval($_GET["id"]);
 
-$user = null;
-if (isset($_SESSION["user_id"])) {
-    $user = $userDao->findById($_SESSION["user_id"]);
-}
+$user = getLoggedUser();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = $_GET["action"] ?? null;

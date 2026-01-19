@@ -1,5 +1,4 @@
 <?php
-require_once dirname(__FILE__) . "/db/db.php";
 require_once dirname(__FILE__) . "/app/global.php";
 
 $template = file_get_contents(dirname(__FILE__) . "/templates/layout.html");
