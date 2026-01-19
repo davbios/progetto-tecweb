@@ -205,6 +205,38 @@ main {
     margin-bottom: 2em;
 }
 
+/* PAGINA HOME */
+.search-section {
+    text-align: center;
+    margin-bottom: 4em;
+}
+
+.search-section h1 {
+    display: inline-block;
+    line-height: 1.5em;
+    margin: 1em 0;
+    max-width: 800px;
+}
+
+.search-section form {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-section form #site-search {
+    width: 100%;
+    font-size: 14pt;
+    padding: 1em;
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+}
+.search-section form .search-btn {
+    padding: 0.5em 1.5em;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+}
+
 /* PAGINA DRINK */
 .row {
     display: flex;

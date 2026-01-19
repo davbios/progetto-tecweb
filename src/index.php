@@ -9,7 +9,7 @@ $template = str_replace("[navbar]", getNavbar("home", isset($_SESSION["user_id"]
 $template = str_replace("[breadcrumb]", '<span lang="en">Home</span>', $template);
 
 $content = '<section class="search-section">
-<h2>Cerca, scopri e perfeziona i migliori cocktail alcolici da tutto il mondo.</h2>
+<h1>Cerca, scopri e perfeziona i migliori cocktail alcolici da tutto il mondo.</h1>
 <form action="cerca.html" method="GET">
     <label for="site-search" class="visually-hidden">Cerca un drink</label>
     <input type="search" id="site-search" name="q" placeholder="Hai già in mente un drink? Trovalo in un attimo." autocomplete="off">
