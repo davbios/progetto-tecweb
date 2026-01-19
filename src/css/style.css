@@ -284,7 +284,7 @@ main {
 }
 
 .review-icon {
-    width: 10em;
+    flex-basis: 7em;
     margin: 1em;
 }
 

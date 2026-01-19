@@ -82,7 +82,8 @@ class PdoReviewDao implements ReviewDao
         R.drink_id AS drink_id, U.username AS user__username, U.email AS user__email, 
         U.password AS user__password, U.is_admin AS user__is_admin, 
         U.created_at AS user__created_at, U.updated_at AS user__updated_at 
-        FROM reviews R JOIN users U ON R.user_id = U.id WHERE R.drink_id = :id");
+        FROM reviews R JOIN users U ON R.user_id = U.id WHERE R.drink_id = :id 
+        ORDER BY R.created_at DESC");
         $stmt->bindParam("id", $drinkId, PDO::PARAM_INT);
         $stmt->execute();
         $reviews = [];

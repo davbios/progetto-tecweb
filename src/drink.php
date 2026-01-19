@@ -142,10 +142,13 @@ if ($user !== null) {
 </li>';
 }
 
-for ($i = 0; $i < 10; $i++) {
-    $review = file_get_contents(dirname(__FILE__) . "/templates/review.html");
-    $review = str_replace("[rating]", "3", $review);
-    $content .= $review;
+foreach ($reviewDao->getAllForDrink($drink->getId()) as $review) {
+    $reviewCard = file_get_contents(dirname(__FILE__) . "/templates/review.html");
+    $reviewCard = str_replace("[rating]", $review->rate, $reviewCard);
+    $reviewCard = str_replace("[text]", $review->text, $reviewCard);
+    $reviewCard = str_replace("[username]", $review->getAuthor()->username, $reviewCard);
+    $reviewCard = str_replace("[user_icon]", "img/user-icon.png", $reviewCard);
+    $content .= $reviewCard;
 }
 $content .= '</ul>
         </section>';
