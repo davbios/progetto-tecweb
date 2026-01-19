@@ -1,7 +1,6 @@
 <?php
 require_once dirname(__FILE__) . "/db/db.php";
-require_once dirname(__FILE__) . "/app/navbar.php";
-session_start();
+require_once dirname(__FILE__) . "/app/global.php";
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: /");
@@ -13,40 +12,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $uploadfile = $uploaddir . basename($_FILES['file']['name']);
 
     if (!move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-        die("Possible file upload attack!");
+        setPageError(__FILE__, 'Immagine non valida.');
+        exit;
     }
 
     $category = $categoryDao->findById($_POST["category"]);
     if ($category === null) {
-        die("Categoria non trovata");
+        setPageError(__FILE__, 'Categoria non trovata.');
+        exit;
     }
 
-    $user = $userDao->findById(1);
+    if (empty($_POST["name"]) || empty($_POST["description"]) || empty($_POST["poster"])) {
+        setPageError(__FILE__, 'Form incompleto.');
+        exit;
+    }
 
-    $drink = new Drink($_POST["name"], $_POST["description"], $_POST["poster"], $user, $category, null, null, null);
+    $user = $userDao->findById($_SESSION["user_id"]);
+    if ($user === null) {
+        setPageError(__FILE__, 'Impossibile trovare l\'utente loggato.');
+        exit;
+    }
 
-    // try {
-    $drink = $drinkDao->insert($drink);
-    // } catch (PDOException $e) {
-    //     die($e->getMessage());
-    // }
+    $drink = new Drink($_POST["name"], $_POST["description"], $_POST["poster"], $user, null, $category, null, null, null);
+
+    try {
+        $drink = $drinkDao->insert($drink);
+    } catch (PDOException $e) {
+        setPageError(__FILE__, 'Si è verificato un errore: ' . $e->getMessage());
+        exit;
+    }
     foreach ($_POST["steps"] as $key => $step) {
-        // try {
-        $stepDao->insert(new Step($key + 1, $step, $drink->getId(), null, null, null));
-        // } catch (PDOException $e) {
-        //     die($e->getMessage());
-        // }
+        try {
+            $stepDao->insert(new Step($key + 1, $step, $drink->getId(), null, null, null));
+        } catch (PDOException $e) {
+            setPageError(__FILE__, 'Si è verificato un errore: ' . $e->getMessage());
+            exit;
+        }
     }
 
     if (count($_POST["ingredient-names"]) !== count($_POST["ingredient-quantities"])) {
         die("Il numero di ingredienti e le quantita' non coincidono");
     }
     foreach ($_POST["ingredient-names"] as $key => $name) {
-        // try {
-        $ingredientDao->insert(new Ingredient($name, intval($_POST["ingredient-quantities"][$key]), $drink->getId(), null, null, null));
-        // } catch (PDOException $e) {
-        //     die($e->getMessage());
-        // }
+        try {
+            $ingredientDao->insert(new Ingredient($name, intval($_POST["ingredient-quantities"][$key]), $drink->getId(), null, null, null));
+        } catch (PDOException $e) {
+            setPageError(__FILE__, 'Si è verificato un errore: ' . $e->getMessage());
+            exit;
+        }
     }
     header("Location: drink.php?id=" . $drink->getId());
 } elseif ($_SERVER["REQUEST_METHOD"] === "GET") {
@@ -57,10 +70,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $template = str_replace("[navbar]", getNavbar("nuovo", true), $template);
     $template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » Nuovo drink', $template);
 
-    $content = '<section class="title">
+    $content = '';
+    $error = getPageError(__FILE__);
+    if (isset($error)) {
+        $content .= '<section class="error">
+    <p>';
+        $content .= $error;
+        $content .= '</p>
+    </section>';
+    }
+    $content .= '<section class="title">
                 <h1>Nuovo drink</h1>
             </section>
-            <form enctype="multipart/form-data" action="__URL__" method="POST" class="drink-form">
+            <form enctype="multipart/form-data" action="nuovo-drink.php" method="POST" class="drink-form">
                 <fieldset class="info-fieldset">
                     <legend>Informazioni generali</legend>
 

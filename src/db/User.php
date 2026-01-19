@@ -52,6 +52,7 @@ interface UserDao
     public function findById(int $id): ?User;
     public function findByUsername(string $username): ?User;
     public function findByUsernameAndPassword(string $username, string $password): ?User;
+    public function hasUserFavouriteDrink(int $userId, int $drinkId): bool;
     public function insert(User $user): User;
     public function update(User $user): User;
     public function delete(User $user): User;
@@ -123,6 +124,14 @@ class PdoUserDao implements UserDao
             return NULL;
         }
         return $user;
+    }
+
+    public function hasUserFavouriteDrink(int $userId, int $drinkId): bool {
+        $stmt = $this->pdo->prepare("SELECT 1 FROM users_fav_drinks WHERE user_id = :userId AND drink_id = :drinkId");
+        $stmt->bindParam("userId", $userId, PDO::PARAM_INT);
+        $stmt->bindParam("drinkId", $drinkId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->rowCount() === 1;
     }
 
     public function insert(User $user): User

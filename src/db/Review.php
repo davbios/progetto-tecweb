@@ -17,6 +17,7 @@ class Review extends BaseModel
     {
         parent::__construct($id, $created_at, $updated_at);
         $this->text = $text;
+        $this->rate = $rate;
         $this->author = $author;
         $this->drinkId = $drinkId;
     }
@@ -58,13 +59,13 @@ class PdoReviewDao implements ReviewDao
             $row["text"],
             (int) $row["rate"],
             new User(
-                $row["review_author__username"],
-                $row["review_author__email"],
-                $row["review_author__password"],
-                $row["review_author__is_admin"],
-                (int) $row["author_id"],
-                new DateTime($row["review_author__created_at"]),
-                new DateTime($row["review_author__updated_at"])
+                $row["user__username"],
+                $row["user__email"],
+                $row["user__password"],
+                $row["user__is_admin"],
+                (int) $row["user_id"],
+                new DateTime($row["user__created_at"]),
+                new DateTime($row["user__updated_at"])
             ),
             (int) $row["drink_id"],
             (int) $row["id"],
@@ -98,7 +99,7 @@ class PdoReviewDao implements ReviewDao
         R.drink_id AS drink_id, U.username AS user__username, U.email AS user__email, 
         U.password AS user__password, U.is_admin AS user__is_admin, 
         U.created_at AS user__created_at, U.updated_at AS user__updated_at 
-        FROM reviews R JOIN users U ON R.user_id = U.id WHERE id = :id");
+        FROM reviews R JOIN users U ON R.user_id = U.id WHERE R.id = :id");
         $stmt->bindParam("id", $id, PDO::PARAM_INT);
         $stmt->execute();
         if ($stmt->rowCount() === 1) {
@@ -130,11 +131,13 @@ class PdoReviewDao implements ReviewDao
         try {
             $this->pdo->beginTransaction();
 
-            $insertStmt = $this->pdo->prepare("INSERT INTO reviews (text, rate, user_id) VALUES (:text, :rate, :user_id);");
+            $insertStmt = $this->pdo->prepare("INSERT INTO reviews (text, rate, user_id, drink_id) VALUES (:text, :rate, :user_id, :drink_id);");
             $insertStmt->bindParam("text", $review->text, PDO::PARAM_STR);
             $insertStmt->bindParam("rate", $review->rate, PDO::PARAM_INT);
             $userId = $review->getAuthor()->getId();
             $insertStmt->bindParam("user_id", $userId, PDO::PARAM_INT);
+            $drinkId = $review->getDrinkId();
+            $insertStmt->bindParam("drink_id", $drinkId, PDO::PARAM_INT);
             $insertStmt->execute();
 
             $id = $this->pdo->lastInsertId();

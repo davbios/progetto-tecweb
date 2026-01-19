@@ -1,7 +1,6 @@
 <?php
 require_once dirname(__FILE__) . "/db/db.php";
-require_once dirname(__FILE__) . "/app/navbar.php";
-session_start();
+require_once dirname(__FILE__) . "/app/global.php";
 
 $template = file_get_contents(dirname(__FILE__) . "/templates/layout.html");
 $template = str_replace("[title]", "Arte del Cocktail", $template);
