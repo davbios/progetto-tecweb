@@ -67,6 +67,7 @@
     --color-3: #23022e;
     --color-4: #111;
     --color-5: #6c7a89;
+    --color-error: #c0392b;
 
     --border-radius: 0.5em;
 
@@ -207,6 +208,14 @@ h6 {
 
 main {
     margin-bottom: 2em;
+}
+
+.section-error p {
+    font-size: 1.1em;
+    padding: 1em;
+    color: var(--color-1);
+    background-color: var(--color-error);
+    border-radius: var(--border-radius);
 }
 
 /* PAGINA HOME */
@@ -394,12 +403,20 @@ main {
 
 
 /* NUOVO DRINK */
+
 .drink-form {
     text-align: right;
 }
 
 .drink-form>* {
     text-align: left;
+}
+
+.drink-form .input-error {
+    font-size: 0.9em;
+    color: var(--color-error);
+    margin: 0.5em 0 0 0;
+    font-weight: 600;
 }
 
 .drink-form fieldset {

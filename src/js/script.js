@@ -41,7 +41,7 @@ function onLoad() {
         }
         else {
             const elements = [
-                {element: regEmail, tabIndex: -1},
+                { element: regEmail, tabIndex: -1 },
                 { element: regUsername, tabIndex: -1 },
                 { element: regPassword, tabIndex: -1 },
                 { element: regSubmit, tabIndex: -1 },
@@ -133,7 +133,7 @@ function onLoad() {
             const regEmail = document.getElementById('reg-email');
             const regUsername = document.getElementById('reg-username');
             const regPassword = document.getElementById('reg-password');
-            const regSubmit = document.getElementById('reg-submit');   
+            const regSubmit = document.getElementById('reg-submit');
             if (regEmail && regEmail.tabIndex !== -1) focusableInRegister.push(regEmail);
             if (regUsername && regUsername.tabIndex !== -1) focusableInRegister.push(regUsername);
             if (regPassword && regPassword.tabIndex !== -1) focusableInRegister.push(regPassword);
@@ -197,7 +197,7 @@ function addIngredient() {
         ' name="ingredient-names[]" placeholder="es. Vodka" required>' +
         '</div>' +
         `<button type="button" class="btn-remove" onclick="removeIngredient(${fieldId})">` +
-        '<img src="img/trash.svg" alt="Rimuovi ingrediente">' +
+        `<img src="img/trash.svg" alt="Rimuovi ingrediente ${fieldId}">` +
         '</button>' +
         '</div>'
     list.appendChild(item);
@@ -214,7 +214,7 @@ function addStep() {
         ` placeholder="Procedimento" required></textarea>` +
         '</div>' +
         `<button type="button" class="btn-remove" onclick="removeStep(${fieldId})">` +
-        '<img src="img/trash.svg" alt="Rimuovi passo di preparazione">' +
+        `<img src="img/trash.svg" alt="Rimuovi passo di preparazione ${fieldId}">` +
         '</button>' +
         '</div>'
     list.appendChild(item)
