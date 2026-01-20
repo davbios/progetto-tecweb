@@ -1,0 +1,19 @@
+<li class="review">
+    <div class="review-icon">
+        <img src="[user_icon]" alt="Foto profilo di [username]">
+    </div>
+    <div class="review-body">
+        <strong class="review-author">[username]</strong>
+        <form action="drink.php?id=[drink_id]&action=review" method="POST" class="review-text" autocomplete="off">
+            <div class="form-group">
+                <label for="rating">Voto</label>
+                <input type="number" id="rating" name="rating" step="0.5" max="5" min="0.5" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Descrizione</label>
+                <textarea id="text" name="text" required></textarea>
+            </div>
+            <button type="submit" class="btn">Pubblica</button>
+        </form>
+    </div>
+</li>

@@ -63,96 +63,64 @@ $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alco
 $template = str_replace("[navbar]", getNavbar("", isset($_SESSION["user_id"])), $template);
 $template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » <a href="/esplora.php">Esplora</a> » ' . $drink->name, $template);
 
-$content = '';
+$content = getTemplate("drink");
+
 $error = getPageError(__FILE__);
-if (isset($error)) {
-    $content .= '<section class="error">
-    <p>';
-    $content .= $error;
-    $content .= '</p>
-    </section>';
-}
-$content .= '<div class="row">';
-$content .= '<section class="drink-image">
-                <img src="' . $drink->poster . '" alt="' . $drink->name . '">
-            </section>
-            <section class="drink-info">
-                <h2>' . $drink->name . '</h2>';
+$content = str_replace(
+    "[error]",
+    isset($error) ? str_replace("[message]", $error, getTemplate("section_error")) : "",
+    $content
+);
+
+$content = str_replace("[poster]", $drink->poster, $content);
+$content = str_replace("[name]", $drink->name, $content);
+$content = str_replace("[description]", $drink->description, $content);
 
 $isDrinkUserFavourite = false;
 if ($user !== null) {
     $isDrinkUserFavourite = $userDao->hasUserFavouriteDrink($user->getId(), $drink->getId());
 
-    $content .= '<form action="drink.php?id=' . $drink->getId() . '&action=' . ($isDrinkUserFavourite ? 'removeFavourite' : 'addFavourite') . '" method="POST">
+    $actionsContent = '<form action="drink.php?id=' . $drink->getId() . '&action=' . ($isDrinkUserFavourite ? 'removeFavourite' : 'addFavourite') . '" method="POST">
                     <button type="submit" class="btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-heart">
-                            <path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                            </path>
-                        </svg>
+                        <img src="img/like.svg" alt="">
                         ' . ($isDrinkUserFavourite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti') .
         '</button>
-                </form>';
+    </form>';
+    $content = str_replace("[actions]", $actionsContent, $content);
+} else {
+    $content = str_replace("[actions]", "", $content);
 }
 
-$content .= '<p>' . $drink->description . '</p>
-            </section>
-        </div>
-        <div class="row">
-            <section class="drink-ingredients">
-                <h3>Ingredienti</h3>
-                <ul>';
+$ingredientsListContent = "";
 foreach ($ingredientDao->getAllForDrink($drink->getId()) as $ingredient) {
-    $content .= "<li>" . $ingredient->quantity . " " . $ingredient->name . "</li>\n";
+    $ingredientsListContent .= "<li>" . $ingredient->quantity . " " . $ingredient->name . "</li>\n";
 }
-$content .= '</ul>
-            </section>
-            <section class="drink-prep">
-                <h3>Preparazione</h3>
-                <ol>';
+$content = str_replace("[ingredients]", $ingredientsListContent, $content);
+
+$stepsListContent = "";
 foreach ($stepDao->getAllForDrink($drink->getId()) as $step) {
-    $content .= "<li>" . $step->description . "</li>\n";
+    $stepsListContent .= "<li>" . $step->description . "</li>\n";
 }
-$content .= '</ol>
-            </section>
-        </div>
-        <section>
-            <h3>Recensioni</h3>
-            <ul class="reviews">';
+$content = str_replace("[steps]", $stepsListContent, $content);
+
+$reviewsContent = "";
 if ($user !== null) {
-    $content .= '<li class="review">
-    <div class="review-icon">
-        <img src="img/user-icon.png" alt="">
-    </div>
-    <div class="review-body">
-        <strong class="review-author">' . $user->getUsername() . '</strong>
-        <form action="drink.php?id=' . $drink->getId() . '&action=review" method="POST" class="review-text" autocomplete="off">
-            <div class="form-group">
-                <label for="rating">Voto</label>
-                <input type="number" id="rating" name="rating" step="0.5" max="5" min="0.5" required>
-            </div>
-            <div class="form-group">
-                <label for="text">Descrizione</label>
-                <textarea id="text" name="text" required></textarea>
-            </div>
-            <button type="submit" class="btn">Pubblica</button>
-        </form>
-    </div>
-</li>';
+    $form = getTemplate("review_form");
+    $form = str_replace("[username]", $user->username, $form);
+    $form = str_replace("[drink_id]", $drink->getId(), $form);
+    $form = str_replace("[user_icon]", "img/user-icon.png", $form);
+    $reviewsContent .= $form;
 }
 
 foreach ($reviewDao->getAllForDrink($drink->getId()) as $review) {
-    $reviewCard = file_get_contents(dirname(__FILE__) . "/templates/review.html");
+    $reviewCard = getTemplate("review");
     $reviewCard = str_replace("[rating]", $review->rate / 2.0, $reviewCard);
     $reviewCard = str_replace("[text]", $review->text, $reviewCard);
     $reviewCard = str_replace("[username]", $review->getAuthor()->username, $reviewCard);
     $reviewCard = str_replace("[user_icon]", "img/user-icon.png", $reviewCard);
-    $content .= $reviewCard;
+    $reviewsContent .= $reviewCard;
 }
-$content .= '</ul>
-        </section>';
+$content = str_replace("[reviews]", $reviewsContent, $content);
 
 $template = str_replace("[content]", $content, $template);
 
