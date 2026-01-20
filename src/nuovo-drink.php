@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $content .= '<section class="title">
                 <h1>Nuovo drink</h1>
             </section>
-            <form enctype="multipart/form-data" action="nuovo-drink.php" method="POST" class="drink-form">
+            <form enctype="multipart/form-data" action="nuovo-drink.php" method="POST" class="drink-form" autocomplete="off">
                 <fieldset class="info-fieldset">
                     <legend>Informazioni generali</legend>
 

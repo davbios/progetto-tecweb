@@ -226,7 +226,7 @@ main {
 
 .search-section form #site-search {
     width: 100%;
-    font-size: 14pt;
+    font-size: 1.1em;
     padding: 1em;
     border-top-left-radius: 1em;
     border-bottom-left-radius: 1em;
@@ -403,7 +403,7 @@ main {
     width: 80%;
     border-radius: 5px;
     border: none;
-    font-size: 12pt;
+    font-size: 1em;
     background-color: #fff;
     margin: 0;
     width: 100%;
@@ -479,7 +479,7 @@ button:hover {
 .drink-form label {
     display: block;
     margin-bottom: 0.5em;
-    font-size: 11pt;
+    font-size: 0.9em;
 }
 
 .form-row {
@@ -494,16 +494,14 @@ button:hover {
     text-align: left;
 }
 
-.list-fieldset .btn-add {
-    font-size: 12pt;
+.list-fieldset .btn-add,
+.drink-form .btn-submit {
+    font-size: 1em;
     padding: 0.5em 2em;
     display: inline-block;
 }
 
 .drink-form .btn-submit {
-    display: inline-block;
-    font-size: 12pt;
-    padding: 0.5em 2em;
     margin-top: 1em;
 }
 

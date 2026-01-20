@@ -128,7 +128,7 @@ if ($user !== null) {
     </div>
     <div class="review-body">
         <strong class="review-author">' . $user->getUsername() . '</strong>
-        <form action="drink.php?id=' . $drink->getId() . '&action=review" method="POST" class="review-text">
+        <form action="drink.php?id=' . $drink->getId() . '&action=review" method="POST" class="review-text" autocomplete="off">
             <div class="form-group">
                 <label for="rating">Voto</label>
                 <input type="number" id="rating" name="rating" step="0.5" max="5" min="0.5" required>
