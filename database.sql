@@ -79,3 +79,29 @@ CREATE TABLE users_fav_drinks (
 INSERT INTO categories (name, poster) VALUES ('Energetici', NULL), ('Rilassanti', NULL), ('Musicali', NULL);
 INSERT INTO users (username, email, password, is_admin) VALUES ('admin', 'admin@example.com', '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1); -- psw: admin
 INSERT INTO users (username, email, password, is_admin) VALUES ('user', 'user@example.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0); -- psw: user
+
+INSERT INTO users (username, email, password, is_admin) VALUES 
+('admin', 'admin@example.com', '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1),
+('user', 'user@example.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('mario_rossi', 'mario.rossi@email.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('luigi_verdi', 'luigi.verdi@test.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('giulia_bianchi', 'giulia.b@example.org', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('francesca_neri', 'fra.neri@provider.net', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('alessandro_sartori', 'alex.sartori@web.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0), 
+('sofia_galli', 'sofia.galli@cinema.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('barman_pro', 'mixologist@drinks.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('laura_monti', 'laura.monti@music.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('valerio_romano', 'v.romano@motogp.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('dario_esposito', 'dario.esposito@cucina.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('critico_gastronomico', 'recensioni@foodblog.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('studente_universitario', 'studente@uni.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('party_planner', 'feste@events.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0);
+
+INSERT INTO categories (name, poster) VALUES 
+('drink felici', 'src/img/categorie/1.png'),
+('drink classici', 'src/img/categorie/2.png'),
+('drink arrabbiati', 'src/img/categorie/3.png'),
+('drink playlist', 'src/img/categorie/4.png'),
+('drink festa', 'src/img/categorie/5.png'),
+('drink assurdi', 'src/img/categorie/6.png');
+
