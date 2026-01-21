@@ -52,7 +52,7 @@ CREATE TABLE ingredients (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(400) NOT NULL,
     drink_id INT NOT NULL REFERENCES drinks(id),
-    quantity INT NOT NULL,
+    quantity VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -245,5 +245,250 @@ INSERT INTO reviews (drink_id, user_id, rate, text) VALUES
 (21, 14, 2.0, 'Sembra di bere una pizza margherita liquida e fredda. Mai più.'),
 (21, 3, 4.5, 'Piccante al punto giusto, mi ha svegliato anche i parenti defunti.');
 
+INSERT INTO ingredients (name, drink_id, quantity) VALUES 
+-- 1. PINA COLADA
+('Rum Bianco', 1, '30 ml'),
+('Succo di Ananas', 1, '90 ml'),
+('Latte di Cocco', 1, '30 ml'),
+('Fetta di Ananas', 1, '1 fetta'),
 
+-- 2. APEROL SPRITZ
+('Aperol', 2, '60 ml'),
+('Prosecco', 2, '90 ml'),
+('Spruzzata di Soda', 2, '20 ml'),
+('Fetta di Arancia', 2, '1 fetta'),
 
+-- 3. TEQUILA SUNRISE
+('Tequila', 3, '45 ml'),
+('Succo d\'Arancia', 3, '90 ml'),
+('Sciroppo di Granatina', 3, '15 ml'),
+('Ciliegina', 3, '1 ciliegina'),
+
+-- 4. BELLINI
+('Prosecco', 4, '100 ml'),
+('Polpa di Pesca', 4, '50 ml'),
+
+-- 5. MARTINI DRY
+('Gin', 5, '60 ml'),
+('Vermouth Dry', 5, '10 ml'),
+('Oliva Verde', 5, '1 oliva'),
+
+-- 6. GIN TONIC
+('Gin', 6, '40 ml'),
+('Acqua Tonica', 6, '120 ml'),
+('Fetta di Limone', 6, '1 fetta'),
+
+-- 7. NEGRONI
+('Gin', 7, '30 ml'),
+('Vermouth Rosso', 7, '30 ml'),
+('Bitter Campari', 7, '30 ml'),
+('Scorza d\'Arancia', 7, '1 scorza'),
+
+-- 8. MANHATTAN
+('Rye Whisky', 8, '50 ml'),
+('Vermouth Rosso', 8, '20 ml'),
+('Gocce di Angostura', 8, '2 gocce'),
+('Ciliegia al Maraschino', 8, '1 ciliegia'),
+
+-- 9. ANGELO AZZURRO
+('Gin', 9, '30 ml'),
+('Cointreau', 9, '30 ml'),
+('Blue Curacao', 9, '10 ml'),
+
+-- 10. LONG ISLAND ICED TEA
+('Vodka', 10, '15 ml'),
+('Rum Bianco', 10, '15 ml'),
+('Gin', 10, '15 ml'),
+('Tequila', 10, '15 ml'),
+('Cointreau', 10, '15 ml'),
+('Cola', 10, '30 ml'),
+
+-- 11. ASSENZIO
+('Assenzio', 11, '40 ml'),
+('Zolletta di Zucchero', 11, '1 zolletta'),
+('Acqua Ghiacciata', 11, '40 ml'),
+
+-- 12. WHISKY SOUR
+('Bourbon Whisky', 12, '45 ml'),
+('Succo di Limone', 12, '30 ml'),
+('Sciroppo di Zucchero', 12, '15 ml'),
+('Albume d\'uovo', 12, '1 albume'),
+
+-- 13. IRISH COFFEE
+('Whisky Irlandese', 13, '40 ml'),
+('Caffè Espresso Bollente', 13, '80 ml'),
+('Zucchero', 13, '1 cucchiaino'),
+('Panna Fresca', 13, '30 ml'),
+
+-- 14. CUBA LIBRE
+('Rum Chiaro', 14, '50 ml'),
+('Coca Cola', 14, '120 ml'),
+('Succo di Lime', 14, '10 ml'),
+
+-- 15. MOJITO CUBANO
+('Rum Bianco', 15, '50 ml'),
+('Zucchero di Canna', 15, '2 cucchiaini'),
+('Foglie di Menta', 15, '8 foglie'),
+('Spicchi di Lime', 15, '2 spicchi'),
+('Acqua Frizzante', 15, '50 ml'),
+
+-- 16. RED BULL VODKA
+('Vodka', 16, '30 ml'),
+('Red Bull', 16, '120 ml'),
+('Ghiaccio', 16, '3 cubetti'),
+
+-- 17. SHOT TEQUILA E SALE
+('Tequila', 17, '30 ml'),
+('Sale', 17, '1 pizzico'),
+('Spicchio di Limone', 17, '1 spicchio'),
+
+-- 18. CAIPIRINHA
+('Cachaca', 18, '50 ml'),
+('Lime a pezzi', 18, '3 pezzi'),
+('Zucchero di Canna', 18, '2 cucchiaini'),
+
+-- 19. CERVELLO DI SCIMMIA
+('Vodka alla Pesca', 19, '20 ml'),
+('Baileys', 19, '10 ml'),
+('Gocce di Granatina', 19, '5 gocce'),
+
+-- 20. DRINK DIEGO (Assurdo)
+('Assenzio', 20, '30 ml'),
+('Peperoncino Piccante', 20, '1 intero'),
+('Lacrime di Studente', 20, '10 ml'),
+('Ingrediente Segreto X', 20, '20 ml'),
+
+-- 21. BLOODY MARY
+('Vodka', 21, '45 ml'),
+('Succo di Pomodoro', 21, '90 ml'),
+('Tabasco', 21, '2 gocce'),
+('Gambo di Sedano', 21, '1 gambo');
+
+INSERT INTO steps (drink_id, num, description) VALUES
+-- 1. PINA COLADA
+(1, 1, 'Inserisci il ghiaccio, il rum, il succo d\'ananas e il latte di cocco nel frullatore.'),
+(1, 2, 'Frulla ad alta velocità finché il composto non diventa cremoso (circa 15 secondi).'),
+(1, 3, 'Versa in un bicchiere alto e decora con la fetta d\'ananas.'),
+
+-- 2. APEROL SPRITZ
+(2, 1, 'Riempi un calice da vino con abbondante ghiaccio.'),
+(2, 2, 'Versa prima il Prosecco, poi aggiungi l\'Aperol (per evitare che si depositi sul fondo).'),
+(2, 3, 'Completa con una spruzzata di soda e guarnisci con la fetta d\'arancia.'),
+
+-- 3. TEQUILA SUNRISE
+(3, 1, 'Metti i cubetti di ghiaccio in un bicchiere alto.'),
+(3, 2, 'Versa la tequila e il succo d\'arancia, poi mescola delicatamente.'),
+(3, 3, 'Versa lo sciroppo di granatina molto lentamente: scenderà sul fondo creando l\'effetto "alba". Non mescolare!'),
+
+-- 4. BELLINI
+(4, 1, 'Versa la polpa di pesca fredda direttamente nel flûte.'),
+(4, 2, 'Aggiungi il Prosecco lentamente per non far perdere il gas.'),
+(4, 3, 'Mescola delicatamente dal basso verso l\'alto.'),
+
+-- 5. MARTINI DRY
+(5, 1, 'Raffredda una coppa Martini con del ghiaccio (poi buttalo).'),
+(5, 2, 'Riempi un mixing glass con ghiaccio, versa Gin e Vermouth e mescola (o agita se preferisci alla James Bond).'),
+(5, 3, 'Filtra il tutto nella coppa fredda e aggiungi l\'oliva.'),
+
+-- 6. GIN TONIC
+(6, 1, 'Riempi il bicchiere di ghiaccio fino all\'orlo.'),
+(6, 2, 'Versa il Gin e passa la fetta di limone sul bordo del bicchiere prima di inserirla.'),
+(6, 3, 'Aggiungi l\'acqua tonica e mescola appena appena.'),
+
+-- 7. NEGRONI
+(7, 1, 'Metti il ghiaccio in un bicchiere basso.'),
+(7, 2, 'Versa Gin, Vermouth Rosso e Bitter Campari in parti uguali.'),
+(7, 3, 'Mescola bene e strizza la scorza d\'arancia sopra il drink per sprigionare gli oli essenziali.'),
+
+-- 8. MANHATTAN
+(8, 1, 'Metti del ghiaccio nel mixing glass.'),
+(8, 2, 'Versa il Whisky, il Vermouth e l\'Angostura. Mescola delicatamente per 30 secondi.'),
+(8, 3, 'Filtra nella coppa e aggiungi la ciliegina al maraschino.'),
+
+-- 9. ANGELO AZZURRO
+(9, 1, 'Riempi lo shaker di ghiaccio.'),
+(9, 2, 'Versa Gin, Cointreau e Blue Curacao.'),
+(9, 3, 'Agita energicamente e filtra nella coppa cocktail.'),
+
+-- 10. LONG ISLAND ICED TEA
+(10, 1, 'Metti il ghiaccio in un bicchiere alto e versa tutti gli alcolici (Vodka, Rum, Gin, Tequila, Cointreau).'),
+(10, 2, 'Aggiungi il succo di limone e la Cola.'),
+(10, 3, 'Mescola delicatamente per amalgamare.'),
+
+-- 11. ASSENZIO
+(11, 1, 'Versa l\'assenzio nel bicchiere.'),
+(11, 2, 'Appoggia l\'apposito cucchiaino forato sopra il bicchiere con la zolletta di zucchero.'),
+(11, 3, 'Versa l\'acqua ghiacciata goccia a goccia sullo zucchero finché non si scioglie e intorbidisce l\'assenzio.'),
+
+-- 12. WHISKY SOUR
+(12, 1, 'Versa Whisky, limone, zucchero e albume nello shaker SENZA ghiaccio.'),
+(12, 2, 'Agita fortissimo (Dry Shake) per montare l\'albume a neve.'),
+(12, 3, 'Aggiungi il ghiaccio, agita di nuovo per raffreddare e filtra nel bicchiere.'),
+
+-- 13. IRISH COFFEE
+(13, 1, 'Scalda il bicchiere con acqua bollente, poi svuotalo.'),
+(13, 2, 'Sciogli lo zucchero nel caffè caldo e aggiungi il Whisky.'),
+(13, 3, 'Versa la panna leggermente montata facendola scorrere sul dorso di un cucchiaino (deve galleggiare, non mescolarsi!).'),
+
+-- 14. CUBA LIBRE
+(14, 1, 'Spremi il succo di mezzo lime dentro un bicchiere alto e lascia cadere la scorza dentro.'),
+(14, 2, 'Riempi di ghiaccio e versa il Rum.'),
+(14, 3, 'Aggiungi la Coca Cola e mescola.'),
+
+-- 15. MOJITO CUBANO
+(15, 1, 'Metti zucchero, foglie di menta e succo di lime nel bicchiere. Pesta delicatamente (non distruggere la menta!).'),
+(15, 2, 'Riempi il bicchiere di ghiaccio tritato e aggiungi il Rum.'),
+(15, 3, 'Colma con acqua frizzante e mescola dal basso verso l\'alto.'),
+
+-- 16. RED BULL VODKA
+(16, 1, 'Metti il ghiaccio nel bicchiere.'),
+(16, 2, 'Versa la Vodka.'),
+(16, 3, 'Aggiungi la Red Bull fino a riempire e servi.'),
+
+-- 17. SHOT TEQUILA E SALE
+(17, 1, 'Versa la tequila nel bicchierino (chupito).'),
+(17, 2, 'Metti il sale sul dorso della mano tra pollice e indice.'),
+(17, 3, 'Il rito: lecca il sale, bevi la tequila d\'un fiato, mordi il limone.'),
+
+-- 18. CAIPIRINHA
+(18, 1, 'Taglia il lime a cubetti e mettilo nel bicchiere con lo zucchero.'),
+(18, 2, 'Pesta energicamente per estrarre il succo.'),
+(18, 3, 'Aggiungi ghiaccio tritato fino all\'orlo e versa la Cachaca. Mescola.'),
+
+-- 19. CERVELLO DI SCIMMIA
+(19, 1, 'Versa la Vodka alla pesca nel bicchierino.'),
+(19, 2, 'Versa il Baileys molto lentamente (meglio se usando un cucchiaino): a contatto con la vodka si addenserà creando filamenti.'),
+(19, 3, 'Aggiungi poche gocce di granatina per l\'effetto "sangue". Bevi tutto d\'un fiato.'),
+
+-- 20. DRINK DIEGO (Assurdo)
+(20, 1, 'Versa l\'assenzio nel bicchiere e accendilo con un accendino (flambé) per pochi secondi. Spegni la fiamma.'),
+(20, 2, 'Aggiungi il peperoncino e l\'ingrediente segreto mescolando in senso antiorario.'),
+(20, 3, 'Bevi pensando intensamente a un esame passato. L\'effetto è immediato.'),
+
+-- 21. BLOODY MARY
+(21, 1, 'Metti il ghiaccio nello shaker con vodka, succo di pomodoro e limone.'),
+(21, 2, 'Aggiungi tabasco e salsa Worcester a piacere. Agita delicatamente.'),
+(21, 3, 'Filtra nel bicchiere alto e decora con il gambo di sedano.');
+
+INSERT INTO users_fav_drinks (user_id, drink_id) VALUES
+(1, 7),
+(1, 13),
+(1, 2),
+(2, 1),
+(2, 6),
+(2, 15),
+(3, 9),
+(3, 11),
+(4, 10),
+(4, 16),
+(4, 17),
+(5, 4),
+(5, 5),
+(8, 20),
+(8, 12),
+(10, 3),
+(12, 21), 
+(14, 19), 
+(15, 14), 
+(6, 6),   
+(9, 15);  
