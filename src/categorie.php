@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . "/app/global.php";
 
 $template = getTemplate("layout");
-$template = str_replace("[title]", "Arte del Cocktail | Categorie", $template);
+$template = str_replace("[title]", "Categorie | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Il ricettario social per i tuoi drink. Cerca ispirazione tra il nostro catalogo e le creazioni degli altri utenti.", $template);
 $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
 $template = str_replace("[navbar]", getNavbar("categorie", isset($_SESSION["user_id"])), $template);

@@ -92,7 +92,7 @@ if (isset($_GET["action"])) {
 }
 
 $template = getTemplate("layout");
-$template = str_replace("[title]", "Arte del Cocktail | " . $drink->name, $template);
+$template = str_replace("[title]", $drink->name . " | Arte del Cocktail", $template);
 $template = str_replace("[description]", $drink->description, $template);
 $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
 $template = str_replace("[navbar]", getNavbar("", isset($_SESSION["user_id"])), $template);

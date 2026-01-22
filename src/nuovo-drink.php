@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 $template = getTemplate("layout");
-$template = str_replace("[title]", "Arte del Cocktail | Nuovo drink", $template);
+$template = str_replace("[title]", "Nuovo drink | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Crea un nuovo drink.", $template);
 $template = str_replace("[keywords]", "", $template);
 $template = str_replace("[navbar]", getNavbar("nuovo", true), $template);
