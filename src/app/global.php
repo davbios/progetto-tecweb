@@ -39,7 +39,7 @@ function displayFormError(string $page, string $field, string $template): string
     $error = getPageError($page, $field);
     return str_replace(
         "[error_" . $field . "]",
-        (isset($error) ? '<p class="input-error">' . $error . '</p>' : ''),
+        (isset($error) ? '<p role="alert" class="input-error">' . $error . '</p>' : ''),
         $template
     );
 }

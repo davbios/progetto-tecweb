@@ -1,9 +1,8 @@
 <section class="search-section">
     <h1>Cerca, scopri e perfeziona i migliori cocktail alcolici da tutto il mondo.</h1>
-    <form action="cerca.html" method="GET">
-        <label for="site-search" class="visually-hidden">Cerca un drink</label>
+    <form action="cerca.html" method="GET" role="search">
         <input type="search" id="site-search" name="q" placeholder="Hai già in mente un drink? Trovalo in un attimo."
-            autocomplete="off">
+            autocomplete="off" aria-label="Campo per la ricerca di un drink">
         <button type="submit" class="search-btn" aria-label="Avvia ricerca">
             <span aria-hidden="true"><img src="img/search.svg" alt=""></span>
         </button>

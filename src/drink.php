@@ -117,18 +117,22 @@ if ($user !== null) {
 
     $actionsContent = '<div class="actions">';
     if ($isDrinkUserFavourite) {
-        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=removeFavourite" class="btn btn-icon" id="btnFavourite" aria-label="Rimuovi questo drink dai preferiti">
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=removeFavourite" 
+        class="btn btn-icon" id="btnFavourite" aria-label="Rimuovi questo drink dai preferiti" role="button">
             Rimuovi dai preferiti
         </a>';
     } else {
-        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=addFavourite" class="btn btn-icon" id="btnFavourite" aria-label="Aggiungi questo drink ai preferiti">
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=addFavourite" 
+        class="btn btn-icon" id="btnFavourite" aria-label="Aggiungi questo drink ai preferiti" role="button">
             Aggiungi ai preferiti
         </a>';
     }
 
     if ($user->getId() === $drink->getCreator()->getId()) {
-        $actionsContent .= '<a href="modifica-drink.php?id=' . $drink->getId() . '" class="btn btn-icon btn-warning" id="btnEdit" aria-label="Modifica questo drink">Modifica</a>';
-        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=delete" class="btn btn-icon btn-danger" id="btnDelete" aria-label="Elimina questo drink">
+        $actionsContent .= '<a href="modifica-drink.php?id=' . $drink->getId() . '" class="btn btn-icon btn-warning" id="btnEdit" 
+         role="button" aria-label="Modifica questo drink">Modifica</a>';
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=delete" class="btn btn-icon btn-danger" id="btnDelete" 
+         role="button" aria-label="Elimina questo drink">
             Elimina
         </a>';
     }
