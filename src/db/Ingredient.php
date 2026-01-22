@@ -5,13 +5,13 @@ class Ingredient extends BaseModel
 {
     public string $name;
 
-    public int $quantity;
+    public string $quantity;
 
     // N.B.:
     // vedi Review#$drinkId
     private int $drinkId;
 
-    public function __construct(string $name, int $quantity, int $drinkId, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
+    public function __construct(string $name, string $quantity, int $drinkId, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
     {
         parent::__construct($id, $created_at, $updated_at);
         $this->name = $name;
@@ -48,7 +48,7 @@ class PdoIngredientDao implements IngredientDao
     {
         return new Ingredient(
             $row["name"],
-            (int) $row["quantity"],
+            $row["quantity"],
             (int) $row["drink_id"],
             (int) $row["id"],
             new DateTime($row["created_at"]),
@@ -88,7 +88,7 @@ class PdoIngredientDao implements IngredientDao
 
             $insertStmt = $this->pdo->prepare("INSERT INTO ingredients (name, quantity, drink_id) VALUES (:name, :quantity, :drinkId);");
             $insertStmt->bindParam("name", $ingredient->name, PDO::PARAM_STR);
-            $insertStmt->bindParam("quantity", $ingredient->quantity, PDO::PARAM_INT);
+            $insertStmt->bindParam("quantity", $ingredient->quantity, PDO::PARAM_STR);
             $drinkId = $ingredient->getDrinkId();
             $insertStmt->bindParam("drinkId", $drinkId, PDO::PARAM_INT);
             $insertStmt->execute();
@@ -113,7 +113,7 @@ class PdoIngredientDao implements IngredientDao
 
             $updateStmt = $this->pdo->prepare("UPDATE ingredients SET name = :name, quantity = :quantity WHERE id = :id");
             $updateStmt->bindParam("name", $ingredient->name, PDO::PARAM_STR);
-            $updateStmt->bindParam("quantity", $ingredient->quantity, PDO::PARAM_INT);
+            $updateStmt->bindParam("quantity", $ingredient->quantity, PDO::PARAM_STR);
             $id = $ingredient->getId();
             $updateStmt->bindParam("id", $id, PDO::PARAM_INT);
             $updateStmt->execute();

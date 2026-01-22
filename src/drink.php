@@ -5,9 +5,14 @@ if (empty($_GET["id"]) || !is_numeric($_GET["id"])) {
     header("Location: index.php");
     exit;
 }
-$queryDrinkId = intval($_GET["id"]);
 
 $user = getLoggedUser();
+
+$drink = $drinkDao->findById(intval($_GET["id"]));
+if (empty($drink)) {
+    header("Location: index.php");
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = $_GET["action"] ?? null;
@@ -23,36 +28,66 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             setPageError(__FILE__, 'Recensione non valida.');
         } else {
             $rate = intval(floatval($_POST["rating"]) * 2);
-            $review = new Review($_POST["text"], $rate, $user, $queryDrinkId, null, null, null);
+            $review = new Review($_POST["text"], $rate, $user, $drink->getId(), null, null, null);
             try {
                 $reviewDao->insert($review);
             } catch (PDOException $e) {
                 setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile creare la recensione.');
             }
         }
-    } elseif ($action === "addFavourite") {
-        try {
-            $drinkDao->addUserFavourite($user->getId(), $queryDrinkId);
-        } catch (PDOException $e) {
-            setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile inserire il <span lang="en">drink</span> nei preferiti.');
-        }
-    } elseif ($action === "removeFavourite") {
-        try {
-            $drinkDao->removeUserFavourite($user->getId(), $queryDrinkId);
-        } catch (PDOException $e) {
-            setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile rimuovere il <span lang="en">drink</span> dai preferiti.');
-        }
+    } else {
+        setPageError(__FILE__, "Azione sconosciuta");
     }
-    header("Location: drink.php?id=" . $queryDrinkId);
+    header("Location: drink.php?id=" . $drink->getId());
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
     header("Location: index.php");
     exit;
 }
 
-$drink = $drinkDao->findById($queryDrinkId);
-if (empty($drink)) {
-    header("Location: index.php");
+if (isset($_GET["action"])) {
+    // per qualsiasi azione l'utente deve essere loggato
+    if ($user === null) {
+        header("Location: login.php");
+        exit;
+    }
+
+    $redirectTo = "drink.php?id=" . $drink->getId();
+    if ($_GET["action"] === "addFavourite") {
+        try {
+            $drinkDao->addUserFavourite($user->getId(), $drink->getId());
+        } catch (PDOException $e) {
+            setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile inserire il <span lang="en">drink</span> nei preferiti.');
+        }
+    } elseif ($_GET["action"] === "removeFavourite") {
+        try {
+            $drinkDao->removeUserFavourite($user->getId(), $drink->getId());
+        } catch (PDOException $e) {
+            setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile rimuovere il <span lang="en">drink</span> dai preferiti.');
+        }
+    } elseif ($_GET["action"] === "delete" && $user->getId() === $drink->getCreator()->getId()) {
+        try {
+            $drinkDao->delete($drink);
+            $redirectTo = "/";
+        } catch (PDOException $e) {
+            setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile eliminare il <span lang="en">drink</span>.');
+        }
+    } elseif ($_GET["action"] === "deleteReview" && is_numeric($_GET["reviewId"])) {
+        $review = $reviewDao->findById(intval($_GET["reviewId"]));
+        if (!isset($review) || $review->getAuthor()->getId() !== $user->getid()) {
+            setPageError(__FILE__, 'Non è possibile eliminare questa recensione');
+        } else {
+            try {
+                $reviewDao->delete($review);
+            } catch (PDOException $e) {
+                setPageError(__FILE__, 'Non è stato possibile eliminare la recensione.');
+            }
+        }
+    } else {
+        setPageError(__FILE__, "Azione sconosciuta");
+    }
+
+    header("Location: " . $redirectTo);
     exit;
 }
 
@@ -80,12 +115,19 @@ $isDrinkUserFavourite = false;
 if ($user !== null) {
     $isDrinkUserFavourite = $userDao->hasUserFavouriteDrink($user->getId(), $drink->getId());
 
-    $actionsContent = '<form action="drink.php?id=' . $drink->getId() . '&action=' . ($isDrinkUserFavourite ? 'removeFavourite' : 'addFavourite') . '" method="POST">
-                    <button type="submit" class="btn">
-                        <img src="img/like.svg" alt="">
-                        ' . ($isDrinkUserFavourite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti') .
-        '</button>
-    </form>';
+    $actionsContent = '<div class="actions">
+        <a href="drink.php?id=' . $drink->getId() . '&action=' . ($isDrinkUserFavourite ? 'removeFavourite' : 'addFavourite') . '" class="btn btn-icon" id="btnFavourite">
+            ' . ($isDrinkUserFavourite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti') .
+        '</a>';
+
+    if ($user->getId() === $drink->getCreator()->getId()) {
+        $actionsContent .= '<a href="modifica-drink.php?id=' . $drink->getId() . '" class="btn btn-icon btn-warning" id="btnEdit">Modifica</a>';
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=delete" class="btn btn-icon btn-danger" id="btnDelete">
+            Elimina
+        </a>';
+    }
+    
+    $actionsContent .= "</div>";
     $content = str_replace("[actions]", $actionsContent, $content);
 } else {
     $content = str_replace("[actions]", "", $content);
@@ -117,7 +159,14 @@ foreach ($reviewDao->getAllForDrink($drink->getId()) as $review) {
     $reviewCard = str_replace("[rating]", $review->rate / 2.0, $reviewCard);
     $reviewCard = str_replace("[text]", $review->text, $reviewCard);
     $reviewCard = str_replace("[username]", $review->getAuthor()->username, $reviewCard);
+    $reviewCard = str_replace("[datetime]", $review->getUpdatedAt()->format("d/m/Y - H:i:s"), $reviewCard);
     $reviewCard = str_replace("[user_icon]", "img/user-icon.png", $reviewCard);
+
+    if (isset($user) && $user->getId() === $review->getAuthor()->getId()) {
+        $reviewCard = str_replace("[actions]", '<a href="drink.php?id=' . $drink->getId() . '&action=deleteReview&reviewId=' . $review->getId() . '" class="btn btn-icon btn-danger" id="btnDeleteReview">Elimina</a>', $reviewCard);
+    } else {
+$reviewCard = str_replace("[actions]", "", $reviewCard);
+    }
     $reviewsContent .= $reviewCard;
 }
 $content = str_replace("[reviews]", $reviewsContent, $content);

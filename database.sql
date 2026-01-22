@@ -14,6 +14,7 @@ CREATE TABLE users (
     username VARCHAR(200) NOT NULL,
     email VARCHAR(200) NOT NULL UNIQUE,
     password VARCHAR(200) NOT NULL,
+    picture VARCHAR(400),
     is_admin BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -32,8 +33,8 @@ CREATE TABLE drinks (
     name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT NOT NULL,
     poster VARCHAR(400) NOT NULL,
-    creator_id INT NOT NULL REFERENCES users(id),
-    category_id INT REFERENCES categories(id),
+    creator_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    category_id INT REFERENCES categories(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -42,8 +43,8 @@ CREATE TABLE reviews (
     id INT PRIMARY KEY AUTO_INCREMENT,
     text TEXT NOT NULL,
     rate REAL NOT NULL,
-    user_id INT NOT NULL REFERENCES users (id),
-    drink_id INT NOT NULL REFERENCES drinks (id),
+    user_id INT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    drink_id INT NOT NULL REFERENCES drinks (id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -51,7 +52,7 @@ CREATE TABLE reviews (
 CREATE TABLE ingredients (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(400) NOT NULL,
-    drink_id INT NOT NULL REFERENCES drinks(id),
+    drink_id INT NOT NULL REFERENCES drinks(id) ON DELETE CASCADE,
     quantity VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -59,7 +60,7 @@ CREATE TABLE ingredients (
 
 CREATE TABLE steps (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    drink_id INT NOT NULL REFERENCES drinks(id),
+    drink_id INT NOT NULL REFERENCES drinks(id) ON DELETE CASCADE,
     num INT NOT NULL,
     description TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
@@ -67,77 +68,72 @@ CREATE TABLE steps (
 );
 
 CREATE TABLE users_fav_drinks (
-    user_id INT NOT NULL REFERENCES users(id),
-    drink_id INT REFERENCES drinks(id),
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    drink_id INT REFERENCES drinks(id) ON DELETE CASCADE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (user_id, drink_id)
 );
 
--- Dati di test
-INSERT INTO categories (name, poster) VALUES ('Energetici', NULL), ('Rilassanti', NULL), ('Musicali', NULL);
-INSERT INTO users (username, email, password, is_admin) VALUES ('admin', 'admin@example.com', '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1); -- psw: admin
-INSERT INTO users (username, email, password, is_admin) VALUES ('user', 'user@example.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0); -- psw: user
-
-INSERT INTO users (username, email, password, is_admin) VALUES 
-('admin', 'admin@example.com', '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1),
-('user', 'user@example.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('mario_rossi', 'mario.rossi@email.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('luigi_verdi', 'luigi.verdi@test.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('giulia_bianchi', 'giulia.b@example.org', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('francesca_neri', 'fra.neri@provider.net', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('alessandro_sartori', 'alex.sartori@web.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0), 
-('sofia_galli', 'sofia.galli@cinema.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('barman_pro', 'mixologist@drinks.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('laura_monti', 'laura.monti@music.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('valerio_romano', 'v.romano@motogp.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('dario_esposito', 'dario.esposito@cucina.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('critico_gastronomico', 'recensioni@foodblog.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('studente_universitario', 'studente@uni.it', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('party_planner', 'feste@events.com', '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0);
+INSERT INTO users (username, email, picture, password, is_admin) VALUES 
+('admin', 'admin@example.com', NULL, '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1),
+('user', 'user@example.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('mario_rossi', 'mario.rossi@email.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('luigi_verdi', 'luigi.verdi@test.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('giulia_bianchi', 'giulia.b@example.org', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('francesca_neri', 'fra.neri@provider.net', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('alessandro_sartori', 'alex.sartori@web.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0), 
+('sofia_galli', 'sofia.galli@cinema.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('barman_pro', 'mixologist@drinks.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('laura_monti', 'laura.monti@music.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('valerio_romano', 'v.romano@motogp.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('dario_esposito', 'dario.esposito@cucina.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('critico_gastronomico', 'recensioni@foodblog.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('studente_universitario', 'studente@uni.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('party_planner', 'feste@events.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0);
 
 INSERT INTO categories (name, poster) VALUES 
-('drink felici', 'src/img/categorie/1.png'),
-('drink classici', 'src/img/categorie/2.png'),
-('drink arrabbiati', 'src/img/categorie/3.png'),
-('drink playlist', 'src/img/categorie/4.png'),
-('drink festa', 'src/img/categorie/5.png'),
-('drink assurdi', 'src/img/categorie/6.png');
+('drink felici', 'img/categorie/1.png'),
+('drink classici', 'img/categorie/2.png'),
+('drink arrabbiati', 'img/categorie/3.png'),
+('drink playlist', 'img/categorie/4.png'),
+('drink festa', 'img/categorie/5.png'),
+('drink assurdi', 'img/categorie/6.png');
 
 INSERT INTO drinks (name, description, poster, creator_id, category_id) VALUES
 -- CAT 1: DRINK FELICI (ID 1)
-('Pina Colada', 'Ananas, cocco e rum: un sorso e sei subito in vacanza col sorriso.', 'src/img/drink/Pina_Colada.png', 11, 1),
-('Aperol Spritz', 'Arancione come il sole al tramonto, porta allegria immediata.', 'src/img/drink/Aperol_Spritz.png', 10, 1),
-('Tequila Sunrise', 'I colori dell\'alba nel bicchiere per iniziare la serata con ottimismo.', 'src/img/drink/Tequila_Sunrise.png', 1, 1),
-('Bellini', 'Prosecco e polpa di pesca fresca. Dolce, frizzante e felice.', 'src/img/drink/Bellini.png', 5, 1),
+('Pina Colada', 'Ananas, cocco e rum: un sorso e sei subito in vacanza col sorriso.', 'img/drink/Pina_Colada.png', 11, 1),
+('Aperol Spritz', 'Arancione come il sole al tramonto, porta allegria immediata.', 'img/drink/Aperol_Spritz.png', 10, 1),
+('Tequila Sunrise', 'I colori dell\'alba nel bicchiere per iniziare la serata con ottimismo.', 'img/drink/Tequila_Sunrise.png', 1, 1),
+('Bellini', 'Prosecco e polpa di pesca fresca. Dolce, frizzante e felice.', 'img/drink/Bellini.png', 5, 1),
 
 -- CAT 2: DRINK CLASSICI (ID 2)
-('Martini Dry', 'Agitato, non mescolato. L\'eleganza fatta a bicchiere.', 'src/img/drink/Martini_Dry.png', 2, 2),
-('Gin Tonic', 'Poche chiacchiere, tanta classe. Il drink che non delude mai.', 'src/img/drink/Gin_Tonic.png', 1, 2),
-('Negroni', 'Il re dell\'aperitivo italiano: Gin, Vermouth e Campari in parti uguali.', 'src/img/drink/Negroni.png', 3, 2),
-('Manhattan', 'Whisky e Vermouth rosso, un gusto deciso che attraversa i secoli.', 'src/img/drink/Manhattan.png', 4, 2),
+('Martini Dry', 'Agitato, non mescolato. L\'eleganza fatta a bicchiere.', 'img/drink/Martini_Dry.png', 2, 2),
+('Gin Tonic', 'Poche chiacchiere, tanta classe. Il drink che non delude mai.', 'img/drink/Gin_Tonic.png', 1, 2),
+('Negroni', 'Il re dell\'aperitivo italiano: Gin, Vermouth e Campari in parti uguali.', 'img/drink/Negroni.png', 3, 2),
+('Manhattan', 'Whisky e Vermouth rosso, un gusto deciso che attraversa i secoli.', 'img/drink/Manhattan.png', 4, 2),
 
 -- CAT 3: DRINK ARRABBIATI (ID 3)
-('Angelo Azzurro', 'Gin e Cointreau per una gradazione che non perdona. Fortissimo.', 'src/img/drink/Angelo_Azzurro.png', 1, 3),
-('Long Island Iced Tea', 'Sembra innocuo tè freddo, ma contiene 4 tipi di alcol diversi. Attento.', 'src/img/drink/Long_Island_Iced_Tea.png', 5, 3),
-('Assenzio', 'La fata verde che ha fatto impazzire i poeti. Non per deboli di cuore.', 'src/img/drink/Assenzio.png', 6, 3),
+('Angelo Azzurro', 'Gin e Cointreau per una gradazione che non perdona. Fortissimo.', 'img/drink/Angelo_Azzurro.png', 1, 3),
+('Long Island Iced Tea', 'Sembra innocuo tè freddo, ma contiene 4 tipi di alcol diversi. Attento.', 'img/drink/Long_Island_Iced_Tea.png', 5, 3),
+('Assenzio', 'La fata verde che ha fatto impazzire i poeti. Non per deboli di cuore.', 'img/drink/Assenzio.png', 6, 3),
 
 -- CAT 4: DRINK PLAYLIST (ID 4)
-('Whisky Sour', 'L\'equilibrio perfetto tra dolce e aspro, come un buon pezzo Jazz.', 'src/img/drink/Whisky_Sour.png', 7, 4),
-('Irish Coffee', 'Caffè corretto Whiskey e panna. Per restare svegli ad ascoltare musica.', 'src/img/drink/Irish_Coffee.png', 8, 4),
-('Cuba Libre', 'Rum e Cola. Il ritmo dei Caraibi nel tuo bicchiere.', 'src/img/drink/Cuba_Libre.png', 1, 4),
+('Whisky Sour', 'L\'equilibrio perfetto tra dolce e aspro, come un buon pezzo Jazz.', 'img/drink/Whisky_Sour.png', 7, 4),
+('Irish Coffee', 'Caffè corretto Whiskey e panna. Per restare svegli ad ascoltare musica.', 'img/drink/Irish_Coffee.png', 8, 4),
+('Cuba Libre', 'Rum e Cola. Il ritmo dei Caraibi nel tuo bicchiere.', 'img/drink/Cuba_Libre.png', 1, 4),
 
 -- CAT 5: DRINK FESTA (ID 5)
-('Mojito Cubano', 'Menta pestata e ghiaccio: impossibile non ballare con questo in mano.', 'src/img/drink/Mojito_Cubano.png', 9, 5),
-('Red Bull Vodka', 'Il carburante della discoteca. Per chi vuole vedere l\'alba.', 'src/img/drink/Red_Bull_Vodka.png', 2, 5),
-('Shot Tequila e Sale', 'Non si sorseggia, si butta giù. Il via ufficiale a ogni festa.', 'src/img/drink/Shot_Tequila_e_Sale.png', 12, 5),
-('Caipirinha', 'Lime e zucchero di canna direttamente dal Brasile. Festa assicurata.', 'src/img/drink/Caipirinha.png', 13, 5),
+('Mojito Cubano', 'Menta pestata e ghiaccio: impossibile non ballare con questo in mano.', 'img/drink/Mojito_Cubano.png', 9, 5),
+('Red Bull Vodka', 'Il carburante della discoteca. Per chi vuole vedere l\'alba.', 'img/drink/Red_Bull_Vodka.png', 2, 5),
+('Shot Tequila e Sale', 'Non si sorseggia, si butta giù. Il via ufficiale a ogni festa.', 'img/drink/Shot_Tequila_e_Sale.png', 12, 5),
+('Caipirinha', 'Lime e zucchero di canna direttamente dal Brasile. Festa assicurata.', 'img/drink/Caipirinha.png', 13, 5),
 
 -- CAT 6: DRINK ASSURDI (ID 6)
-('Cervello di Scimmia', 'Un mix di Baileys e sciroppo che crea un effetto visivo... particolare.', 'src/img/drink/Cervello_di_Scimmia.png', 14, 6),
-('Drink Diego', 'La leggenda narra che nessuno ricordi gli ingredienti il giorno dopo. Un mix segreto e potente.', 'src/img/drink/Drink_Diego.png', 8, 6),
-('Bloody Mary', 'Succo di pomodoro, tabasco e vodka. Praticamente una zuppa alcolica.', 'src/img/drink/Bloody_Mary.png', 15, 6);
+('Cervello di Scimmia', 'Un mix di Baileys e sciroppo che crea un effetto visivo... particolare.', 'img/drink/Cervello_di_Scimmia.png', 14, 6),
+('Drink Diego', 'La leggenda narra che nessuno ricordi gli ingredienti il giorno dopo. Un mix segreto e potente.', 'img/drink/Drink_Diego.png', 8, 6),
+('Bloody Mary', 'Succo di pomodoro, tabasco e vodka. Praticamente una zuppa alcolica.', 'img/drink/Bloody_Mary.png', 15, 6);
 
 INSERT INTO reviews (drink_id, user_id, rate, text) VALUES
 -- 1. PINA COLADA

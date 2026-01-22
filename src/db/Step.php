@@ -46,7 +46,7 @@ class PdoStepDao implements StepDao
         return new Step(
             $row["num"],
             $row["description"],
-            (int) $row["drinkId"],
+            (int) $row["drink_id"],
             (int) $row["id"],
             new DateTime($row["created_at"]),
             new DateTime($row["updated_at"]),

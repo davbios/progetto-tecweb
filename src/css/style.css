@@ -196,6 +196,18 @@ main {
     background-image: url("../img/log-in.svg");
 }
 
+#btnFavourite {
+    background-image: url("../img/like.svg");
+}
+
+#btnDelete, #btnDeleteReview {
+    background-image: url("../img/trash.svg");
+}
+
+#btnEdit {
+    background-image: url("../img/edit.svg");
+}
+
 /* GLOBAL */
 h1,
 h2,
@@ -258,7 +270,6 @@ main {
 
 .btn {
     border: none;
-    border-bottom: 4px solid var(--color-3);
     -webkit-border-radius: var(--border-radius);
     -moz-border-radius: var(--border-radius);
     border-radius: var(--border-radius);
@@ -267,21 +278,36 @@ main {
     justify-items: center;
     color: var(--color-1);
 }
+.btn:active {
+    background-color: var(--color-3);
+}
+
+.btn-danger {
+    background-color: var(--color-error);
+}
+.btn-warning {
+    background-color: var(--star-background);
+}
 
 .btn:hover {
     cursor: pointer;
 }
 
-.btn>* {
-    color: var(--btn-text);
-    vertical-align: middle;
-    display: inline-block;
+.btn-icon {
+    padding: 0.75em 0.75em 0.75em 2.75em;
+    background-repeat: no-repeat;
+    background-position: 0.75em center;
+    background-size: 20px 20px;
 }
 
-.btn svg {
-    margin-right: 8px;
-    width: 20px;
-    height: 20px;
+.actions {
+    margin-bottom: 1.5em;
+}
+
+.actions .btn {
+    text-decoration: none;
+    font-size: 0.85em;
+    margin-right: 0.5em;
 }
 
 .drink-image {
@@ -301,7 +327,7 @@ main {
     padding: 1.5em;
 }
 
-.drink-info h2 {
+.drink-info h1 {
     margin: 0 0 0.75em 0;
 }
 
@@ -329,6 +355,7 @@ main {
 
 .review {
     display: flex;
+    margin-bottom: 1em;
 }
 
 .review-icon {
@@ -361,18 +388,60 @@ main {
     -webkit-text-fill-color: transparent;
 }
 
-.review-body .review-author,
-.review-body .review-text {
+.review-body {
+    flex-basis: 100%;
+}
+
+.review-body .review-text,
+.review-body .review-form {
     display: block;
     margin: 0.5em 0;
 }
 
-.review textarea {
-    width: 100%;
+.review-body .review-form {
+    margin-bottom: 2em;
 }
 
-.review-body svg {
-    width: 1em;
+.review-form fieldset {
+    text-align: right;
+}
+
+.review-form fieldset>* {
+    text-align: left;
+}
+
+.review-body time {
+    font-size: 0.85em;
+    display: block;
+}
+
+.review-form input,
+.review-form textarea {
+    display: block;
+    padding: 0.5em;
+    -webkit-border-radius: var(--border-radius);
+    -moz-border-radius: var(--border-radius);
+    border-radius: var(--border-radius);
+    border: none;
+    font-size: 1em;
+    background-color: #fff;
+    margin: 0;
+    width: 100%;
+    border: 2px solid var(--color-4);
+}
+
+.review-form .form-group {
+    margin: 0.5em 0;
+}
+
+.review-form #rating {
+    width: 10em;
+}
+
+.review-body .btn-danger {
+    font-size: 0.85em;
+    text-decoration: none;
+    display: inline-block;
 }
 
 /* DRINK CARD */
@@ -511,7 +580,7 @@ button:hover {
     margin-bottom: 1em;
 }
 
-.drink-form label {
+.form-group label {
     display: block;
     margin-bottom: 0.5em;
     font-size: 0.9em;

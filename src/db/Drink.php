@@ -26,7 +26,8 @@ class Drink extends BaseModel
         return $this->creator;
     }
 
-    public function getAvgRating(): ?float {
+    public function getAvgRating(): ?float
+    {
         return $this->avgRating;
     }
 
@@ -78,6 +79,7 @@ class PdoDrinkDao implements DrinkDao
                 $row["creator__username"],
                 $row["creator__email"],
                 $row["creator__password"],
+                $row["creator__picture"],
                 $row["creator__is_admin"] === "1",
                 (int) $row["creator__id"],
                 new DateTime($row["creator__created_at"]),
@@ -103,9 +105,10 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
-        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
+        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
+        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
@@ -127,9 +130,10 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
-        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
+        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
+        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
@@ -150,9 +154,10 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
-        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
+        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
+        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
@@ -174,9 +179,10 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
-        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
+        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
+        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM users_fav_drinks UD 
         JOIN drinks D ON D.id = UD.drink_id 
         JOIN users U ON U.id = D.creator_id 
@@ -214,9 +220,10 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
-        C.created_at AS category__create_at, C.updated_at AS category__updated_at 
+        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
+        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating  
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
