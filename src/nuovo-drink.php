@@ -115,6 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
+    unset($_SESSION[$sessionFormDataKey]);
     header("Location: drink.php?id=" . $drink->getId());
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
     header("Location: /");

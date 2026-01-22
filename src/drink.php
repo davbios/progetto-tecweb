@@ -115,18 +115,24 @@ $isDrinkUserFavourite = false;
 if ($user !== null) {
     $isDrinkUserFavourite = $userDao->hasUserFavouriteDrink($user->getId(), $drink->getId());
 
-    $actionsContent = '<div class="actions">
-        <a href="drink.php?id=' . $drink->getId() . '&action=' . ($isDrinkUserFavourite ? 'removeFavourite' : 'addFavourite') . '" class="btn btn-icon" id="btnFavourite">
-            ' . ($isDrinkUserFavourite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti') .
-        '</a>';
+    $actionsContent = '<div class="actions">';
+    if ($isDrinkUserFavourite) {
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=removeFavourite" class="btn btn-icon" id="btnFavourite" aria-label="Rimuovi questo drink dai preferiti">
+            Rimuovi dai preferiti
+        </a>';
+    } else {
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=addFavourite" class="btn btn-icon" id="btnFavourite" aria-label="Aggiungi questo drink ai preferiti">
+            Aggiungi ai preferiti
+        </a>';
+    }
 
     if ($user->getId() === $drink->getCreator()->getId()) {
-        $actionsContent .= '<a href="modifica-drink.php?id=' . $drink->getId() . '" class="btn btn-icon btn-warning" id="btnEdit">Modifica</a>';
-        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=delete" class="btn btn-icon btn-danger" id="btnDelete">
+        $actionsContent .= '<a href="modifica-drink.php?id=' . $drink->getId() . '" class="btn btn-icon btn-warning" id="btnEdit" aria-label="Modifica questo drink">Modifica</a>';
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=delete" class="btn btn-icon btn-danger" id="btnDelete" aria-label="Elimina questo drink">
             Elimina
         </a>';
     }
-    
+
     $actionsContent .= "</div>";
     $content = str_replace("[actions]", $actionsContent, $content);
 } else {
@@ -165,7 +171,7 @@ foreach ($reviewDao->getAllForDrink($drink->getId()) as $review) {
     if (isset($user) && $user->getId() === $review->getAuthor()->getId()) {
         $reviewCard = str_replace("[actions]", '<a href="drink.php?id=' . $drink->getId() . '&action=deleteReview&reviewId=' . $review->getId() . '" class="btn btn-icon btn-danger" id="btnDeleteReview">Elimina</a>', $reviewCard);
     } else {
-$reviewCard = str_replace("[actions]", "", $reviewCard);
+        $reviewCard = str_replace("[actions]", "", $reviewCard);
     }
     $reviewsContent .= $reviewCard;
 }

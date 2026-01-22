@@ -64,16 +64,15 @@
 :root {
     --color-1: #edeaea;
     --color-2: #765ab0;
-    --color-3: #23022e;
+    --color-3: #200229;
     --color-4: #111;
-    --color-5: #6c7a89;
     --color-error: #c0392b;
 
     --border-radius: 0.5em;
 
     --star-size: 32px;
-    --star-color: #3e3e3e;
-    --star-background: #b88237;
+    --star-color: var(--color-3);
+    --star-background: var(--color-2);
 }
 
 * {
@@ -200,7 +199,8 @@ main {
     background-image: url("../img/like.svg");
 }
 
-#btnDelete, #btnDeleteReview {
+#btnDelete,
+#btnDeleteReview {
     background-image: url("../img/trash.svg");
 }
 
@@ -278,6 +278,7 @@ main {
     justify-items: center;
     color: var(--color-1);
 }
+
 .btn:active {
     background-color: var(--color-3);
 }
@@ -285,6 +286,7 @@ main {
 .btn-danger {
     background-color: var(--color-error);
 }
+
 .btn-warning {
     background-color: var(--star-background);
 }
@@ -404,6 +406,9 @@ main {
 
 .review-form fieldset {
     text-align: right;
+    -webkit-border-radius: var(--border-radius);
+    -moz-border-radius: var(--border-radius);
+    border-radius: var(--border-radius);
 }
 
 .review-form fieldset>* {
@@ -455,7 +460,7 @@ main {
 }
 
 .drink-card {
-    background: var(--color-5);
+    background-color: #fff;
     border: 1px solid var(--color-4);
     -webkit-border-radius: var(--border-radius);
     -moz-border-radius: var(--border-radius);
