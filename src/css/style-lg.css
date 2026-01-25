@@ -1,0 +1,7 @@
+main {
+    padding: 0 1em;
+}
+
+.category-list, .drink-list {
+    grid-template-columns: repeat(3, 1fr);
+}

@@ -76,7 +76,7 @@ class PdoUserDao implements UserDao
             $row["email"],
             $row["password"],
             $row["picture"],
-            $row["is_admin"] === "1",
+            $row["is_admin"] === 1,
             (int) $row["id"],
             new DateTime($row["created_at"]),
             new DateTime($row["updated_at"]),

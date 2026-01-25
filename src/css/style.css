@@ -66,6 +66,7 @@
     --color-2: #765ab0;
     --color-3: #200229;
     --color-4: #111;
+    --color-5: #1978d4;
     --color-error: #c0392b;
 
     --border-radius: 0.5em;
@@ -78,6 +79,13 @@
 * {
     font-family: 'Comfortaa', sans-serif;
     box-sizing: border-box;
+}
+
+a {
+    color: var(--color-1);
+}
+a:visited {
+    color: var(--color-5);
 }
 
 html,
@@ -277,6 +285,7 @@ main {
     background-color: var(--color-2);
     justify-items: center;
     color: var(--color-1);
+    text-decoration: none;
 }
 
 .btn:active {
@@ -469,6 +478,50 @@ main {
 }
 
 .drink-card img {
+    width: 100%;
+}
+
+.category-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.category-card {
+    background-color: var(--color-4);
+    -webkit-border-radius: var(--border-radius);
+    -moz-border-radius: var(--border-radius);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    height: 12em;
+}
+
+.category-card strong {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+}
+
+.category-card .btn-danger {
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    text-align: center;
+    font-size: 0.9em;
+    padding: 0.5em 1em;
+}
+
+.category-card img {
+    opacity: 0.25;
     width: 100%;
 }
 

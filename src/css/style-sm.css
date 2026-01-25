@@ -1,0 +1,7 @@
+.category-list, .drink-list {
+    display: block;
+}
+
+.category-card, .drink-card {
+    margin: 1em 0;
+}

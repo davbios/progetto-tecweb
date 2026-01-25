@@ -94,12 +94,12 @@ INSERT INTO users (username, email, picture, password, is_admin) VALUES
 ('party_planner', 'feste@events.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0);
 
 INSERT INTO categories (name, poster) VALUES 
-('drink felici', 'img/categorie/1.png'),
-('drink classici', 'img/categorie/2.png'),
-('drink arrabbiati', 'img/categorie/3.png'),
-('drink playlist', 'img/categorie/4.png'),
-('drink festa', 'img/categorie/5.png'),
-('drink assurdi', 'img/categorie/6.png');
+('Felici', 'img/categorie/1.png'),
+('Classici', 'img/categorie/2.png'),
+('Arrabbiati', 'img/categorie/3.png'),
+('Playlist', 'img/categorie/4.png'),
+('Festa', 'img/categorie/5.png'),
+('Assurdi', 'img/categorie/6.png');
 
 INSERT INTO drinks (name, description, poster, creator_id, category_id) VALUES
 -- CAT 1: DRINK FELICI (ID 1)

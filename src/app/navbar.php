@@ -5,9 +5,9 @@ function getNavbar(string $current, bool $userIsLogged): string
     $content = '<nav class="navbar" aria-label="Menu principale" role="navigation">
             <ul class="main-navbar">';
     $content .= '<li id="homeNav" lang="en"' . ($current === "home" ? ' class="current" >Home' : '><a href="/" lang="en">Home</a>') . '</li>';
+    $content .= '<li id="catNav"' . ($current === "categorie" ? ' class="current" >Categorie' : '><a href="/categorie.php">Categorie</a>') . '</li>';
     $content .= '<li id="exploreNav"' . ($current === "esplora" ? ' class="current" >Esplora' : '><a href="/esplora.php">Esplora</a>') . '</li>';
     $content .= '<li id="creationsNav"' . ($current === "creazioni" ? ' class="current" >Creazioni' : '><a href="/creazioni.php">Creazioni</a>') . '</li>';
-    $content .= '<li id="catNav"' . ($current === "categorie" ? ' class="current" >Categorie' : '><a href="/categorie.php">Categorie</a>') . '</li>';
     $content .= '</ul>
             <ul class="user-navbar">';
     if ($userIsLogged) {
