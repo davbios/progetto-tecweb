@@ -676,17 +676,17 @@ button:hover {
 }
 
 .login-page :focus {
-    outline: 3px solid #8B6FB5;
+    outline: 3px solid var(--color-2);
     outline-offset: 3px;
 }
 
 .login-page :focus-visible {
-    outline: 3px solid #8B6FB5;
+    outline: 3px solid var(--color-2);
     outline-offset: 3px;
 }
 
 .login-page :focus:not(:focus-visible) {
-    outline: 3px solid #8B6FB5;
+    outline: 3px solid var(--color-2);
 }
 
 .visually-hidden {
@@ -723,7 +723,7 @@ button:hover {
     position: relative;
     width: min(850px, 95vw);
     height: min(550px, 90vh);
-    background-color: #EDEAEA;
+    background-color: var(--color-1);
     -webkit-border-radius: 30px;
     -moz-border-radius: 30px;
     border-radius: 30px;
@@ -747,8 +747,8 @@ button:hover {
     right: 0;
     width: 50%;
     height: 100%;
-    background-color: #EDEAEA;
-    color: #23022E;
+    background-color: var(--color-1);
+    color: var(--color-3);
     display: flex;
     align-items: center;
     text-align: center;
@@ -806,8 +806,8 @@ button:hover {
     -moz-border-radius: 15px;
     border-radius: 15px;
     border: none;
-    background-color: #23022E;
-    color: #EDEAEA;
+    background-color: var(--color-3);
+    color: var(--color-1);
     font-size: 1em;
     font-weight: 900;
 }
@@ -833,7 +833,7 @@ button:hover {
     left: -250%;
     width: 300%;
     height: 100%;
-    background: #23022E;
+    background: var(--color-3);
     -webkit-border-radius: 150px;
     -moz-border-radius: 150px;
     border-radius: 150px;
@@ -846,7 +846,7 @@ button:hover {
 }
 
 .login-page .curtain h2 {
-    color: #EDEAEA;
+    color: var(--color-1);
 }
 
 .login-page .curtain p {
@@ -857,7 +857,7 @@ button:hover {
     position: absolute;
     width: 50%;
     height: 100%;
-    color: #EDEAEA;
+    color: var(--color-1);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -876,7 +876,7 @@ button:hover {
 
 .login-page .curtain .btn {
     background: transparent;
-    border: 3px solid #EDEAEA;
+    border: 3px solid var(--color-1);
 }
 
 .login-page .curtain.right {

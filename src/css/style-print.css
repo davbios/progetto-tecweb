@@ -1,0 +1,433 @@
+@media print {
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-Medium.ttf");
+        font-style: normal;
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-MediumItalic.ttf");
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-Bold.ttf");
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-BoldItalic.ttf");
+        font-style: italic;
+        font-weight: 700;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-SemiBold.ttf");
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-SemiBoldItalic.ttf");
+        font-style: italic;
+        font-weight: 600;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-Italic.ttf");
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-Light.ttf");
+        font-style: normal;
+        font-weight: 300;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("../fonts/Montserrat/Montserrat-LightItalic.ttf");
+        font-style: italic;
+        font-weight: 300;
+    }
+
+    :root {
+        --color-1: #ffffff;
+        --color-2: #765ab0;
+        --color-3: #200229;
+        --color-4: #000000;
+        --color-5: #1978d4;
+        --color-error: #c0392b;
+
+        --border-radius: 0;
+        --star-size: 20px;
+        --star-color: var(--color-3);
+        --star-background: var(--color-2);
+    }
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        background-color: var(--color-1);
+        height: auto;
+        line-height: 1.3em;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        color: var(--color-4);
+    }
+
+    .navbar,
+    .search-section form,
+    .actions,
+    .review-form,
+    .btn-icon,
+    .category-card .btn-danger,
+    .drink-form button,
+    .list-fieldset .btn-add,
+    .drink-form .btn-submit,
+    .login-page .input img,
+    .errorImg {
+        display: none !important;
+    }
+
+    /* HEADER */
+    header {
+        padding-top: 1em;
+        background-color: var(--color-1) !important;
+        text-align: center;
+        width: 100%;
+        border-bottom: 2px solid var(--color-4);
+        margin-bottom: 1em;
+    }
+
+    header h1 {
+        display: block;
+        font-size: 2.2em;
+        line-height: 1.2em;
+        margin: 0;
+    }
+
+    main {
+        width: 100%;
+        max-width: none;
+        margin: 0 auto;
+        padding: 0 1em;
+    }
+
+    /* GLOBAL */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: var(--color-4);
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+
+    h1 {
+        font-size: 1.6em;
+        margin: 0.5em 0;
+    }
+
+    h2 {
+        font-size: 1.4em;
+        margin: 0.4em 0;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        margin: 0.3em 0;
+    }
+
+    p, li, td {
+        font-size: 11px;
+        line-height: 1.3;
+    }
+
+    /* PAGINA HOME */
+    .search-section {
+        text-align: center;
+        margin-bottom: 1.5em;
+    }
+
+    .search-section h1 {
+        display: block;
+        line-height: 1.2em;
+        margin: 0.5em 0;
+        max-width: none;
+        font-size: 1.4em;
+    }
+
+    /* PAGINA DRINK */
+    .row {
+        display: block;
+        page-break-inside: avoid;
+    }
+
+    .drink-image {
+        width: 100%;
+        height: auto;
+        padding: 0.5em;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    .drink-image img {
+        width: 50%;
+        height: auto;
+        max-width: 300px;
+    }
+
+    .drink-info {
+        width: 100%;
+        padding: 0.5em;
+    }
+
+    .drink-info h1 {
+        margin: 0 0 0.5em 0;
+        font-size: 1.6em;
+    }
+
+    .drink-ingredients,
+    .drink-prep {
+        width: 100%;
+        margin-bottom: 1em;
+        page-break-inside: avoid;
+    }
+
+    .drink-ingredients ul,
+    .drink-prep ol {
+        padding-left: 1.5em;
+        margin: 0.5em 0;
+    }
+
+    /* REVIEW */
+    .reviews {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        page-break-inside: avoid;
+    }
+
+    .review {
+        display: block;
+        margin-bottom: 1em;
+        padding: 0.5em;
+        border-bottom: 1px solid #ccc;
+        page-break-inside: avoid;
+    }
+
+    .review-icon {
+        display: none;
+    }
+
+    .review-stars {
+        --percent: calc(var(--rating) / 5 * 100%);
+        display: block;
+        font-size: var(--star-size);
+        font-family: Times;
+        line-height: 1;
+        margin-bottom: 0.3em;
+    }
+
+    .review-stars::before {
+        content: '★★★★★';
+        letter-spacing: 2px;
+        background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .review-body {
+        width: 100%;
+    }
+
+    .review-body .review-text {
+        display: block;
+        margin: 0.3em 0;
+    }
+
+    .review-body time {
+        font-size: 0.8em;
+        display: block;
+        color: #666;
+        margin-top: 0.3em;
+    }
+
+    /* DRINK CARD */
+    .drink-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem auto 1rem;
+        display: block;
+        gap: 0;
+    }
+
+    .drink-card {
+        background-color: var(--color-1);
+        border: 1px solid var(--color-4);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        margin-bottom: 1em;
+        page-break-inside: avoid;
+    }
+
+    .drink-card img {
+        width: 30%;
+        float: left;
+        margin-right: 1em;
+    }
+
+    .drink-card-content {
+        padding: 0.5em;
+    }
+
+    .drink-card h3 {
+        margin: 0 0 0.3em 0;
+        font-size: 1.1em;
+    }
+
+    .drink-card p {
+        margin: 0.2em 0;
+        font-size: 10px;
+    }
+
+    /* CATEGORY LIST */
+    .category-list {
+        list-style: none;
+        padding: 0;
+        display: block;
+        gap: 0;
+    }
+
+    .category-card {
+        background-color: var(--color-1);
+        border: 1px solid var(--color-4);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        position: relative;
+        height: auto;
+        margin-bottom: 1em;
+        page-break-inside: avoid;
+    }
+
+    .category-card img {
+        display: none;
+    }
+
+    .category-card strong {
+        position: static;
+        transform: none;
+        font-size: 1.2em;
+        display: block;
+        padding: 0.8em;
+        text-align: center;
+        background-color: #f0f0f0;
+    }
+
+    .drink-form,
+    .form-group,
+    .form-list,
+    .form-row {
+        display: none;
+    }
+
+    /* PAGINE DI ERRORI */
+    .error-header h1 {
+        font-size: 2em;
+        text-align: center;
+        margin-top: 1em;
+    }
+
+    #content h1 {
+        margin: 0.3em 0;
+        font-size: 1.8em;
+        text-align: center;
+        line-height: 1;
+    }
+
+    #content h2 {
+        margin: 0.2em 0;
+        font-size: 1.4em;
+        text-align: center;
+        line-height: 1;
+    }
+
+    #content h3 {
+        font-size: 1.2em;
+        text-align: center;
+        padding: 0.2em;
+        line-height: 1.2em;
+        font-weight: normal;
+    }
+
+    /* UTILITY PER LA STAMPA */
+    .no-print {
+        display: none !important;
+    }
+
+    .page-break {
+        page-break-before: always;
+    }
+
+    .keep-together {
+        page-break-inside: avoid;
+    }
+
+    /* LINK - MOSTRA URL */
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 9px;
+        color: #666;
+    }
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    * {
+        margin: 0.1em 0;
+        padding: 0.1em;
+    }
+
+    .section-error p {
+        font-size: 0.9em;
+        padding: 0.5em;
+        color: var(--color-4);
+        background-color: transparent;
+        border: 1px solid var(--color-error);
+        border-radius: var(--border-radius);
+    }
+
+    /* CLEAR FLOATS */
+    .drink-card:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
