@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["user_id"]  = $user->getId();
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = $user->isAdmin();
-            $redirectTo = "profilo.php";
+            $redirectTo = "index.php";
         } else {
             $errori[] = "L'username e/o password inseriti sono errati. Si prega di riprovare.";
             $_SESSION['login_errors'] = $errori;
