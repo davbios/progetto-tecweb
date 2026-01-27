@@ -18,7 +18,7 @@
         </form>
     </div>
     <div class="box register">
-        <form action="login.php" method="POST" aria-labelledby="register-heading">
+        <form action="login.php" method="POST" enctype="multipart/form-data" aria-labelledby="register-heading">
             <input type="hidden" name="action" value="register">
             <h2>Registrati</h2>
             <section class="input">
@@ -29,6 +29,12 @@
             <section class="input">
                 <label for="reg-username">Username</label>
                 <input id="reg-username" type="text" name="username" placeholder="Username" value="[register_username]" required>
+                <img src="img/user.svg" alt="" aria-hidden="true">
+            </section>
+            <section class="input">
+                <p>Inserisci una foto di profilo :</p>
+                <label for="reg-pct">Foto Profilo</label>
+                <input id="reg-pct" type="file" name="picture" accept="image/*" placeholder="Foto Profilo" value="[register_pct]" required>
                 <img src="img/user.svg" alt="" aria-hidden="true">
             </section>
             <section class="input">

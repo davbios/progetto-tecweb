@@ -47,6 +47,16 @@ class User extends BaseModel
     {
         return $this->is_admin;
     }
+
+    public function getPicture(): ?string 
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): void 
+    {
+        $this->picture = $picture;
+    }
 }
 
 interface UserDao

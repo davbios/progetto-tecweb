@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["user_id"]  = $user->getId();
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = $user->isAdmin();
-            $redirectTo = "index.php";
+            $redirectTo = "profilo.php";
         } else {
             $errori[] = "L'username e/o password inseriti sono errati. Si prega di riprovare.";
             $_SESSION['login_errors'] = $errori;
@@ -46,9 +46,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     } elseif ($action === "register") {
         // registrazione
-        $email        = trim($_POST["email"]) ?? null;
-        $username     = trim($_POST["username"]) ?? null;
-        $password     = trim($_POST["password"]) ?? null;
+        $email = trim($_POST["email"]) ?? null;
+        $username = trim($_POST["username"]) ?? null;
+        $password = trim($_POST["password"]) ?? null;
+        $picture = null;
+
+        if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($fileInfo, $_FILES['picture']['tmp_name']);
+            finfo_close($fileInfo);
+            if (in_array($mimeType, $allowedTypes)) {
+                $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
+                $picture = uniqid('user_') . '.' . $extension;
+                $uploadPath = 'uploads/profile_pictures/' . $picture;
+                if (!is_dir('uploads/profile_pictures')) {
+                    mkdir('uploads/profile_pictures', 0777, true);
+                }
+                move_uploaded_file($_FILES['picture']['tmp_name'], $uploadPath);
+            }
+        }
         $existingUser = $userDao->findByUsername($username);
         
         if ($existingUser) {
@@ -59,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['active_form'] = 'register';
         } else {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $user = new User($username, $email, $passwordHash, '', false);
+            $user = new User($username, $email, $passwordHash, $picture, false);
             $user = $userDao->insert($user);
 
             $_SESSION["user_id"]  = $user->getId();
@@ -68,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $redirectTo = "index.php";
         }
     }
-    
+
     header("Location: " . $redirectTo);
     exit;
 }
@@ -103,6 +120,7 @@ $content = str_replace("[active_form_class]", ($activeForm === 'register') ? 'ac
 $content = str_replace("[login_username]", htmlspecialchars($formData['login']['username']), $content);
 $content = str_replace("[register_email]", htmlspecialchars($formData['register']['email']), $content);
 $content = str_replace("[register_username]", htmlspecialchars($formData['register']['username']), $content);
+$content = str_replace("[register_pct]", "",  $content);
 $content = str_replace("[reg_btn_tabindex]", ($activeForm === 'register') ? 'tabindex="-1"' : '', $content);
 $content = str_replace("[login_btn_tabindex]", ($activeForm === 'login') ? 'tabindex="-1"' : '', $content);
 

@@ -1,0 +1,34 @@
+<main>
+    [error_messages]
+    <section id="dati-utente" aria-label="Scheda Utente">
+        <div class="profile-card">
+            <img class="profile-img" src="[picture]" alt="Immagine profilo di [Username]">
+            <div class="profile-info"> 
+                <dl>
+                    <dt id="username-label">Nome Utente:</dt>
+                    <dd id="username" aria-labelledby="username-label">[Username]</dd>
+                    
+                    <dt id="email-label">Email:</dt>
+                    <dd id="email" aria-labelledby="email-label">[Email]</dd>
+                    <!-- Per la bio se la mettiamo 
+                     
+                    <dt id="bio-label">Bio:</dt>
+                    <dd id="bio" aria-labelledby="bio-label">[bio]</dd> 
+                    -->
+                    
+                </dl>
+                [edit_button]
+            </div>
+        </div>
+    </section>
+    
+    <section id="Preferiti" aria-labelledby="titolo-preferiti">
+        <h2 id="titolo-preferiti">Drink preferiti</h2>
+        [favorites_list]
+    </section>
+    
+    <section id="Creazioni" aria-labelledby="titolo-creazioni">
+        <h2 id="titolo-creazioni">Le mie creazioni</h2>
+        [creations_list]
+    </section>
+</main>

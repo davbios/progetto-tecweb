@@ -1,12 +1,94 @@
 <?php
 require_once dirname(__FILE__) . "/app/global.php";
 
+$user = getLoggedUser();
+if (!$user) {
+    header("Location: login.php");
+    exit;
+}
+
+$userId = $_GET['id'] ?? $_SESSION['user_id'] ?? null;
+if (!$userId) {
+    header("Location: login.php");
+    exit;
+}
+
+$profileUser = $userDao->findById($userId);
+if (!$profileUser) {
+    header("Location: index.php");
+    exit;
+}
+
+$userDrinks = $DrinkDao->getCreator($userId); 
+$favoriteDrinks = $DrinkDao->getUserFavourites($userId);
+$isOwnProfile = ($user->getId() == $profileUser->getId());
+
+$errori = [];
+if(isset($_SESSION['profile_errors'])) {
+    $errori = $_SESSION['profile_errors'];
+    unset($_SESSION['profile_errors']);
+}
+
 $template = getTemplate("layout");
-$template = str_replace("[title]", "Profilo | Arte del Cocktail", $template);
-$template = str_replace("[description]", "Il ricettario social per i tuoi drink. Cerca ispirazione tra il nostro catalogo e le creazioni degli altri utenti.", $template);
-$template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
-$template = str_replace("[navbar]", getNavbar("profilo", isset($_SESSION["user_id"])), $template);
-$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » Profilo', $template);
+$template = str_replace("[title]", $profileUser->getUsername() . " | Profilo | Arte del Cocktail", $template);
+$template = str_replace("[description]", "Profilo di " . $profileUser->getUsername() . ". Scopri le sue creazioni e i cocktail preferiti.", $template);
+$template = str_replace("[keywords]", "profilo, " . $profileUser->getUsername() . ", cocktail, drink, utente", $template);
+$template = str_replace("[navbar]", getNavbar("profilo", true), $template);
+$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » ' . htmlspecialchars($profileUser->getUsername()), $template);
+
+$content = getTemplate("profilo");
+$content = str_replace("[picture]", $profileUser->getPicture() ? 'uploads/profile_pictures/' . $profileUser->getPicture() : 'img/user-icon.png', $content);
+$content = str_replace("[Username]", htmlspecialchars($profileUser->getUsername()), $content);
+$content = str_replace("[Email]", htmlspecialchars($profileUser->getEmail()), $content);
+
+if (!$isOwnProfile) {
+    $content = str_replace('<button class="edit-btn">Modifica Profilo</button>', '', $content);
+}
+if ($favoriteDrinks && count($favoriteDrinks) > 0) {
+    $favhtml = '<div class="cocktails-grid">';
+    foreach ($favoriteDrinks as $drink) {
+        $favhtml .= '
+        <article class="cocktail-card">
+            <a href="cocktail.php?id=' . $drink->getId() . '">
+                <img src="' . ($drink->getImage() ?: '') . '" alt="' . htmlspecialchars($cocktail->getName()) . '">
+                <h3>' . htmlspecialchars($cocktail->getName()) . '</h3>
+            </a>
+        </article>';
+    }
+    $favhtml .= '</div>';
+} else {
+    $favhtml = '<p class="no-content">Nessun cocktail preferito.</p>';
+}
+$content = str_replace('</section>', $favhtml . '</section>', $content);
+if ($userDrinks && count($userDrinks) > 0) {
+    $creationsHtml = '<div class="cocktails-grid">';
+    foreach ($userDrinks as $drink) {
+        $creationsHtml .= '
+        <article class="cocktail-card">
+            <a href="cocktail.php?id=' . $drink->getId() . '">
+                <img src="' . ($drink->getImage() ?: '') . '" alt="' . htmlspecialchars($cocktail->getName()) . '">
+                <h3>' . htmlspecialchars($cocktail->getName()) . '</h3>
+            </a>
+        </article>';
+    }
+    $creationsHtml .= '</div>';
+} else {
+    $creationsHtml = '<p class="no-content">Nessuna creazione ancora pubblicata.</p>';
+}
+$content = str_replace('</section>', $creationsHtml . '</section>', $content);
+
+// Gestione messaggi di errore
+$errorMessages = "";
+if (!empty($errori)) {
+    $errorTemplate = getTemplate("error_messages");
+    $messages = "";
+    foreach ($errori as $errore) {
+        $messages .= '<p>' . htmlspecialchars($errore) . '</p>';
+    }
+    $errorMessages = str_replace("[messages]", $messages, $errorTemplate);
+}
+$content = str_replace('[error_messages]', $errorMessages, $content);
+$template = str_replace("[content]", $content, $template);
 
 echo $template;
 ?>

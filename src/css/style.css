@@ -798,6 +798,13 @@ button:hover {
     border: none;
 }
 
+.login-page .input p{
+    font-size: 0.9em;
+    font-weight: normal;
+    text-align: left;
+    padding-left: 50px;
+}
+
 .login-page .btn {
     margin-top: 8%;
     width: 50%;
@@ -951,3 +958,93 @@ button:hover {
     margin-top: 1em;
     margin-bottom: 1.5em;
 }
+
+/*  PROFILO   */
+/* Stili provvisori per la pagina profilo 
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: var(--light-color);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+}
+
+.profile-info dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-info dt {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.profile-info dd {
+    margin: 0;
+}
+
+.edit-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+    background: var(--secondary-color);
+}
+
+.drink-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.drink-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.drink-card:hover {
+    transform: translateY(-5px);
+}
+
+.drink-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.drink-card h3 {
+    padding: 1rem;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.no-content {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+    font-style: italic;
+}*/
