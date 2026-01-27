@@ -272,6 +272,13 @@ main {
     border-bottom-right-radius: 1em;
 }
 
+.empty-result {
+    display: block;
+    text-align: center;
+    font-size: 1.1em;
+    margin: 4em 1em;
+}
+
 /* PAGINA DRINK */
 .row {
     display: flex;
@@ -532,31 +539,32 @@ main {
 
 /* NUOVO DRINK */
 
-.drink-form {
+form {
     text-align: right;
+    margin-bottom: 1em;
 }
 
-.drink-form>* {
+form>* {
     text-align: left;
 }
 
-.drink-form .input-error {
+form .input-error {
     font-size: 0.9em;
     color: var(--color-error);
     margin: 0.5em 0 0 0;
     font-weight: 600;
 }
 
-.drink-form fieldset {
+form fieldset {
     margin-bottom: 0.5em;
     -webkit-border-radius: var(--border-radius);
     -moz-border-radius: var(--border-radius);
     border-radius: var(--border-radius);
 }
 
-.drink-form input,
-.drink-form textarea,
-.drink-form select {
+form input,
+form textarea,
+form select {
     display: block;
     padding: 0.5em;
     width: 80%;
@@ -571,7 +579,7 @@ main {
     border: 2px solid var(--color-4);
 }
 
-.drink-form textarea {
+form textarea {
     resize: horizontal;
     height: 4em;
 }
@@ -593,11 +601,12 @@ button:hover {
     cursor: pointer;
 }
 
-.info-fieldset {
+.flex-fieldset {
     display: flex;
     flex-wrap: wrap;
 }
 
+.input-poster,
 .input-category {
     flex-basis: 40%;
     padding-right: 1em;
@@ -607,12 +616,22 @@ button:hover {
     flex-basis: 60%;
 }
 
+.input-username {
+    padding-right: 0.5em;
+    flex-basis: 50%;
+}
+
+.input-email {
+    padding-left: 0.5em;
+    flex-basis: 50%;
+}
+
 .input-description {
     width: 100%;
     flex-basis: 100%;
 }
 
-.drink-form button {
+form button {
     color: var(--color-1);
     border: 2px solid var(--color-3);
     -webkit-border-radius: var(--border-radius);
@@ -621,7 +640,7 @@ button:hover {
     background-color: var(--color-2);
 }
 
-.drink-form button:active {
+form button:active {
     background-color: var(--color-3);
 }
 
@@ -658,7 +677,7 @@ button:hover {
 }
 
 .list-fieldset .btn-add,
-.drink-form .btn-submit {
+form .btn-submit {
     font-size: 1em;
     padding: 0.5em 2em;
     display: inline-block;
@@ -666,6 +685,15 @@ button:hover {
 
 .drink-form .btn-submit {
     margin-top: 1em;
+}
+
+.profile-form {
+    flex-basis: 30%;
+    margin-right: 1em;
+}
+
+.password-form {
+    flex-basis: 70%;
 }
 
 

@@ -14,6 +14,7 @@ CREATE TABLE users (
     username VARCHAR(200) NOT NULL,
     email VARCHAR(200) NOT NULL UNIQUE,
     password VARCHAR(200) NOT NULL,
+    bio TEXT NOT NULL,
     picture VARCHAR(400),
     is_admin BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
@@ -76,22 +77,22 @@ CREATE TABLE users_fav_drinks (
     PRIMARY KEY (user_id, drink_id)
 );
 
-INSERT INTO users (username, email, picture, password, is_admin) VALUES 
-('admin', 'admin@example.com', NULL, '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1),
-('user', 'user@example.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('mario_rossi', 'mario.rossi@email.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('luigi_verdi', 'luigi.verdi@test.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('giulia_bianchi', 'giulia.b@example.org', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('francesca_neri', 'fra.neri@provider.net', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('alessandro_sartori', 'alex.sartori@web.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0), 
-('sofia_galli', 'sofia.galli@cinema.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('barman_pro', 'mixologist@drinks.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('laura_monti', 'laura.monti@music.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('valerio_romano', 'v.romano@motogp.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('dario_esposito', 'dario.esposito@cucina.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('critico_gastronomico', 'recensioni@foodblog.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('studente_universitario', 'studente@uni.it', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
-('party_planner', 'feste@events.com', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0);
+INSERT INTO users (username, email, bio, picture, password, is_admin) VALUES 
+('admin', 'admin@example.com', '', NULL, '$2y$12$lRGpE/AHZZ3WSHyXc4KC.engFmMm24lqT3LxJlO2OVfujxWFzrZAa', 1),
+('user', 'user@example.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('mario_rossi', 'mario.rossi@email.it', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('luigi_verdi', 'luigi.verdi@test.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('giulia_bianchi', 'giulia.b@example.org', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('francesca_neri', 'fra.neri@provider.net', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('alessandro_sartori', 'alex.sartori@web.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0), 
+('sofia_galli', 'sofia.galli@cinema.it', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('barman_pro', 'mixologist@drinks.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('laura_monti', 'laura.monti@music.it', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('valerio_romano', 'v.romano@motogp.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('dario_esposito', 'dario.esposito@cucina.it', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('critico_gastronomico', 'recensioni@foodblog.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('studente_universitario', 'studente@uni.it', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0),
+('party_planner', 'feste@events.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0);
 
 INSERT INTO categories (name, poster) VALUES 
 ('Felici', 'img/categorie/1.png'),

@@ -62,6 +62,7 @@ class PdoReviewDao implements ReviewDao
                 $row["user__username"],
                 $row["user__email"],
                 $row["user__password"],
+                $row["user__bio"],
                 $row["user__picture"],
                 $row["user__is_admin"],
                 (int) $row["user_id"],
@@ -81,7 +82,8 @@ class PdoReviewDao implements ReviewDao
         $stmt = $this->pdo->prepare("SELECT R.id AS id, R.text AS text, R.rate AS rate, 
         R.user_id AS user_id, R.created_at AS created_at, R.updated_at AS updated_at, 
         R.drink_id AS drink_id, U.username AS user__username, U.email AS user__email, 
-        U.password AS user__password, U.is_admin AS user__is_admin, U.picture AS user__picture, 
+        U.password AS user__password, U.is_admin AS user__is_admin, 
+        U.picture AS user__picture, U.bio AS user__bio, 
         U.created_at AS user__created_at, U.updated_at AS user__updated_at 
         FROM reviews R JOIN users U ON R.user_id = U.id WHERE R.drink_id = :id 
         ORDER BY R.created_at DESC");
@@ -99,7 +101,8 @@ class PdoReviewDao implements ReviewDao
         $stmt = $this->pdo->prepare("SELECT R.id AS id, R.text AS text, R.rate AS rate, 
         R.user_id AS user_id, R.created_at AS created_at, R.updated_at AS updated_at, 
         R.drink_id AS drink_id, U.username AS user__username, U.email AS user__email, 
-        U.password AS user__password, U.is_admin AS user__is_admin, U.picture AS user__picture, 
+        U.password AS user__password, U.is_admin AS user__is_admin, 
+        U.picture AS user__picture, U.bio AS user__bio, 
         U.created_at AS user__created_at, U.updated_at AS user__updated_at 
         FROM reviews R JOIN users U ON R.user_id = U.id WHERE R.id = :id");
         $stmt->bindParam("id", $id, PDO::PARAM_INT);
@@ -116,7 +119,8 @@ class PdoReviewDao implements ReviewDao
         $stmt = $this->pdo->prepare("SELECT R.id AS id, R.text AS text, R.rate AS rate, 
         R.user_id AS user_id, R.created_at AS created_at, R.updated_at AS updated_at, 
         R.drink_id AS drink_id, U.username AS user__username, U.email AS user__email, 
-        U.password AS user__password, U.is_admin AS user__is_admin, U.picture AS user__picture, 
+        U.password AS user__password, U.is_admin AS user__is_admin, 
+        U.picture AS user__picture, U.bio AS user__bio, 
         U.created_at AS user__created_at, U.updated_at AS user__updated_at 
         FROM reviews R JOIN users U ON R.user_id = U.id WHERE user_id = :id");
         $stmt->bindParam("id", $userId, PDO::PARAM_INT);

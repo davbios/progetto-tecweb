@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['active_form'] = 'register';
         } else {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $user = new User($username, $email, $passwordHash, $picture, false);
+            $user = new User($username, $email, $passwordHash, '', $picture, false);
             $user = $userDao->insert($user);
 
             $_SESSION["user_id"]  = $user->getId();

@@ -51,6 +51,8 @@ interface DrinkDao
     /** @return Drink[] */
     public function getAllByUser(int $userId, int $limit = 10, int $offset = 0): array;
     /** @return Drink[] */
+    public function search(string $query, int $limit = 10, int $offset = 0): array;
+    /** @return Drink[] */
     public function getUserFavourites(int $userId, int $limit = 10, int $offset = 0): array;
     public function addUserFavourite(int $userId, int $drinkId): void;
     public function removeUserFavourite(int $userId, int $drinkId): void;
@@ -79,6 +81,7 @@ class PdoDrinkDao implements DrinkDao
                 $row["creator__username"],
                 $row["creator__email"],
                 $row["creator__password"],
+                $row["creator__bio"],
                 $row["creator__picture"],
                 $row["creator__is_admin"] === "1",
                 (int) $row["creator__id"],
@@ -105,7 +108,8 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
         (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
@@ -130,7 +134,8 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
         (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
@@ -154,7 +159,8 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
         (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
@@ -173,13 +179,39 @@ class PdoDrinkDao implements DrinkDao
         return $drinks;
     }
 
+    public function search(string $query, int $limit = 10, int $offset = 0): array {
+        $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
+        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
+        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.picture AS creator__picture, U.bio AS creator__bio, 
+        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
+        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
+        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
+        FROM drinks D 
+        JOIN users U ON U.id = D.creator_id 
+        LEFT JOIN categories C ON C.id = D.category_id 
+        WHERE D.name LIKE :name LIMIT :lt OFFSET :os;");
+        $query = "%" . $query . "%";
+        $stmt->bindParam("name", $query, PDO::PARAM_STR);
+        $stmt->bindParam("lt", $limit, PDO::PARAM_INT);
+        $stmt->bindParam("os", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $drinks = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            array_push($drinks, $this->mapRowToDrink($row));
+        }
+        return $drinks;
+    }
+
     /** @return Drink[] */
     public function getUserFavourites(int $userId, int $limit = 10, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
         (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
@@ -220,7 +252,8 @@ class PdoDrinkDao implements DrinkDao
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, U.picture AS creator__picture, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
         (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating  

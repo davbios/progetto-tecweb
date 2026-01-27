@@ -19,24 +19,39 @@ if ($page < 1) {
 
 $drinks = [];
 $drinksPerPage = 21;
-if (isset($_GET["category"]) && is_numeric($_GET["category"])) {
+
+$place = '';
+$subtitle = '';
+if (isset($_GET["q"])) {
+    $drinks = $drinkDao->search($_GET["q"], $drinksPerPage, $page - 1);
+    $subtitle = 'Ricerca per "' . $_GET["q"] . '"';
+    $place = 'Ricerca';
+} elseif (isset($_GET["category"]) && is_numeric($_GET["category"])) {
     $category = $categoryDao->findById(intval($_GET["category"]));
     $drinks = $drinkDao->getAllInCategory($category->getId(), $drinksPerPage, $page - 1);
-    $place = '<a href="categorie.php" lang="en">Categorie</a> » <span lang="en">Drink</span> ' . $category->name;
+    $subtitle = '<span lang="en">Drink</span> ' . $category->name;
+    $place = '<a href="categorie.php">Categorie</a> » <span lang="en">Drink</span> ' . $category->name;
 } else {
     $drinks = $drinkDao->getAllOfficial($drinksPerPage, $page - 1);
+    $subtitle = 'I nostri <span lang="en">Drink</span>';
     $place = 'Esplora';
 }
-$content = str_replace("[subtitle]", $place, $content);
-    $template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » ' . $place, $template);
+$content = str_replace("[subtitle]", $subtitle, $content);
+$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » ' . $place, $template);
 
-$drinksListContent = "";
-foreach ($drinks as $drink) {
-    $drinkCard = getTemplate("drink_card");
-    $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
-    $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
-    $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
-    $drinksListContent .= $drinkCard;
+$drinksListContent = '';
+if (count($drinks) > 0) {
+    $drinksListContent = '<ul class="drink-list">';
+    foreach ($drinks as $drink) {
+        $drinkCard = getTemplate("drink_card");
+        $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
+        $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
+        $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
+        $drinksListContent .= $drinkCard;
+    }
+    $drinksListContent .= '</ul>';
+} else {
+    $drinksListContent = '<p class="empty-result">Nessun risultato</p>';
 }
 $content = str_replace("[drinks]", $drinksListContent, $content);
 

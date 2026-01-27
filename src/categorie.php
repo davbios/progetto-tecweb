@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 if (
     isset($user) && $user->isAdmin() &&
-    $_GET["action"] === "delete" && isset($_GET["id"]) && is_numeric($_GET["id"])
+    isset($_GET["action"]) && $_GET["action"] === "delete" && isset($_GET["id"]) && is_numeric($_GET["id"])
 ) {
     $category = $categoryDao->findById(intval($_GET["id"]));
     $categoryDao->delete($category);
