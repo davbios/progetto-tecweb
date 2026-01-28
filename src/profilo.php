@@ -13,13 +13,16 @@ if (!$userId) {
     exit;
 }
 
+require_once dirname(__FILE__) . "/db/Drink.php";
+$DrinkDao = new PdoDrinkDao($pdo);
+
 $profileUser = $userDao->findById($userId);
 if (!$profileUser) {
     header("Location: index.php");
     exit;
 }
 
-$userDrinks = $DrinkDao->getCreator($userId); 
+$userDrinks = $DrinkDao->getAllByUser($userId); 
 $favoriteDrinks = $DrinkDao->getUserFavourites($userId);
 $isOwnProfile = ($user->getId() == $profileUser->getId());
 
@@ -34,48 +37,51 @@ $template = str_replace("[title]", $profileUser->getUsername() . " | Profilo | A
 $template = str_replace("[description]", "Profilo di " . $profileUser->getUsername() . ". Scopri le sue creazioni e i cocktail preferiti.", $template);
 $template = str_replace("[keywords]", "profilo, " . $profileUser->getUsername() . ", cocktail, drink, utente", $template);
 $template = str_replace("[navbar]", getNavbar("profilo", true), $template);
-$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » ' . htmlspecialchars($profileUser->getUsername()), $template);
+$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » ' . "Profilo", $template);
 
 $content = getTemplate("profilo");
 $content = str_replace("[picture]", $profileUser->getPicture() ? 'uploads/profile_pictures/' . $profileUser->getPicture() : 'img/user-icon.png', $content);
 $content = str_replace("[Username]", htmlspecialchars($profileUser->getUsername()), $content);
 $content = str_replace("[Email]", htmlspecialchars($profileUser->getEmail()), $content);
+$content = str_replace("[bio]", htmlspecialchars($profileUser->bio), $content);        
 
-if (!$isOwnProfile) {
-    $content = str_replace('<button class="edit-btn">Modifica Profilo</button>', '', $content);
+$editButton = '';
+if ($isOwnProfile) {
+    $editButton = '<a href="modifica-profilo.php?id=' . $userId . '" class="edit-btn">Modifica Profilo</a>';
 }
+$content = str_replace("[edit_button]", $editButton, $content);
+
+// Sezione drink preferiti
 if ($favoriteDrinks && count($favoriteDrinks) > 0) {
-    $favhtml = '<div class="cocktails-grid">';
+    $favhtml = '<div class="drink-grid">';
     foreach ($favoriteDrinks as $drink) {
-        $favhtml .= '
-        <article class="cocktail-card">
-            <a href="cocktail.php?id=' . $drink->getId() . '">
-                <img src="' . ($drink->getImage() ?: '') . '" alt="' . htmlspecialchars($cocktail->getName()) . '">
-                <h3>' . htmlspecialchars($cocktail->getName()) . '</h3>
-            </a>
-        </article>';
+        $drinkCard = getTemplate("drink_card");
+        $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
+        $drinkCard = str_replace("[drink]", htmlspecialchars($drink->name), $drinkCard);
+        $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
+        $favhtml .= $drinkCard;
     }
     $favhtml .= '</div>';
 } else {
     $favhtml = '<p class="no-content">Nessun cocktail preferito.</p>';
 }
-$content = str_replace('</section>', $favhtml . '</section>', $content);
+$content = str_replace('[favorites_list]', $favhtml, $content);
+
+// Sezione creazioni
 if ($userDrinks && count($userDrinks) > 0) {
-    $creationsHtml = '<div class="cocktails-grid">';
+    $creationsHtml = '<div class="drink-grid">';
     foreach ($userDrinks as $drink) {
-        $creationsHtml .= '
-        <article class="cocktail-card">
-            <a href="cocktail.php?id=' . $drink->getId() . '">
-                <img src="' . ($drink->getImage() ?: '') . '" alt="' . htmlspecialchars($cocktail->getName()) . '">
-                <h3>' . htmlspecialchars($cocktail->getName()) . '</h3>
-            </a>
-        </article>';
+        $drinkCard = getTemplate("drink_card");
+        $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
+        $drinkCard = str_replace("[drink]", htmlspecialchars($drink->name), $drinkCard);
+        $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
+        $creationsHtml .= $drinkCard;
     }
     $creationsHtml .= '</div>';
 } else {
     $creationsHtml = '<p class="no-content">Nessuna creazione ancora pubblicata.</p>';
 }
-$content = str_replace('</section>', $creationsHtml . '</section>', $content);
+$content = str_replace('[creations_list]', $creationsHtml, $content);
 
 // Gestione messaggi di errore
 $errorMessages = "";
