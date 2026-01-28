@@ -55,14 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $user->email = $_POST["email"];
         $user->bio = trim($_POST["bio"]);
     } elseif ($_POST["action"] === "picture") {
-        $uploaddir = "/var/www/uploads/";
-        $pictureFilename = basename($_FILES["picture"]["name"]);
-        if (!move_uploaded_file($_FILES["picture"]["tmp_name"], $uploaddir . $posterFilename)) {
+        $image = handleImageUpload("picture", "user");
+        if (!isset($image)) {
             setPageError(__FILE__, "Immagine non valida.", "picture");
             header("Location: modifica-profilo.php");
             exit;
         }
-        $user->picture = $pictureFilename;
+        $user->picture = $image;
     } elseif ($_POST["action"] === "password") {
         if (!password_verify($_POST["oldpassword"], $user->getPassword())) {
             setPageError(__FILE__, "Password errata", "oldusername");

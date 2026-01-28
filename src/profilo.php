@@ -13,18 +13,15 @@ if (!$userId) {
     exit;
 }
 
-require_once dirname(__FILE__) . "/db/Drink.php";
-$DrinkDao = new PdoDrinkDao($pdo);
-
 $profileUser = $userDao->findById($userId);
 if (!$profileUser) {
     header("Location: index.php");
     exit;
 }
 
-$userDrinks = $DrinkDao->getAllByUser($userId); 
-$favoriteDrinks = $DrinkDao->getUserFavourites($userId);
-$isOwnProfile = ($user->getId() == $profileUser->getId());
+$userDrinks = $drinkDao->getAllByUser($userId); 
+$favoriteDrinks = $drinkDao->getUserFavourites($userId);
+$isOwnProfile = ($user->getId() === $profileUser->getId());
 
 $errori = [];
 if(isset($_SESSION['profile_errors'])) {
@@ -40,7 +37,7 @@ $template = str_replace("[navbar]", getNavbar("profilo", true), $template);
 $template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » ' . "Profilo", $template);
 
 $content = getTemplate("profilo");
-$content = str_replace("[picture]", $profileUser->getPicture() ? 'uploads/profile_pictures/' . $profileUser->getPicture() : 'img/user-icon.png', $content);
+$content = str_replace("[picture]", $profileUser->getPicture() ? $profileUser->getPicture() : 'img/user-icon.png', $content);
 $content = str_replace("[Username]", htmlspecialchars($profileUser->getUsername()), $content);
 $content = str_replace("[Email]", htmlspecialchars($profileUser->getEmail()), $content);
 $content = str_replace("[bio]", htmlspecialchars($profileUser->bio), $content);        

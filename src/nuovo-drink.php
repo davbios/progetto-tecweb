@@ -46,7 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     saveFormDataValue("ingredients", $ingredients);
 
-    if (!move_uploaded_file($_FILES["poster"]["tmp_name"], $uploaddir . $posterFilename)) {
+    $poster = handleImageUpload("poster", "drink");
+    if (!isset($poster)) {
         setPageError(__FILE__, "Immagine non valida.", "poster");
         header("Location: nuovo-drink.php");
         exit;
@@ -74,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $drink = new Drink(
         trim($_POST["name"]),
         trim($_POST["description"]),
-        $posterFilename,
+        $poster,
         $user,
         null,
         $category,

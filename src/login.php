@@ -49,23 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = trim($_POST["email"]) ?? null;
         $username = trim($_POST["username"]) ?? null;
         $password = trim($_POST["password"]) ?? null;
-        $picture = null;
-
-        if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = finfo_file($fileInfo, $_FILES['picture']['tmp_name']);
-            finfo_close($fileInfo);
-            if (in_array($mimeType, $allowedTypes)) {
-                $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
-                $picture = uniqid('user_') . '.' . $extension;
-                $uploadPath = 'uploads/profile_pictures/' . $picture;
-                if (!is_dir('uploads/profile_pictures')) {
-                    mkdir('uploads/profile_pictures', 0777, true);
-                }
-                move_uploaded_file($_FILES['picture']['tmp_name'], $uploadPath);
-            }
-        }
         $existingUser = $userDao->findByUsername($username);
         
         if ($existingUser) {
@@ -76,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['active_form'] = 'register';
         } else {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $user = new User($username, $email, $passwordHash, '', $picture, false);
+            $user = new User($username, $email, $passwordHash, '', null, false);
             $user = $userDao->insert($user);
 
             $_SESSION["user_id"]  = $user->getId();
@@ -95,15 +78,7 @@ if(isset($_SESSION['active_form'])) {
     unset($_SESSION['active_form']);
 }
 
-$template = getTemplate("layout");
-$template = str_replace('<body onload="onLoad()">', '<body class="login-page" onload="onLoad()">', $template);
-$template = str_replace("[title]", "Arte del Cocktail | Accesso e Registrazione", $template);
-$template = str_replace("[description]", "Accedi o registrati per scoprire e creare fantastici cocktail", $template);
-$template = str_replace("[keywords]", "login, registrazione, cocktail, drink, accesso, account", $template);
-$template = str_replace("[navbar]", getNavbar("login", isset($_SESSION["user_id"])), $template);
-$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » Accesso/Registrazione', $template);
-
-$content = getTemplate("login");
+$template = getTemplate("login");
 
 $errorMessages = "";
 if (!empty($errori)) {
@@ -115,18 +90,14 @@ if (!empty($errori)) {
     $errorMessages = str_replace("[messages]", $messages, $errorTemplate);
 }
 
-$content = str_replace("[error_messages]", $errorMessages, $content);
-$content = str_replace("[active_form_class]", ($activeForm === 'register') ? 'active' : '', $content);
-$content = str_replace("[login_username]", htmlspecialchars($formData['login']['username']), $content);
-$content = str_replace("[register_email]", htmlspecialchars($formData['register']['email']), $content);
-$content = str_replace("[register_username]", htmlspecialchars($formData['register']['username']), $content);
-$content = str_replace("[register_pct]", "",  $content);
-$content = str_replace("[reg_btn_tabindex]", ($activeForm === 'register') ? 'tabindex="-1"' : '', $content);
-$content = str_replace("[login_btn_tabindex]", ($activeForm === 'login') ? 'tabindex="-1"' : '', $content);
-
-$template = str_replace('<main>', '<div class="login-main-container">', $template);
-$template = str_replace('</main>', '</div>', $template);
-$template = str_replace("[content]", $content, $template);
+$template = str_replace("[error_messages]", $errorMessages, $template);
+$template = str_replace("[active_form_class]", ($activeForm === 'register') ? 'active' : '', $template);
+$template = str_replace("[login_username]", htmlspecialchars($formData['login']['username']), $template);
+$template = str_replace("[register_email]", htmlspecialchars($formData['register']['email']), $template);
+$template = str_replace("[register_username]", htmlspecialchars($formData['register']['username']), $template);
+$template = str_replace("[register_pct]", "",  $template);
+$template = str_replace("[reg_btn_tabindex]", ($activeForm === 'register') ? 'tabindex="-1"' : '', $template);
+$template = str_replace("[login_btn_tabindex]", ($activeForm === 'login') ? 'tabindex="-1"' : '', $template);
 
 echo $template;
 ?>

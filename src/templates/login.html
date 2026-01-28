@@ -1,68 +1,90 @@
-[error_messages]
-<div id="container" class="container [active_form_class]">
-    <div class="box login">
-        <form action="login.php" method="POST" aria-labelledby="login-heading">
-            <input type="hidden" name="action" value="login">
-            <h2><span lang="en">Log-in</span></h2>
-            <section class="input">
-                <label for="login-username">Username</label>
-                <input id="login-username" type="text" name="username" placeholder="Username" value="[login_username]" required>
-                <img src="img/user.svg" alt="" aria-hidden="true">
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title lang="it">Arte del Cocktail | Accesso e Registrazione</title>
+    <meta name="description" content="Accedi o registrati per scoprire e creare fantastici cocktail">
+    <meta name="keywords" content="login, registrazione, cocktail, drink, accesso, account">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <link rel="stylesheet" href="css/style-lg.css" media="screen and (max-width: 1200px)">
+    <link rel="stylesheet" href="css/style-md.css" media="screen and (max-width: 768px)">
+    <link rel="stylesheet" href="css/style-sm.css" media="screen and (max-width: 480px)">
+    <link rel="stylesheet" href="css/style-print.css" media="print">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <script src="js/script.js" defer></script>
+</head>
+
+<body class="login-page" onload="onLoad()">
+    <main class="login-main-container">
+        [error_messages]
+        <div id="container" class="container [active_form_class]">
+            <section class="box login">
+                <form action="login.php" method="POST">
+                    <input type="hidden" name="action" value="login">
+                    <h1><span lang="en">Log-in</span></h1>
+                    <div class="input">
+                        <label for="login-username">Username</label>
+                        <input id="login-username" type="text" name="username" placeholder="Username"
+                            value="[login_username]" required>
+                        <img src="img/user-1.svg" alt="" aria-hidden="true">
+                    </div>
+                    <div class="input">
+                        <label for="login-password">Password</label>
+                        <input id="login-password" type="password" name="password" placeholder="Password" required>
+                        <img src="img/lock.svg" alt="" aria-hidden="true">
+                    </div>
+                    <button type="submit" class="btn" id="login-submit">Accedi</button>
+                </form>
             </section>
-            <section class="input">
-                <label for="login-password">Password</label>
-                <input id="login-password" type="password" name="password" placeholder="Password" required>
-                <img src="img/lock.svg" alt="" aria-hidden="true">
+            <section class="box register">
+                <form action="login.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" value="register">
+                    <h1>Registrati</h1>
+                    <div class="input">
+                        <label for="reg-email">Email</label>
+                        <input id="reg-email" type="email" name="email" placeholder="Email" value="[register_email]"
+                            required>
+                        <img src="img/mail.svg" alt="" aria-hidden="true">
+                    </div>
+                    <div class="input">
+                        <label for="reg-username">Username</label>
+                        <input id="reg-username" type="text" name="username" placeholder="Username"
+                            value="[register_username]" required>
+                        <img src="img/user-1.svg" alt="" aria-hidden="true">
+                    </div>
+                    <div class="input">
+                        <label for="reg-password">Password</label>
+                        <input id="reg-password" type="password" name="password" placeholder="Password" required>
+                        <img src="img/lock.svg" alt="" aria-hidden="true">
+                    </div>
+                    <button type="submit" class="btn" id="reg-submit">Crea un nuovo profilo</button>
+                </form>
             </section>
-            <button type="submit" class="btn" id="login-submit">Accedi</button>
-        </form>
-    </div>
-    <div class="box register">
-        <form action="login.php" method="POST" enctype="multipart/form-data" aria-labelledby="register-heading">
-            <input type="hidden" name="action" value="register">
-            <h2>Registrati</h2>
-            <section class="input">
-                <label for="reg-email">Email</label>
-                <input id="reg-email" type="email" name="email" placeholder="email" value="[register_email]" required>
-                <img src="img/mail.svg" alt="" aria-hidden="true">
+            <section class="curtain-box">
+                <div class="curtain left">
+                    <h2><span lang="en">Welcome!</span></h2>
+                    <p>Non hai un <span lang="en">account</span>?</p>
+                    <p>Nessun problema, crea un nuovo <span lang="en">account</span> ora!</p>
+                    <button type="button" id="reg-btn" class="btn reg-btn" aria-label="Passa al form di registrazione"
+                        [reg_btn_tabindex]>
+                        Registrati
+                    </button>
+                </div>
+                <div class="curtain right">
+                    <h2><span lang="en">Welcome Back!</span></h2>
+                    <p>Hai già un <span lang="en">account</span>?</p>
+                    <p>Siamo felici di rivederti 😊</p>
+                    <p>Accedi ora al tuo <span lang="en">account</span>:</p>
+                    <button type="button" id="login-btn" class="btn login-btn" aria-label="Passa al form di login"
+                        [login_btn_tabindex]>
+                        Accedi
+                    </button>
+                </div>
             </section>
-            <section class="input">
-                <label for="reg-username">Username</label>
-                <input id="reg-username" type="text" name="username" placeholder="Username" value="[register_username]" required>
-                <img src="img/user.svg" alt="" aria-hidden="true">
-            </section>
-            <section class="input">
-                <p>Inserisci una foto di profilo :</p>
-                <label for="reg-pct">Foto Profilo</label>
-                <input id="reg-pct" type="file" name="picture" accept="image/*" placeholder="Foto Profilo" value="[register_pct]" required>
-                <img src="img/user.svg" alt="" aria-hidden="true">
-            </section>
-            <section class="input">
-                <label for="reg-password">Password</label>
-                <input id="reg-password" type="password" name="password" placeholder="Password" required>
-                <img src="img/lock.svg" alt="" aria-hidden="true">
-            </section>
-            <button type="submit" class="btn" id="reg-submit">Crea un nuovo profilo</button>
-        </form>
-    </div>
-    <div class="curtain-box">
-        <div class="curtain left">
-            <h2><span lang="en">Welcome!</span></h2>
-            <p>Non hai un <span lang="en">account</span>?</p>
-            <p>Nessun problema, crea un nuovo <span lang="en">account</span> ora!</p>
-            <button type="button" id="reg-btn" class="btn reg-btn" aria-label="Passa al form di registrazione" [reg_btn_tabindex]>
-                Registrati
-            </button>
         </div>
-        <div class="curtain right">
-            <h2><span lang="en">Welcome Back!</span></h2>
-            <p>Hai già un <span lang="en">account</span>?</p>
-            <p>Siamo felici di rivederti 😊</p> 
-            <p>Accedi ora al tuo <span lang="en">account</span>:</p>
-            <button type="button" id="login-btn" class="btn login-btn" aria-label="Passa al form di login" [login_btn_tabindex]>
-                Accedi
-            </button>
-        </div>
-    </div> 
-</div>
-<script src="js/script.js"></script>
+    </main>
+</body>
+
+</html>

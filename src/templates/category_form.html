@@ -1,16 +1,18 @@
 <section class="category-form-section">
-    <form action="categorie.php?action=create" method="POST" autocomplete="off">
+    <form enctype="multipart/form-data" action="categorie.php" method="POST" autocomplete="off">
         <fieldset class="flex-fieldset">
             <legend>Nuova categoria</legend>
+
+            <input type="hidden" name="action" value="create">
     
             <div class="form-group input-poster">
                 <label for="poster">Poster</label>
-                <input type="file" id="poster" name="poster" accept="image/jpeg,image/png" required="">
+                <input type="file" id="poster" name="poster" accept="image/jpeg,image/png,image/webp" required="">
                 [error_poster]
             </div>
             <div class="form-group input-name">
                 <label for="name">Nome</label>
-                <input type="text" id="name" name="text" required>
+                <input type="text" id="name" name="name" required>
                 [error_name]
             </div>
             <button type="submit" class="btn" id="btnSubmit">Crea</button>

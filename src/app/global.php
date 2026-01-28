@@ -49,4 +49,35 @@ function getTemplate(string $name): string
     return file_get_contents(dirname(__FILE__, 2) . "/templates/" . $name . ".html");
 }
 
+function handleImageUpload(string $name, string $type): ?string
+{
+    global $_FILES;
+    if (!isset($_FILES[$name]) || $_FILES[$name]["error"] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+
+    $allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($fileInfo, $_FILES[$name]["tmp_name"]);
+    finfo_close($fileInfo);
+
+    if (!in_array($mimeType, $allowedTypes)) {
+        return null;
+    }
+
+
+    $extension = pathinfo($_FILES[$name]["name"], PATHINFO_EXTENSION);
+    $picture = uniqid($type . "_") . "." . $extension;
+    $uploadPath = "uploads/" . $type . "/" . $picture;
+    if (!is_dir("uploads/" . $type)) {
+        mkdir("uploads/" . $type, 0755, true);
+    }
+
+    if (!move_uploaded_file($_FILES[$name]["tmp_name"], $uploadPath)) {
+        return null;
+    }
+
+    return $uploadPath;
+}
+
 ?>

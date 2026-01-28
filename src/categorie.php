@@ -5,10 +5,8 @@ $user = getLoggedUser();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($_POST["action"] === "create") {
-        $uploaddir = "/var/www/uploads/";
-        $posterFilename = basename($_FILES["poster"]["name"]);
-
-        if (!move_uploaded_file($_FILES["poster"]["tmp_name"], $uploaddir . $posterFilename)) {
+        $poster = handleImageUpload("poster", "category");
+        if (!isset($poster)) {
             setPageError(__FILE__, "Immagine non valida.", "poster");
             header("Location: categorie.php");
             exit;
@@ -19,12 +17,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location: categorie.php");
             exit;
         }
+
+        $category = new Category(trim($_POST["name"]), $poster, null, null, null);
+        try {
+            $categoryDao->insert($category);
+        } catch (PDOException $e) {
+            setPageError(__FILE__, $e->getMessage());
+        }
     } else {
         setPageError(__FILE__, "Azione sconosciuta");
-        header("Location: categorie.php");
-        exit;
     }
-
+    header("Location: categorie.php");
+    exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
     header("Location: categorie.php");
     exit;
