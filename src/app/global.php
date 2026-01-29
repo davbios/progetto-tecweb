@@ -4,6 +4,11 @@ require_once dirname(__FILE__) . "/navbar.php";
 require_once dirname(__FILE__, 2) . "/db/db.php";
 session_start();
 
+if (!str_ends_with($_SERVER['REQUEST_URI'], "disclaimer.php") && !isset($_SESSION['disclaimer_accepted'])) {
+    header('Location: disclaimer.php');
+    exit();
+}
+
 function getLoggedUser(): ?User
 {
     global $userDao;

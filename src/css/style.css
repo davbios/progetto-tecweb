@@ -267,7 +267,7 @@ main {
 
 /* PAGINA HOME */
 .intro {
-    padding: 2em 2em 2em 2em;
+    padding-bottom: 2em;
 }
 
 .intro h2 {
