@@ -10,15 +10,27 @@ $template = str_replace("[breadcrumb]", '<span lang="en">Home</span>', $template
 
 $content = getTemplate("home");
 
-$bestDrinksContent = "";
-foreach ($drinkDao->getAllOfficial(10, 0) as $drink) {
+$topRatedContent = "";
+foreach ($drinkDao->getTopRated(3, 0) as $drink) {
     $drinkCard = getTemplate("drink_card");
     $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
     $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
     $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
-    $bestDrinksContent .= $drinkCard;
+    $topRatedContent .= $drinkCard;
 }
-$content = str_replace("[best_drinks]", $bestDrinksContent, $content);
+$content = str_replace("[top_rated]", $topRatedContent, $content);
+
+
+$mostReviewedContent = "";
+foreach ($drinkDao->getMostReviewed(3, 0) as $drink) {
+    $drinkCard = getTemplate("drink_card");
+    $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
+    $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
+    $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
+    $mostReviewedContent .= $drinkCard;
+}
+$content = str_replace("[most_reviewed]", $mostReviewedContent, $content);
+
 
 $template = str_replace("[content]", $content, $template);
 

@@ -67,7 +67,8 @@
     --color-3: #200229;
     --color-4: #111;
     --color-5: #1978d4;
-    --color-error: #c0392b;
+    --color-6: #009dff;
+    --color-error: #ff0000d7;
 
     --border-radius: 0.5em;
 
@@ -82,10 +83,10 @@
 }
 
 a {
-    color: var(--color-1);
+    color: var(--color-2);
 }
 a:visited {
-    color: var(--color-5);
+    color: var(--color-6);
 }
 
 html,
@@ -240,6 +241,7 @@ main {
     color: var(--color-1);
     background-color: var(--color-error);
     border-radius: var(--border-radius);
+    font-weight: 900;
 }
 
 /* PAGINA HOME */
@@ -555,7 +557,7 @@ form .input-error {
     font-size: 0.9em;
     color: var(--color-error);
     margin: 0.5em 0 0 0;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 form fieldset {
@@ -727,12 +729,6 @@ form .btn-submit {
     border: 0;
 }
 
-
-.login-page #error-messages p {
-    font-size: large;
-    font-weight: 900;
-}
-
 .login-page {
     display: flex;
     flex-direction: column;
@@ -836,6 +832,7 @@ form .btn-submit {
     font-weight: 900;
     text-align: center;
 }
+
 
 .login-page .input img {
     position: absolute;

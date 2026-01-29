@@ -54,6 +54,8 @@ interface DrinkDao
     public function search(string $query, int $limit = 10, int $offset = 0): array;
     /** @return Drink[] */
     public function getUserFavourites(int $userId, int $limit = 10, int $offset = 0): array;
+    public function getTopRated(int $limit = 3, int $offset = 0): array;
+    public function getMostReviewed(int $limit = 3, int $offset = 0): array;
     public function addUserFavourite(int $userId, int $drinkId): void;
     public function removeUserFavourite(int $userId, int $drinkId): void;
     public function findById(int $id): ?Drink;
@@ -179,6 +181,45 @@ class PdoDrinkDao implements DrinkDao
         return $drinks;
     }
 
+    public function getTopRated(int $limit = 3, int $offset = 0): array
+    {
+        $stmt = $this->pdo->prepare("SELECT D.id, D.name, D.description, D.poster, D.creator_id, D.category_id, D.created_at, D.updated_at, AVG(R.rate) AS avg_rating, COUNT(R.id) AS review_count
+        FROM drinks D JOIN reviews R ON R.drink_id = D.id
+        GROUP BY D.id
+        ORDER BY avg_rating DESC, review_count DESC 
+        LIMIT :lt OFFSET :os;");
+        $stmt->bindParam("lt", $limit, PDO::PARAM_INT);
+        $stmt->bindParam("os", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $drinks = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $drink = $this->findById($row["id"]);
+            if ($drink !== null) {
+                array_push($drinks, $drink);
+            }
+        }
+        return $drinks;
+    }
+
+    public function getMostReviewed(int $limit = 3, int $offset = 0): array
+    {
+        $stmt = $this->pdo->prepare("SELECT D.id, COUNT(R.id) AS review_count, AVG(R.rate) AS avg_rating
+        FROM drinks D JOIN reviews R ON R.drink_id = D.id
+        GROUP BY D.id
+        ORDER BY review_count DESC, avg_rating DESC 
+        LIMIT :lt OFFSET :os;");
+        $stmt->bindParam("lt", $limit, PDO::PARAM_INT);
+        $stmt->bindParam("os", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $drinks = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $drink = $this->findById($row["id"]);
+            if ($drink !== null) {
+                array_push($drinks, $drink);
+            }
+        }
+        return $drinks;
+    }
     public function search(string $query, int $limit = 10, int $offset = 0): array {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
