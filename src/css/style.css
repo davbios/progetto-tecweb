@@ -297,6 +297,104 @@ main {
     margin: 4em 1em;
 }
 
+/* DISCLAIMER */
+
+.disclaimer .container{
+  width: 100%;
+  max-width: 600px;
+  min-height: auto;
+  padding-top: 5em;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: transparent;
+  color: inherit;
+  border-radius: 20px;
+}
+/*  SEZIONE SPID    */
+.italia-it-button {
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    color: #fff;
+    font-weight: 600;
+    line-height: 0.8em;
+    text-decoration: none;
+    border: 0;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+.italia-it-button-icon,
+.italia-it-button-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.italia-it-button-icon {
+    margin: 0 -0.4em 0 0;
+    padding: 0.6em 0.8em 0.5em;
+    border-right: rgba(255, 255, 255, 0.1) 0.1em solid;
+}
+.italia-it-button-text {
+    padding: 0.95em 1em 0.85em 1em;
+    font-size: 1em;
+    text-align: center;
+}
+
+.italia-it-button-size-m {
+    font-size: 15px;
+    width: 220px;
+}
+.italia-it-button-size-m > span img {
+    width: 29px;
+    height: 29px;
+    border: 0;
+}
+.button-spid {
+    background-color: #06c;
+    color: #fff;
+}
+.button-spid svg {
+    fill: #fff;
+}
+.button-spid:hover {
+    background-color: #036;
+    color: #fff;
+}
+.button-spid:active {
+    background-color: #83beed;
+    color: #036;
+}
+.button-spid[type="submit"] {
+    cursor: pointer;
+    font-family: inherit;
+}
+.button-spid[type="submit"]:hover {
+    background-color: #0056b3;
+}
+/*  SEZIONE SPID    */
+
+ .disclaimer #message{
+  font-size: 1.5em;
+  font-weight: 900;
+  font-variant: small-caps;
+  display: block;
+  padding-bottom: 5%;
+}
+.disclaimer form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.disclaimer #info{
+    padding-top: 15%;
+}
+
+
 /* PAGINA DRINK */
 .row {
     display: flex;

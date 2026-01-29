@@ -1,6 +1,11 @@
 <?php
 require_once dirname(__FILE__) . "/app/global.php";
 
+if (!isset($_SESSION['disclaimer_accepted'])) {
+    header('Location: disclaimer.php');
+    exit();
+}
+
 $template = getTemplate("layout");
 $template = str_replace("[title]", "Home | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Il ricettario social per i tuoi drink. Cerca ispirazione tra il nostro catalogo e le creazioni degli altri utenti.", $template);
