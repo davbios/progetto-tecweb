@@ -234,7 +234,7 @@ main {
     margin-bottom: 2em;
 }
 
-.section-error p {
+.error-wrapper p {
     font-size: 1.1em;
     padding: 1em;
     color: var(--color-1);

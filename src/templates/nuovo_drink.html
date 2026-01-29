@@ -1,61 +1,63 @@
 [error]
-<section class="title">
-    <h1>Nuovo drink</h1>
+<section class="page">
+    <h2>Nuovo drink</h2>
+
+    <form enctype="multipart/form-data" action="nuovo-drink.php" method="POST" class="drink-form" autocomplete="off">
+        <fieldset class="flex-fieldset">
+            <legend>Informazioni generali</legend>
+
+            <div class="form-group input-category">
+                <label for="category">Categoria</label>
+                <select name="category" id="category" required="">
+                    <option disabled="" selected="">Nessuna</option>
+                    [categories]
+                </select>
+                [error_category]
+            </div>
+
+            <div class="form-group input-name">
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" placeholder="es. Gin Tonic" value="[drink_name]" required="">
+                [error_name]
+            </div>
+
+            <div class="form-group input-description">
+                <label for="description">Descrizione</label>
+                <textarea id="description" name="description" placeholder="es. Un grande classico"
+                    required="">[drink_description]</textarea>
+                [error_description]
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Immagine</legend>
+
+            <label for="poster">Carica un file</label>
+            <input type="file" id="poster" name="poster" accept="image/jpeg,image/png,image/webp" value="[drink_poster]"
+                required="">
+            [error_poster]
+        </fieldset>
+
+        <fieldset class="list-fieldset">
+            <legend>Ingredienti</legend>
+
+            <ul id="ingredients-list" class="form-list">
+                [ingredients]
+            </ul>
+
+            <button type="button" class="btn-add" onclick="addIngredient()">Aggiungi</button>
+        </fieldset>
+
+        <fieldset class="list-fieldset">
+            <legend>Preparazione</legend>
+
+            <ol id="steps-list" class="form-list">
+                [steps]
+            </ol>
+
+            <button type="button" class="btn-add" onclick="addStep()">Aggiungi</button>
+        </fieldset>
+
+        <button type="submit" class="btn-submit">Crea</button>
+    </form>
 </section>
-<form enctype="multipart/form-data" action="nuovo-drink.php" method="POST" class="drink-form" autocomplete="off">
-    <fieldset class="flex-fieldset">
-        <legend>Informazioni generali</legend>
-
-        <div class="form-group input-category">
-            <label for="category">Categoria</label>
-            <select name="category" id="category" required="">
-                <option disabled="" selected="">Nessuna</option>
-                [categories]
-            </select>
-            [error_category]
-        </div>
-
-        <div class="form-group input-name">
-            <label for="name">Nome</label>
-            <input type="text" id="name" name="name" placeholder="es. Gin Tonic" value="[drink_name]" required="">
-            [error_name]
-        </div>
-
-        <div class="form-group input-description">
-            <label for="description">Descrizione</label>
-            <textarea id="description" name="description" placeholder="es. Un grande classico"
-                required="">[drink_description]</textarea>
-            [error_description]
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>Immagine</legend>
-
-        <label for="poster">Carica un file</label>
-        <input type="file" id="poster" name="poster" accept="image/jpeg,image/png,image/webp" value="[drink_poster]" required="">
-        [error_poster]
-    </fieldset>
-
-    <fieldset class="list-fieldset">
-        <legend>Ingredienti</legend>
-
-        <ul id="ingredients-list" class="form-list">
-            [ingredients]
-        </ul>
-
-        <button type="button" class="btn-add" onclick="addIngredient()">Aggiungi</button>
-    </fieldset>
-
-    <fieldset class="list-fieldset">
-        <legend>Preparazione</legend>
-
-        <ol id="steps-list" class="form-list">
-            [steps]
-        </ol>
-
-        <button type="button" class="btn-add" onclick="addStep()">Aggiungi</button>
-    </fieldset>
-
-    <button type="submit" class="btn-submit">Crea</button>
-</form>

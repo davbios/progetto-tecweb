@@ -1,75 +1,77 @@
 [error]
-<section class="title">
-    <h1>Modifica Profilo</h1>
+<section class="page">
+    <h2>Modifica Profilo</h2>
+
+    <form action="modifica-profilo.php" method="POST" class="info-form">
+        <fieldset class="flex-fieldset">
+            <legend>Informazioni generali</legend>
+
+            <input type="hidden" name="action" value="info">
+
+            <div class="form-group input-username">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="[username]" required="">
+                [error_username]
+            </div>
+
+            <div class="form-group input-email">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="[email]" required="">
+                [error_email]
+            </div>
+
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" name="bio" required="">[bio]</textarea>
+                [error_bio]
+            </div>
+        </fieldset>
+
+        <button type="submit" class="btn-submit">Salva</button>
+    </form>
+
+
+    <div class="row">
+        <form enctype="multipart/form-data" action="modifica-profilo.php" method="POST" class="profile-form">
+            <fieldset>
+                <legend>Foto profilo</legend>
+
+                <input type="hidden" name="action" value="picture">
+
+                <label for="picture">Carica un file</label>
+                <input type="file" id="picture" name="picture" accept="image/jpeg,image/png,image/webp"
+                    value="[picture]" required="">
+                [error_picture]
+            </fieldset>
+
+            <button type="submit" class="btn-submit">Salva</button>
+        </form>
+        <form enctype="multipart/form-data" action="modifica-profilo.php" method="POST" class="password-form">
+            <fieldset class="info-fieldset">
+                <legend>Password</legend>
+
+                <input type="hidden" name="action" value="password">
+
+                <div class="form-group">
+                    <label for="oldpassword">Vecchia password</label>
+                    <input type="password" id="oldpassword" name="oldpassword" required="">
+                    [error_oldpassword]
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Nuova password</label>
+                    <input type="password" id="password" name="password" required="">
+                    [error_password]
+                </div>
+
+                <div class="form-group">
+                    <label for="repassword">Ripeti nuova password</label>
+                    <input type="password" id="repassword" name="repassword" required="">
+                    [error_repassword]
+                </div>
+            </fieldset>
+
+            <button type="submit" class="btn-submit">Salva</button>
+        </form>
+    </div>
 </section>
-<form action="modifica-profilo.php" method="POST" class="info-form">
-    <fieldset class="flex-fieldset">
-        <legend>Informazioni generali</legend>
-
-        <input type="hidden" name="action" value="info">
-
-        <div class="form-group input-username">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" value="[username]" required="">
-            [error_username]
-        </div>
-
-        <div class="form-group input-email">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="[email]" required="">
-            [error_email]
-        </div>
-
-        <div class="form-group">
-            <label for="bio">Bio</label>
-            <textarea id="bio" name="bio" required="">[bio]</textarea>
-            [error_bio]
-        </div>
-    </fieldset>
-
-    <button type="submit" class="btn-submit">Salva</button>
-</form>
-
-
-<div class="row">
-    <form enctype="multipart/form-data" action="modifica-profilo.php" method="POST" class="profile-form">
-        <fieldset>
-            <legend>Foto profilo</legend>
-
-            <input type="hidden" name="action" value="picture">
-
-            <label for="picture">Carica un file</label>
-            <input type="file" id="picture" name="picture" accept="image/jpeg,image/png,image/webp" value="[picture]" required="">
-            [error_picture]
-        </fieldset>
-
-        <button type="submit" class="btn-submit">Salva</button>
-    </form>
-    <form enctype="multipart/form-data" action="modifica-profilo.php" method="POST" class="password-form">
-        <fieldset class="info-fieldset">
-            <legend>Password</legend>
-
-            <input type="hidden" name="action" value="password">
-
-            <div class="form-group">
-                <label for="oldpassword">Vecchia password</label>
-                <input type="password" id="oldpassword" name="oldpassword" required="">
-                [error_oldpassword]
-            </div>
-
-            <div class="form-group">
-                <label for="password">Nuova password</label>
-                <input type="password" id="password" name="password" required="">
-                [error_password]
-            </div>
-
-            <div class="form-group">
-                <label for="repassword">Ripeti nuova password</label>
-                <input type="password" id="repassword" name="repassword" required="">
-                [error_repassword]
-            </div>
-        </fieldset>
-
-        <button type="submit" class="btn-submit">Salva</button>
-    </form>
-</div>

@@ -18,53 +18,65 @@
 
 <body class="login-page" onload="onLoad()">
     <main class="login-main-container">
-        [error_messages]
         <div id="container" class="container [active_form_class]">
             <section class="box login">
                 <form action="login.php" method="POST">
                     <input type="hidden" name="action" value="login">
-                    <h1><span lang="en">Log-in</span></h1>
+                    <h1 lang="en">Log-in</h1>
+
+                    [error_login]
+
                     <div class="input">
                         <label for="login-username">Username</label>
                         <input id="login-username" type="text" name="username" placeholder="Username"
                             value="[login_username]" required>
                         <img src="img/user-1.svg" alt="" aria-hidden="true">
                     </div>
+
                     <div class="input">
                         <label for="login-password">Password</label>
                         <input id="login-password" type="password" name="password" placeholder="Password" required>
                         <img src="img/lock.svg" alt="" aria-hidden="true">
                     </div>
+
                     <button type="submit" class="btn" id="login-submit">Accedi</button>
                 </form>
             </section>
             <section class="box register">
                 <form action="login.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="register">
+
                     <h1>Registrati</h1>
+
                     <div class="input">
                         <label for="reg-email">Email</label>
                         <input id="reg-email" type="email" name="email" placeholder="Email" value="[register_email]"
                             required>
                         <img src="img/mail.svg" alt="" aria-hidden="true">
+                        [error_register_email]
                     </div>
+
                     <div class="input">
                         <label for="reg-username">Username</label>
                         <input id="reg-username" type="text" name="username" placeholder="Username"
                             value="[register_username]" required>
                         <img src="img/user-1.svg" alt="" aria-hidden="true">
+                        [error_register_username]
                     </div>
+
                     <div class="input">
                         <label for="reg-password">Password</label>
                         <input id="reg-password" type="password" name="password" placeholder="Password" required>
                         <img src="img/lock.svg" alt="" aria-hidden="true">
+                        [error_register_password]
                     </div>
+
                     <button type="submit" class="btn" id="reg-submit">Crea un nuovo profilo</button>
                 </form>
             </section>
             <section class="curtain-box">
                 <div class="curtain left">
-                    <h2><span lang="en">Welcome!</span></h2>
+                    <h2 lang="en">Welcome!</h2>
                     <p>Non hai un <span lang="en">account</span>?</p>
                     <p>Nessun problema, crea un nuovo <span lang="en">account</span> ora!</p>
                     <button type="button" id="reg-btn" class="btn reg-btn" aria-label="Passa al form di registrazione"
@@ -73,7 +85,7 @@
                     </button>
                 </div>
                 <div class="curtain right">
-                    <h2><span lang="en">Welcome Back!</span></h2>
+                    <h2 lang="en">Welcome Back!</h2>
                     <p>Hai già un <span lang="en">account</span>?</p>
                     <p>Siamo felici di rivederti 😊</p>
                     <p>Accedi ora al tuo <span lang="en">account</span>:</p>

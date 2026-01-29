@@ -2,7 +2,7 @@
 
 function getNavbar(string $current, bool $userIsLogged): string
 {
-    $content = '<nav class="navbar" aria-label="Menu principale" role="navigation">
+    $content = '<nav class="navbar" aria-label="Menu principale">
             <ul class="main-navbar">';
     $content .= '<li id="homeNav" lang="en"' . ($current === "home" ? ' class="current" >Home' : '><a href="/" lang="en">Home</a>') . '</li>';
     $content .= '<li id="catNav"' . ($current === "categorie" ? ' class="current" >Categorie' : '><a href="/categorie.php">Categorie</a>') . '</li>';
