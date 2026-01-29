@@ -1,3 +1,37 @@
-.category-list, .drink-list {
+.category-list,
+.drink-list {
     grid-template-columns: repeat(2, 1fr);
+}
+
+.navbar {
+    display: block;
+    padding-bottom: 0.5em;
+}
+
+.nav-toggle {
+    display: block;
+    width: calc(100% - 1em);
+    margin: 0.5em;
+    text-align: left;
+    background-image: url("../img/menu.svg");
+    background-repeat: no-repeat;
+    background-position: 0.75em center;
+    padding-left: 2.5em;
+    font-size: 1.2em;
+    color: var(--color-1);
+}
+
+.nav-menus {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.nav-menus.active {
+    display: block;
+}
+
+.nav-menus ul li {
+    display: block;
 }

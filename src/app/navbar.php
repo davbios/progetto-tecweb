@@ -3,6 +3,14 @@
 function getNavbar(string $current, bool $userIsLogged): string
 {
     $content = '<nav class="navbar" aria-label="Menu principale">
+        <button class="nav-toggle"
+                id="nav-toggle" 
+                aria-label="Apri menu"
+                aria-expanded="false"
+                aria-controls="nav-menus" onclick="toggleNavbar(event)">
+            Menu
+        </button>
+        <div id="nav-menus" class="nav-menus">
             <ul class="main-navbar">';
     $content .= '<li id="homeNav" lang="en"' . ($current === "home" ? ' class="current" >Home' : '><a href="/" lang="en">Home</a>') . '</li>';
     $content .= '<li id="catNav"' . ($current === "categorie" ? ' class="current" >Categorie' : '><a href="/categorie.php">Categorie</a>') . '</li>';
@@ -18,8 +26,9 @@ function getNavbar(string $current, bool $userIsLogged): string
     } else {
         $content .= '<li id="loginNav"' . ($current === "login" ? ' class="current" >Login' : '><a href="/login.php">Entra o Registrati</a>') . '</li>';
     }
-    
+
     $content .= '</ul>
-        </nav>';
+        </div>
+    </nav>';
     return $content;
 }

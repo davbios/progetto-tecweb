@@ -85,6 +85,7 @@
 a {
     color: var(--color-2);
 }
+
 a:visited {
     color: var(--color-6);
 }
@@ -119,7 +120,7 @@ header h1 {
     margin: 0;
 }
 
-hr{
+hr {
     margin: 2em 0 2em 0;
 }
 
@@ -130,12 +131,20 @@ main:not(.login-main-container) {
     max-width: 1200px;
     margin: 0 auto;
 }
+
 main:not(.login-main-container) {
     padding-bottom: 2em;
 }
 
 .navbar {
     margin-top: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-menus {
+    flex-basis: 100%;
     display: flex;
 }
 
@@ -174,6 +183,14 @@ main:not(.login-main-container) {
 
 .navbar li.current {
     background-color: var(--color-3);
+}
+
+.nav-toggle {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 #homeNav {
@@ -249,11 +266,11 @@ main {
 }
 
 /* PAGINA HOME */
-.intro{
+.intro {
     padding: 2em 2em 2em 2em;
 }
 
-.intro h2{
+.intro h2 {
     text-align: center;
     font-variant: small-caps;
 }
@@ -299,20 +316,21 @@ main {
 
 /* DISCLAIMER */
 
-.disclaimer .container{
-  width: 100%;
-  max-width: 600px;
-  min-height: auto;
-  padding-top: 5em;
-  margin: auto;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background: transparent;
-  color: inherit;
-  border-radius: 20px;
+.disclaimer .container {
+    width: 100%;
+    max-width: 600px;
+    min-height: auto;
+    padding-top: 5em;
+    margin: auto;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: transparent;
+    color: inherit;
+    border-radius: 20px;
 }
+
 /*  SEZIONE SPID    */
 .italia-it-button {
     display: inline-block;
@@ -327,17 +345,20 @@ main {
     cursor: pointer;
     overflow: hidden;
 }
+
 .italia-it-button-icon,
 .italia-it-button-text {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
+
 .italia-it-button-icon {
     margin: 0 -0.4em 0 0;
     padding: 0.6em 0.8em 0.5em;
     border-right: rgba(255, 255, 255, 0.1) 0.1em solid;
 }
+
 .italia-it-button-text {
     padding: 0.95em 1em 0.85em 1em;
     font-size: 1em;
@@ -348,49 +369,58 @@ main {
     font-size: 15px;
     width: 220px;
 }
-.italia-it-button-size-m > span img {
+
+.italia-it-button-size-m>span img {
     width: 29px;
     height: 29px;
     border: 0;
 }
+
 .button-spid {
     background-color: #06c;
     color: #fff;
 }
+
 .button-spid svg {
     fill: #fff;
 }
+
 .button-spid:hover {
     background-color: #036;
     color: #fff;
 }
+
 .button-spid:active {
     background-color: #83beed;
     color: #036;
 }
+
 .button-spid[type="submit"] {
     cursor: pointer;
     font-family: inherit;
 }
+
 .button-spid[type="submit"]:hover {
     background-color: #0056b3;
 }
+
 /*  SEZIONE SPID    */
 
- .disclaimer #message{
-  font-size: 1.5em;
-  font-weight: 900;
-  font-variant: small-caps;
-  display: block;
-  padding-bottom: 5%;
+.disclaimer #message {
+    font-size: 1.5em;
+    font-weight: 900;
+    font-variant: small-caps;
+    display: block;
+    padding-bottom: 5%;
 }
-.disclaimer form{
+
+.disclaimer form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.disclaimer #info{
+.disclaimer #info {
     padding-top: 15%;
 }
 
@@ -921,7 +951,7 @@ form .btn-submit {
     border: none;
 }
 
-.login-page .input p{
+.login-page .input p {
     font-size: 0.9em;
     font-weight: normal;
     text-align: left;
@@ -1096,7 +1126,7 @@ form .btn-submit {
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .profile-img {
@@ -1156,7 +1186,7 @@ form .btn-submit {
     background: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
 }
 

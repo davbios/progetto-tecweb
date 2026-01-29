@@ -2,6 +2,14 @@
 //  Utilities per pagina di login/registrazione
 //
 
+function toggleNavbar(e) {
+    const toggle = e.target;
+    const targetId = toggle.getAttribute('aria-controls');
+    const menu = document.getElementById(targetId);
+    const isOpen = menu.classList.toggle('active');
+    toggle.setAttribute('aria-expanded', isOpen);
+}
+
 document.addEventListener("DOMContentLoaded", onLoad);
 
 function onLoad() {
