@@ -24,7 +24,7 @@ if (isset($_SESSION[$sessionFormDataKey])) {
 function saveFormDataValue(string $key, string|array $value): void
 {
     global $sessionFormDataKey;
-    $_SESSION[$sessionFormDataKey][$key] = $value;
+    $_SESSION[$sessionFormDataKey][$key] = htmlspecialchars($value);
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
