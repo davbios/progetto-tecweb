@@ -12,7 +12,6 @@ $formData = [
     "username" => $user->username,
     "email" => $user->email,
     "bio" => $user->bio,
-    "picture" => $user->picture,
 ];
 $sessionFormDataKey = "edit_user_form_data";
 if (isset($_SESSION[$sessionFormDataKey])) {

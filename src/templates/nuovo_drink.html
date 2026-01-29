@@ -9,7 +9,7 @@
             <div class="form-group input-category">
                 <label for="category">Categoria</label>
                 <select name="category" id="category" required="">
-                    <option disabled="" selected="">Nessuna</option>
+                    <option disabled="" selected="" value="">Nessuna</option>
                     [categories]
                 </select>
                 [error_category]
@@ -33,8 +33,7 @@
             <legend>Immagine</legend>
 
             <label for="poster">Carica un file</label>
-            <input type="file" id="poster" name="poster" accept="image/jpeg,image/png,image/webp" value="[drink_poster]"
-                required="">
+            <input type="file" id="poster" name="poster" accept="image/jpeg,image/png,image/webp" required="">
             [error_poster]
         </fieldset>
 

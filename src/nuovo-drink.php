@@ -12,7 +12,6 @@ $formData = [
     "category" => "",
     "name" => "",
     "description" => "",
-    "poster" => "",
     "ingredients" => [],
     "steps" => [],
 ];
@@ -28,9 +27,6 @@ function saveFormDataValue(string $key, string|array $value): void
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $uploaddir = "/var/www/uploads/";
-    $posterFilename = basename($_FILES["poster"]["name"]);
-
     // Salva il contenuto del form nella sessione in modo che nel caso ci fossero errori 
     // i valori inseriti dall'utente possono essere recuperati.
     saveFormDataValue("category", $_POST["category"]);
