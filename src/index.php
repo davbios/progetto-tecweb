@@ -20,6 +20,7 @@ foreach ($drinkDao->getTopRated(3, 0) as $drink) {
     $drinkCard = getTemplate("drink_card");
     $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
     $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
+    $drinkCard = str_replace("[avg_rating]", $drink->getAvgRating(), $drinkCard);
     $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
     $topRatedContent .= $drinkCard;
 }
@@ -31,6 +32,7 @@ foreach ($drinkDao->getMostReviewed(3, 0) as $drink) {
     $drinkCard = getTemplate("drink_card");
     $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
     $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
+    $drinkCard = str_replace("[avg_rating]", $drink->getAvgRating(), $drinkCard);
     $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
     $mostReviewedContent .= $drinkCard;
 }

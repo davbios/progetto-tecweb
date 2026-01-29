@@ -7,4 +7,4 @@ if (isset($_SESSION["user_id"])) {
     unset($_SESSION["is_admin"]);
 }
 
-header("Location: /");
+header("Location: index.php");

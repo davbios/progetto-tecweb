@@ -54,7 +54,9 @@ interface DrinkDao
     public function search(string $query, int $limit = 10, int $offset = 0): array;
     /** @return Drink[] */
     public function getUserFavourites(int $userId, int $limit = 10, int $offset = 0): array;
+    /** @return Drink[] */
     public function getTopRated(int $limit = 3, int $offset = 0): array;
+    /** @return Drink[] */
     public function getMostReviewed(int $limit = 3, int $offset = 0): array;
     public function addUserFavourite(int $userId, int $drinkId): void;
     public function removeUserFavourite(int $userId, int $drinkId): void;
@@ -114,7 +116,7 @@ class PdoDrinkDao implements DrinkDao
         U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
-        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
+        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
@@ -140,7 +142,7 @@ class PdoDrinkDao implements DrinkDao
         U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
-        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
+        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
@@ -165,7 +167,7 @@ class PdoDrinkDao implements DrinkDao
         U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
-        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
+        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
@@ -181,6 +183,7 @@ class PdoDrinkDao implements DrinkDao
         return $drinks;
     }
 
+    /** @return Drink[] */
     public function getTopRated(int $limit = 3, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id, D.name, D.description, D.poster, D.creator_id, D.category_id, D.created_at, D.updated_at, AVG(R.rate) AS avg_rating, COUNT(R.id) AS review_count
@@ -201,6 +204,7 @@ class PdoDrinkDao implements DrinkDao
         return $drinks;
     }
 
+    /** @return Drink[] */
     public function getMostReviewed(int $limit = 3, int $offset = 0): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id, COUNT(R.id) AS review_count, AVG(R.rate) AS avg_rating
@@ -220,7 +224,8 @@ class PdoDrinkDao implements DrinkDao
         }
         return $drinks;
     }
-    public function search(string $query, int $limit = 10, int $offset = 0): array {
+    public function search(string $query, int $limit = 10, int $offset = 0): array
+    {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
         D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
@@ -228,7 +233,7 @@ class PdoDrinkDao implements DrinkDao
         U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
-        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
+        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
@@ -255,7 +260,7 @@ class PdoDrinkDao implements DrinkDao
         U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
-        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating 
+        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating 
         FROM users_fav_drinks UD 
         JOIN drinks D ON D.id = UD.drink_id 
         JOIN users U ON U.id = D.creator_id 
@@ -297,7 +302,7 @@ class PdoDrinkDao implements DrinkDao
         U.picture AS creator__picture, U.bio AS creator__bio, 
         U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
         C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
-        (SELECT AVG(rate) FROM reviews WHERE drink_id = D.id) AS avg_rating  
+        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating  
         FROM drinks D 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 

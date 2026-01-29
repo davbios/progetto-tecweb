@@ -96,7 +96,7 @@ $template = str_replace("[title]", $drink->name . " | Arte del Cocktail", $templ
 $template = str_replace("[description]", $drink->description, $template);
 $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
 $template = str_replace("[navbar]", getNavbar("", isset($_SESSION["user_id"])), $template);
-$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » <a href="/esplora.php">Esplora</a> » ' . $drink->name, $template);
+$template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » <a href="esplora.php">Esplora</a> » ' . $drink->name, $template);
 
 $content = getTemplate("drink");
 
@@ -160,7 +160,7 @@ if ($user !== null) {
     $form = getTemplate("review_form");
     $form = str_replace("[username]", $user->username, $form);
     $form = str_replace("[drink_id]", $drink->getId(), $form);
-    $form = str_replace("[user_icon]", "img/user-icon.png", $form);
+    $form = str_replace("[user_icon]", $user->getPicture() ?? "img/user-default-icon.jpg", $form);
     $reviewsContent .= $form;
 }
 
@@ -170,7 +170,8 @@ foreach ($reviewDao->getAllForDrink($drink->getId()) as $review) {
     $reviewCard = str_replace("[text]", $review->text, $reviewCard);
     $reviewCard = str_replace("[username]", $review->getAuthor()->username, $reviewCard);
     $reviewCard = str_replace("[datetime]", $review->getUpdatedAt()->format("d/m/Y - H:i:s"), $reviewCard);
-    $reviewCard = str_replace("[user_icon]", "img/user-icon.png", $reviewCard);
+    $reviewCard = str_replace("[user_icon]", $review->getAuthor()->getPicture() ?? "img/user-default-icon.jpg", $reviewCard);
+    $reviewCard = str_replace("[user_id]", $review->getAuthor()->getId(), $reviewCard);
 
     if (isset($user) && $user->getId() === $review->getAuthor()->getId()) {
         $reviewCard = str_replace("[actions]", '<a href="drink.php?id=' . $drink->getId() . '&action=deleteReview&reviewId=' . $review->getId() . '" class="btn btn-icon btn-danger" id="btnDeleteReview">Elimina</a>', $reviewCard);

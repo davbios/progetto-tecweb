@@ -109,7 +109,7 @@ header {
 }
 
 header h1 {
-    background-image: url("../img/logo-v2.png");
+    background-image: url("../img/logo.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -298,13 +298,17 @@ main {
     font-size: 1.1em;
     padding: 1em;
     border-top-left-radius: 1em;
+    border-top-right-radius: 0;
     border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 0;
 }
 
 .search-section form .search-btn {
     padding: 0.5em 1.5em;
     border-top-right-radius: 1em;
+    border-top-left-radius: 0;
     border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 0;
 }
 
 .empty-result {
@@ -430,7 +434,7 @@ main {
     display: flex;
 }
 
-.btn {
+.btn, a.btn {
     border: none;
     -webkit-border-radius: var(--border-radius);
     -moz-border-radius: var(--border-radius);
@@ -446,11 +450,11 @@ main {
     background-color: var(--color-3);
 }
 
-.btn-danger {
+.btn.btn-danger {
     background-color: var(--color-error);
 }
 
-.btn-warning {
+.btn.btn-warning {
     background-color: var(--star-background);
 }
 
@@ -458,7 +462,7 @@ main {
     cursor: pointer;
 }
 
-.btn-icon {
+.btn-icon, a.btn-icon {
     padding: 0.75em 0.75em 0.75em 2.75em;
     background-repeat: no-repeat;
     background-position: 0.75em center;
@@ -485,6 +489,9 @@ main {
 .drink-image img {
     width: 100%;
     height: auto;
+    -webkit-border-radius: var(--border-radius);
+    -moz-border-radius: var(--border-radius);
+    border-radius: var(--border-radius);
 }
 
 .drink-info {
@@ -492,7 +499,8 @@ main {
     padding: 1.5em;
 }
 
-.drink-info h1 {
+.drink-info h2 {
+    font-size: 2em;
     margin: 0 0 0.75em 0;
 }
 
@@ -611,6 +619,13 @@ main {
     text-decoration: none;
     display: inline-block;
 }
+.review-author {
+    font-weight: 700;
+    text-decoration: none;
+}
+.review-author:hover {
+    text-decoration: underline;
+}
 
 /* DRINK CARD */
 .drink-list {
@@ -623,16 +638,38 @@ main {
 }
 
 .drink-card {
-    background-color: #fff;
-    border: 1px solid var(--color-4);
-    -webkit-border-radius: var(--border-radius);
-    -moz-border-radius: var(--border-radius);
-    border-radius: var(--border-radius);
-    overflow: hidden;
+    margin-bottom: 0.5em;
 }
 
 .drink-card img {
     width: 100%;
+    -webkit-border-radius: var(--border-radius);
+    -moz-border-radius: var(--border-radius);
+    border-radius: var(--border-radius);
+}
+
+.drink-card a:hover {
+    text-decoration: underline;
+}
+
+.drink-card a {
+    margin-top: 0.15em;
+    padding: 0.5em 0.25em;
+    display: flex;
+    text-decoration: none;
+}
+
+.drink-card span {
+    flex-basis: 4em;
+    padding-right: 1.75em;
+    background-image: url(../img/star-full.svg);
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+.drink-card strong {
+    font-size: 1.3em;
+    flex-basis: 9999px;
 }
 
 .category-list {
@@ -1122,19 +1159,15 @@ form .btn-submit {
     display: flex;
     align-items: center;
     gap: 2rem;
-    background: var(--light-color);
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .profile-img {
-    width: 15%;
-    height: 15%;
+    width: 12em;
+    height: 12em;
     border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--primary-color);
 }
 
 .profile-info dl {
@@ -1158,7 +1191,7 @@ form .btn-submit {
     margin-left: 50%;
     display: inline-block;
     background: var(--color-2);
-    color: white;
+    color: var(--color-1);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 5px;
@@ -1171,39 +1204,7 @@ form .btn-submit {
 
 .profile-info a.edit-btn:hover {
     background: var(--color-3);
-    color: white;
     text-decoration: none;
-}
-
-.drink-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-}
-
-.drink-card {
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.drink-card:hover {
-    transform: translateY(-5px);
-}
-
-.drink-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.drink-card h3 {
-    padding: 1rem;
-    margin: 0;
-    font-size: 1.1rem;
 }
 
 .no-content {

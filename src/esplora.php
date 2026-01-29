@@ -37,7 +37,7 @@ if (isset($_GET["q"])) {
     $place = 'Esplora';
 }
 $content = str_replace("[subtitle]", $subtitle, $content);
-$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » ' . $place, $template);
+$template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » ' . $place, $template);
 
 $drinksListContent = '';
 if (count($drinks) > 0) {
@@ -47,6 +47,7 @@ if (count($drinks) > 0) {
         $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
         $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
         $drinkCard = str_replace("[id]", $drink->getId(), $drinkCard);
+        $drinkCard = str_replace("[avg_rating]", $drink->getAvgRating(), $drinkCard);
         $drinksListContent .= $drinkCard;
     }
     $drinksListContent .= '</ul>';

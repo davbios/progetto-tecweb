@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 $user = getLoggedUser();
 
 if (!isset($user)) {
-    header("Location: /");
+    header("Location: index.php");
     exit;
 }
 
@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     unset($_SESSION[$sessionFormDataKey]);
     header("Location: drink.php?id=" . $drink->getId());
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
-    header("Location: /");
+    header("Location: index.php");
     exit;
 }
 
@@ -124,7 +124,7 @@ $template = str_replace("[title]", "Nuovo drink | Arte del Cocktail", $template)
 $template = str_replace("[description]", "Crea un nuovo drink.", $template);
 $template = str_replace("[keywords]", "", $template);
 $template = str_replace("[navbar]", getNavbar("nuovo", true), $template);
-$template = str_replace("[breadcrumb]", '<a href="/" lang="en">Home</a> » Nuovo drink', $template);
+$template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » Nuovo drink', $template);
 
 $content = getTemplate("nuovo_drink");
 
