@@ -67,6 +67,7 @@ if ($userDrinks && count($userDrinks) > 0) {
     $creationsHtml = '<p class="no-content">Nessuna creazione ancora pubblicata.</p>';
 }
 $content = str_replace('[creations_list]', $creationsHtml, $content);
+$content = str_replace('[creations_pronom]', $isOwnProfile ? 'mie' : 'sue', $content);
 
 $template = str_replace("[content]", $content, $template);
 
