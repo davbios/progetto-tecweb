@@ -435,7 +435,7 @@ main {
     text-align: left;
 }
 
-.review-body time {
+.review-body .review-dt {
     font-size: 0.85em;
     display: block;
 }
