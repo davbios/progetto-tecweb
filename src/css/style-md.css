@@ -35,3 +35,156 @@
 .nav-menus ul li {
     display: block;
 }
+
+
+.login-page {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-page .container {
+
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    min-height: 500px;
+    background-color: var(--color-2);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-page .curtain-box {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-3);
+}
+
+.login-page .curtain-box::before {
+    display: none;
+}
+
+.login-page .curtain {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    transition: none;
+}
+
+.login-page .curtain .btn {
+    width: 80%;
+    max-width: 250px;
+    margin: 0.5rem auto;
+    padding: 0.75rem;
+    background-color: transparent;
+    border: 2px solid var(--color-1);
+    border-radius: var(--border-radius);
+    color: var(--color-1);
+    font-weight: 600;
+    cursor: pointer;    
+}
+
+.login-page .curtain .btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.login-page .box {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: none;
+    padding: 2rem 1.5rem;
+    background-color: var(--color-2);
+}
+
+.login-page .box.login {
+    display: flex;
+}
+
+.login-page.register-active .box.login {
+    display: none;
+}
+
+.login-page.register-active .box.register {
+    display: flex;
+}
+
+.login-page .container h1 {
+    font-size: 2em;
+    margin-bottom: 1.5rem;
+    color: var(--color-1);
+    text-align: center;
+}
+
+.login-page .input {
+    margin: 1rem 0;
+    position: relative;
+}
+
+.login-page .input input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border-radius: var(--border-radius);
+    border: 2px solid transparent;
+    font-size: 1em;
+}
+
+.login-page .input input:focus {
+    border-color: var(--color-3);
+    outline: none;
+}
+
+.login-page .input img {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+.login-page .btn[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    background-color: var(--color-3);
+    color: var(--color-1);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-page .btn[type="submit"]:hover {
+    background-color: #0d1b36;
+}
+
+.login-page .curtain.left {
+    display: flex;
+}
+
+.login-page .curtain.right {
+    display: none;
+}
+
+.login-page .container.active .curtain.left {
+    display: none;
+}
+
+.login-page .container.active .curtain.right {
+    display: flex;
+}

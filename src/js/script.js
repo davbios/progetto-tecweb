@@ -1,3 +1,4 @@
+
 // 
 //  Utilities per pagina di login/registrazione
 //
@@ -10,7 +11,33 @@ function toggleNavbar(e) {
     toggle.setAttribute('aria-expanded', isOpen);
 }
 
-document.addEventListener("DOMContentLoaded", onLoad);
+function showLoginForm() {
+    document.querySelector('.box.login').style.display = 'flex';
+    document.querySelector('.box.register').style.display = 'none';
+    document.getElementById('container').classList.remove('active');
+    document.body.classList.remove('register-active');
+    setTimeout(() => {
+        const loginInput = document.getElementById('login-username');
+        if (loginInput) {
+            loginInput.focus();
+        }
+    }, 100);
+    Tab_Index();
+}
+
+function showRegisterForm() {
+    document.querySelector('.box.login').style.display = 'none';
+    document.querySelector('.box.register').style.display = 'flex';
+    document.getElementById('container').classList.add('active');
+    document.body.classList.add('register-active');
+    setTimeout(() => {
+        const registerInput = document.getElementById('reg-email');
+        if (registerInput) {
+            registerInput.focus();
+        }
+    }, 100);
+    Tab_Index();
+}
 
 function onLoad() {
     const container = document.getElementById('container');
@@ -21,7 +48,6 @@ function onLoad() {
         const loginUsername = document.getElementById('login-username');
         const loginPassword = document.getElementById('login-password');
         const loginSubmit = document.getElementById('login-submit');
-
         const regEmail = document.getElementById('reg-email');
         const regUsername = document.getElementById('reg-username');
         const regPassword = document.getElementById('reg-password');
@@ -37,11 +63,9 @@ function onLoad() {
                 { element: regSubmit, tabIndex: 0 },
                 { element: regbtn, tabIndex: -1 }
             ];
-
             elements.forEach(({ element, tabIndex }) => {
                 if (element) element.tabIndex = tabIndex;
             });
-
             if (loginbtn) {
                 loginbtn.tabIndex = 0;
                 loginbtn.disabled = false;
@@ -185,6 +209,8 @@ function onLoad() {
         }
     });
 }
+
+
 
 // 
 // Utilities per form nuovo drink

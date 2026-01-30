@@ -5,3 +5,21 @@
 .category-card, .drink-card {
     margin: 1em 0;
 }
+
+.login-page .container {
+    border-radius: 15px;
+}
+
+.login-page .box,
+.login-page .curtain {
+    padding: 1.25rem 1rem;
+}
+
+.login-page .container h1 {
+    font-size: 1.8em;
+}
+
+.login-page .curtain .btn {
+    width: 90%;
+    padding: 0.6rem;
+}
