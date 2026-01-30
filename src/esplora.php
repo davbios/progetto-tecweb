@@ -17,22 +17,23 @@ if ($page < 1) {
     $page = 1;
 }
 
-$drinks = [];
-$drinksPerPage = 21;
+$result = null;
+$drinksPerPage = 9;
+$offset = ($page - 1) * $drinksPerPage;
 
 $place = '';
 $subtitle = '';
 if (isset($_GET["q"])) {
-    $drinks = $drinkDao->search($_GET["q"], $drinksPerPage, $page - 1);
+    $result = $drinkDao->searchAndCount($_GET["q"], $drinksPerPage, $offset);
     $subtitle = 'Ricerca per "' . $_GET["q"] . '"';
     $place = 'Ricerca';
 } elseif (isset($_GET["category"]) && is_numeric($_GET["category"])) {
     $category = $categoryDao->findById(intval($_GET["category"]));
-    $drinks = $drinkDao->getAllInCategory($category->getId(), $drinksPerPage, $page - 1);
+    $result = $drinkDao->getAllInCategoryAndCount($category->getId(), $drinksPerPage, $offset);
     $subtitle = '<span lang="en">Drink</span> ' . $category->name;
     $place = '<a href="categorie.php">Categorie</a> » <span lang="en">Drink</span> ' . $category->name;
 } else {
-    $drinks = $drinkDao->getAllOfficial($drinksPerPage, $page - 1);
+    $result = $drinkDao->getAllAndCount($drinksPerPage, $offset);
     $subtitle = 'I nostri <span lang="en">Drink</span>';
     $place = 'Esplora';
 }
@@ -40,9 +41,9 @@ $content = str_replace("[subtitle]", $subtitle, $content);
 $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » ' . $place, $template);
 
 $drinksListContent = '';
-if (count($drinks) > 0) {
+if ($result->count > 0) {
     $drinksListContent = '<ul class="drink-list">';
-    foreach ($drinks as $drink) {
+    foreach ($result->drinks as $drink) {
         $drinkCard = getTemplate("drink_card");
         $drinkCard = str_replace("[drink]", $drink->name, $drinkCard);
         $drinkCard = str_replace("[image]", $drink->poster, $drinkCard);
@@ -51,6 +52,20 @@ if (count($drinks) > 0) {
         $drinksListContent .= $drinkCard;
     }
     $drinksListContent .= '</ul>';
+
+    $totalPages = (int) ceil($result->count / $drinksPerPage);
+    $content = str_replace("[page]", $page, $content);
+    $content = str_replace("[total_pages]", $totalPages, $content);
+    $content = str_replace(
+        "[page_prev]",
+        ($page > 1) ? '<a href="esplora.php?pagina=' . ($page - 1) . '" class="page-prev">Precedente</a>' : '',
+        $content
+    );
+    $content = str_replace(
+        "[page_next]",
+        ($page < $totalPages) ? '<a href="esplora.php?pagina=' . ($page + 1) . '" class="page-next">Successiva</a>' : '',
+        $content
+    );
 } else {
     $drinksListContent = '<p class="empty-result">Nessun risultato</p>';
 }

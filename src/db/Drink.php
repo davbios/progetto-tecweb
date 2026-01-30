@@ -42,18 +42,26 @@ class Drink extends BaseModel
     }
 }
 
+class DrinkList
+{
+    public array $drinks;
+    public int $count;
+
+    public function __construct(array $drinks, int $count)
+    {
+        $this->drinks = $drinks;
+        $this->count = $count;
+    }
+}
+
 interface DrinkDao
 {
+    public function getAllAndCount(int $limit = 10, int $offset = 0): DrinkList;
+    public function getAllInCategoryAndCount(int $categoryId, int $limit = 10, int $offset = 0): DrinkList;
+    public function getAllByUserAndCount(int $userId, int $limit = 10, int $offset = 0): DrinkList;
+    public function searchAndCount(string $query, int $limit = 10, int $offset = 0): DrinkList;
     /** @return Drink[] */
-    public function getAllInCategory(int $categoryId, int $limit = 10, int $offset = 0): array;
-    /** @return Drink[] */
-    public function getAllOfficial(int $limit = 10, int $offset = 0): array;
-    /** @return Drink[] */
-    public function getAllByUser(int $userId, int $limit = 10, int $offset = 0): array;
-    /** @return Drink[] */
-    public function search(string $query, int $limit = 10, int $offset = 0): array;
-    /** @return Drink[] */
-    public function getUserFavourites(int $userId, int $limit = 10, int $offset = 0): array;
+    public function getUserFavourites(int $userId): array;
     /** @return Drink[] */
     public function getTopRated(int $limit = 3, int $offset = 0): array;
     /** @return Drink[] */
@@ -106,8 +114,47 @@ class PdoDrinkDao implements DrinkDao
         );
     }
 
-    /** @return Drink[] */
-    public function getAllInCategory(int $categoryId, int $limit = 10, int $offset = 0): array
+    private function countRows(string $where, array $params = []): int
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM drinks D 
+        JOIN categories C ON D.category_id = C.id 
+        JOIN users U ON D.creator_id = U.id 
+        WHERE " . $where);
+        foreach ($params as $key => $value) {
+            $stmt->bindParam($key, $value, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function getAllAndCount(int $limit = 10, int $offset = 0): DrinkList
+    {
+        $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
+        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
+        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
+        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
+        U.picture AS creator__picture, U.bio AS creator__bio, 
+        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
+        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
+        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating 
+        FROM drinks D 
+        JOIN users U ON U.id = D.creator_id 
+        LEFT JOIN categories C ON C.id = D.category_id 
+        LIMIT :lt OFFSET :os;");
+        $stmt->bindParam("lt", $limit, PDO::PARAM_INT);
+        $stmt->bindParam("os", $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $drinks = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            array_push($drinks, $this->mapRowToDrink($row));
+        }
+
+        $count = $this->countRows("1 = 1");
+
+        return new DrinkList($drinks, $count);
+    }
+
+    public function getAllInCategoryAndCount(int $categoryId, int $limit = 10, int $offset = 0): DrinkList
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
@@ -129,36 +176,13 @@ class PdoDrinkDao implements DrinkDao
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
             array_push($drinks, $this->mapRowToDrink($row));
         }
-        return $drinks;
+
+        $count = $this->countRows("D.category_id = :id", ["id" => $categoryId]);
+
+        return new DrinkList($drinks, $count);
     }
 
-    /** @return Drink[] */
-    public function getAllOfficial(int $limit = 10, int $offset = 0): array
-    {
-        $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
-        D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
-        D.updated_at AS updated_at,  U.id AS creator__id, U.username AS creator__username, U.email AS creator__email, 
-        U.password AS creator__password, U.is_admin AS creator__is_admin, U.created_at AS creator__created_at, 
-        U.picture AS creator__picture, U.bio AS creator__bio, 
-        U.updated_at AS creator__updated_at, C.id AS category__id, C.name AS category__name, C.poster AS category__poster, 
-        C.created_at AS category__created_at, C.updated_at AS category__updated_at, 
-        (SELECT ROUND(AVG(rate), 1) FROM reviews WHERE drink_id = D.id) AS avg_rating 
-        FROM drinks D 
-        JOIN users U ON U.id = D.creator_id 
-        LEFT JOIN categories C ON C.id = D.category_id 
-        WHERE U.is_admin = 1 LIMIT :lt OFFSET :os;");
-        $stmt->bindParam("lt", $limit, PDO::PARAM_INT);
-        $stmt->bindParam("os", $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        $drinks = [];
-        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            array_push($drinks, $this->mapRowToDrink($row));
-        }
-        return $drinks;
-    }
-
-    /** @return Drink[] */
-    public function getAllByUser(int $userId, int $limit = 10, int $offset = 0): array
+    public function getAllByUserAndCount(int $userId, int $limit = 10, int $offset = 0): DrinkList
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
@@ -180,7 +204,10 @@ class PdoDrinkDao implements DrinkDao
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
             array_push($drinks, $this->mapRowToDrink($row));
         }
-        return $drinks;
+
+        $count = $this->countRows("D.creator_id = :id", ["id" => $userId]);
+
+        return new DrinkList($drinks, $count);
     }
 
     /** @return Drink[] */
@@ -224,7 +251,7 @@ class PdoDrinkDao implements DrinkDao
         }
         return $drinks;
     }
-    public function search(string $query, int $limit = 10, int $offset = 0): array
+    public function searchAndCount(string $query, int $limit = 10, int $offset = 0): DrinkList
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
@@ -247,11 +274,20 @@ class PdoDrinkDao implements DrinkDao
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
             array_push($drinks, $this->mapRowToDrink($row));
         }
-        return $drinks;
+
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM drinks D 
+        JOIN categories C ON D.category_id = C.id 
+        JOIN users U ON D.creator_id = U.id 
+        WHERE D.name LIKE :name");
+        $stmt->bindParam("name", $query, PDO::PARAM_STR);
+        $stmt->execute();
+        $count = (int) $stmt->fetchColumn();
+
+        return new DrinkList($drinks, $count);
     }
 
     /** @return Drink[] */
-    public function getUserFavourites(int $userId, int $limit = 10, int $offset = 0): array
+    public function getUserFavourites(int $userId): array
     {
         $stmt = $this->pdo->prepare("SELECT D.id AS id, D.name AS name, D.description AS description, D.poster AS poster, 
         D.creator_id AS creator_id, D.category_id AS category_id, D.created_at AS created_at, 
@@ -265,10 +301,8 @@ class PdoDrinkDao implements DrinkDao
         JOIN drinks D ON D.id = UD.drink_id 
         JOIN users U ON U.id = D.creator_id 
         LEFT JOIN categories C ON C.id = D.category_id 
-        WHERE UD.user_id = :id LIMIT :lt OFFSET :os;");
+        WHERE UD.user_id = :id;");
         $stmt->bindParam("id", $userId, PDO::PARAM_INT);
-        $stmt->bindParam("lt", $limit, PDO::PARAM_INT);
-        $stmt->bindParam("os", $offset, PDO::PARAM_INT);
         $stmt->execute();
         $drinks = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {

@@ -14,7 +14,8 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     $isOwnProfile = false;
 }
 
-$userDrinks = $drinkDao->getAllByUser($profileUser->getId());
+$result = $drinkDao->getAllByUserAndCount($profileUser->getId(), 100, 0);
+$userDrinks = $result->drinks;
 $favoriteDrinks = $drinkDao->getUserFavourites($profileUser->getId());
 
 $template = getTemplate("layout");

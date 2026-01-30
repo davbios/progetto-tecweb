@@ -1,8 +1,10 @@
-.category-list, .drink-list {
+.category-list,
+.drink-list {
     display: block;
 }
 
-.category-card, .drink-card {
+.category-card,
+.drink-card {
     margin: 1em 0;
 }
 
@@ -22,4 +24,68 @@
 .login-page .curtain .btn {
     width: 90%;
     padding: 0.6rem;
+}
+
+.input-category,
+.input-name,
+.input-poster,
+.input-quantity,
+.profile-form,
+.password-form,
+.drink-image,
+.drink-info,
+.drink-ingredients,
+.drink-prep {
+    flex-basis: 100%;
+}
+
+.review-icon {
+    flex-basis: 4em;
+}
+
+.drink-info {
+    padding: 1em 0;
+}
+
+.drink-info .actions {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.drink-info .actions #btnFavourite {
+    flex-basis: 100%;
+    margin: 0 0 0.5em 0;
+}
+
+.form-list .form-row,
+.profile-card,
+.row {
+    flex-wrap: wrap;
+}
+
+.profile-form {
+    margin-right: 0;
+}
+
+.form-list li button {
+    align-self: flex-start;
+    margin: 0.5em 0.5em 0.5em auto;
+}
+
+.input-category,
+.input-poster {
+    padding-right: 0;
+}
+
+.profile-img,
+.profile-info {
+    flex-basis: 100%;
+}
+
+.profile-info dl {
+    margin: 0;
+}
+
+.profile-info a.edit-btn {
+    margin-left: 0;
 }

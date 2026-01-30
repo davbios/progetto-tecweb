@@ -201,10 +201,6 @@ main:not(.login-main-container) {
     background-image: url("../img/archive.svg");
 }
 
-#creationsNav {
-    background-image: url("../img/share-2.svg");
-}
-
 #catNav {
     background-image: url("../img/grid.svg");
 }
@@ -718,6 +714,25 @@ main {
 
 
 /* HOME PAGE */
+.pagination {
+    text-align: center;
+}
+.pagination a {
+    display: inline-block;
+    background-repeat: no-repeat;
+}
+.pagination .page-prev {
+    padding-left: 1.5em;
+    background-image: url('../img/chevron-left.svg');
+    background-position: left center;
+    margin-right: 1em;
+}
+.pagination .page-next {
+    padding-right: 1.5em;
+    background-image: url('../img/chevron-right.svg');
+    background-position: right center;
+    margin-left: 1em;
+}
 
 
 /* NUOVO DRINK */
@@ -1212,4 +1227,8 @@ form .btn-submit {
     padding: 2rem;
     color: var(--text-light);
     font-style: italic;
+}
+
+footer {
+    text-align: center;
 }

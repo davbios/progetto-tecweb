@@ -3,6 +3,10 @@
     grid-template-columns: repeat(2, 1fr);
 }
 
+#breadcrumb {
+    padding: 0 1em;
+}
+
 .navbar {
     display: block;
     padding-bottom: 0.5em;
