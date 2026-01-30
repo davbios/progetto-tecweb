@@ -353,3 +353,52 @@ img {
 .category-form-section {
     display: none;
 }
+
+/* PROFILO */
+
+.profile-card {
+    display: block;
+    padding: 0;
+    border-radius: 0;
+}
+
+.profile-img {
+    width: 5cm;
+    height: 5cm;
+    border-radius: 50%;
+    display: block;
+    margin-bottom: 1cm;
+}
+
+.profile-info dl {
+    display: grid;
+    grid-template-columns: 4cm auto;
+    gap: 0.3cm 1cm;
+    margin: 0;
+}
+
+.profile-info dt {
+    font-weight: bold;
+}
+
+.profile-info dd {
+    margin: 0;
+}
+
+.profile-info a.edit-btn,
+nav,
+footer,
+button {
+    display: none !important;
+}
+#Preferiti ul,
+#Preferiti ol,
+#Creazioni ul,
+#Creazioni ol {
+    padding-left: 1.2cm;
+}
+
+#Preferiti li,
+#Creazioni li {
+    page-break-inside: avoid;
+}
