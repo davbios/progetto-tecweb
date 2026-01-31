@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 $user = getLoggedUser();
 
 if (!isset($user)) {
-    header("Location: login.php");
+    redirectTo("login.php?from=modifica-profilo.php");
     exit;
 }
 
@@ -21,7 +21,7 @@ $formInfo->loadDataFromSession();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $redirectTo = "modifica-profilo.php";
+    $redirectLoc = "modifica-profilo.php";
     if ($_POST["action"] === "info") {
         // Salva il contenuto del form nella sessione in modo che nel caso ci fossero errori 
         // i valori inseriti dall'utente possono essere recuperati.
@@ -29,17 +29,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if (!isset($_POST["username"]) || empty(trim($_POST["username"]))) {
             setPageError(__FILE__, "Nome utente non valido", "username");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
         if (!isset($_POST["email"]) || empty(trim($_POST["email"])) || filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) === false) {
             setPageError(__FILE__, "Email non valida", "email");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
         if (!isset($_POST["bio"]) || empty(trim($_POST["bio"]))) {
             setPageError(__FILE__, "Bio non valida", "bio");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
 
@@ -51,47 +51,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $image = handleImageUpload("picture", "user");
         if (!isset($image)) {
             setPageError(__FILE__, "Immagine non valida.", "picture");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
         $user->picture = $image;
     } elseif ($_POST["action"] === "password") {
         if (!password_verify($_POST["oldpassword"], $user->getPassword())) {
             setPageError(__FILE__, "Password errata", "oldusername");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
 
         if (!isset($_POST["password"]) || empty($_POST["password"])) {
             setPageError(__FILE__, "Password non valida", "username");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
 
         if ($_POST["password"] !== $_POST["repassword"]) {
             setPageError(__FILE__, "Le password non coincidono non valida", "repassword");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
 
         $user->setPassword($_POST["password"]);
     } else {
         setPageError(__FILE__, "Azione sconosciuta");
-        header("Location: " . $redirectTo);
+        redirectTo($redirectLoc);
         exit;
     }
 
     try {
         $userDao->update($user);
-        $redirectTo = "profilo.php";
+        $redirectLoc = "profilo.php";
     } catch (PDOException $e) {
         setPageError(__FILE__, $e->getMessage());
     }
 
-    header("Location: " . $redirectTo);
+    redirectTo($redirectLoc);
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
-    header("Location: index.php");
+    redirectTo("index.php");
     exit;
 }
 

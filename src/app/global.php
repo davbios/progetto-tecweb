@@ -3,10 +3,13 @@
 require_once dirname(__FILE__) . "/navbar.php";
 require_once dirname(__FILE__) . "/form.php";
 require_once dirname(__FILE__, 2) . "/db/db.php";
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!str_ends_with($_SERVER['REQUEST_URI'], "disclaimer.php") && !isset($_SESSION['disclaimer_accepted'])) {
-    header('Location: disclaimer.php');
+    redirectTo("disclaimer.php");
     exit();
 }
 
@@ -84,6 +87,16 @@ function handleImageUpload(string $name, string $type): ?string
     }
 
     return $uploadPath;
+}
+
+function redirectTo(string $location): void
+{
+    header("Location: " . $location);
+}
+
+function redirectNotFound(): void
+{
+    header("Location: 404.html", true, 404);
 }
 
 ?>

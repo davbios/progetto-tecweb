@@ -4,18 +4,18 @@ require_once dirname(__FILE__) . "/app/global.php";
 $user = getLoggedUser();
 
 if (!isset($user)) {
-    header("Location: login.php");
+    redirectTo("login.php");
     exit;
 }
 
 if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
-    header("Location: index.php");
+    redirectTo("index.php");
     exit;
 }
 
 $review = $reviewDao->findById(intval($_GET["id"]));
 if (!isset($review) || $review->getAuthor()->getId() !== $user->getId()) {
-    header("Location: index.php");
+    header("Location: 400.html", true, 400);
     exit;
 }
 
@@ -31,25 +31,25 @@ $form->loadDataFromSession();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $redirectTo = "modifica-recensione.php?id=" . $review->getId();
+    $redirectLoc = "modifica-recensione.php?id=" . $review->getId();
     // Salva il contenuto del form nella sessione in modo che nel caso ci fossero errori 
     // i valori inseriti dall'utente possono essere recuperati.
     $form->saveValues($_POST);
 
     if (!isset($_POST["text"]) || empty(trim($_POST["text"]))) {
         setPageError(__FILE__, "Descrizione non valida", "text");
-        header("Location: " . $redirectTo);
+        redirectTo($redirectLoc);
         exit;
     }
     if (!isset($_POST["rating"]) || !is_numeric($_POST["rating"])) {
         setPageError(__FILE__, "Voto non valido", "rating");
-        header("Location: " . $redirectTo);
+        redirectTo($redirectLoc);
         exit;
     }
     $rating = floatval($_POST["rating"]);
     if ($rating < 0.5 || $rating > 5 || intval($rating * 2) != ($rating * 2.0)) {
         setPageError(__FILE__, "Il voto deve essere compreso tra 0.5 e 5", "rating");
-        header("Location: " . $redirectTo);
+        redirectTo($redirectLoc);
         exit;
     }
 
@@ -58,16 +58,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         $reviewDao->update($review);
-        $redirectTo = "drink.php?id=" . $review->getDrinkId();
+        $redirectLoc = "drink.php?id=" . $review->getDrinkId();
     } catch (PDOException $e) {
         setPageError(__FILE__, $e->getMessage());
     }
 
     $form->clearSession();
-    header("Location: " . $redirectTo);
+    redirectTo($redirectLoc);
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
-    header("Location: index.php");
+    redirectTo("index.php");
     exit;
 }
 

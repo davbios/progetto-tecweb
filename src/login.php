@@ -19,7 +19,7 @@ if (isset($_SESSION['form_data'])) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = $_POST["action"] ?? null;
-    $redirectTo = "login.php";
+    $redirectLoc = "login.php";
 
     if ($action === "login") {
         $errorMessage = "L'username e/o password inseriti sono errati. Si prega di riprovare.";
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             !isset($_POST["password"]) || empty(trim($_POST["password"]))
         ) {
             setPageError(__FILE__, $errorMessage, "login");
-            header("Location: login.php");
+            redirectTo($redirectLoc);
             exit;
         }
 
@@ -41,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = $user->isAdmin();
             if (isset($_GET["from"])) {
-                $redirectTo = $_GET["from"];
+                $redirectLoc = $_GET["from"];
             } else {
-                $redirectTo = "index.php";
+                $redirectLoc = "index.php";
             }
         } else {
             setPageError(__FILE__, $errorMessage, "login");
@@ -54,17 +54,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // registrazione
         if (!isset($_POST["email"]) || empty(trim($_POST["email"]))) {
             setPageError(__FILE__, "Email non valida.", "register_email");
-            header("Location: login.php");
+            redirectTo($redirectLoc);
             exit;
         }
         if (!isset($_POST["username"]) || empty(trim($_POST["username"]))) {
             setPageError(__FILE__, "Username non valido.", "register_username");
-            header("Location: login.php");
+            redirectTo($redirectLoc);
             exit;
         }
         if (!isset($_POST["password"]) || empty(trim($_POST["password"]))) {
             setPageError(__FILE__, "Password non valida.", "register_password");
-            header("Location: login.php");
+            redirectTo($redirectLoc);
             exit;
         }
         $existingUser = $userDao->findByUsername(trim($_POST["username"]));
@@ -83,11 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["user_id"] = $user->getId();
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = false;
-            $redirectTo = "index.php";
+            $redirectLoc = "index.php";
         }
     }
 
-    header("Location: " . $redirectTo);
+    redirectTo($redirectLoc);
     exit;
 }
 

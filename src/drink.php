@@ -2,15 +2,15 @@
 require_once dirname(__FILE__) . "/app/global.php";
 
 if (empty($_GET["id"]) || !is_numeric($_GET["id"])) {
-    header("Location: index.php");
+    redirectTo("index.php");
     exit;
 }
 
 $user = getLoggedUser();
 
 $drink = $drinkDao->findById(intval($_GET["id"]));
-if (empty($drink)) {
-    header("Location: index.php");
+if (!isset($drink)) {
+    redirectNotFound();
     exit;
 }
 
@@ -19,25 +19,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // per qualsiasi azione l'utente deve essere loggato
     if ($user === null) {
-        header("Location: login.php");
+        redirectTo("login.php?from=drink.php?id=" . $drink->getId());
         exit;
     }
 
+    $redirectLoc = "drink.php?id=" . $drink->getId();
     if ($action === "review") {
         if (!isset($_POST["text"]) || empty(trim($_POST["text"]))) {
             setPageError(__FILE__, "Descrizione della recensione non valida");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
         if (!isset($_POST["rating"]) || !is_numeric($_POST["rating"])) {
             setPageError(__FILE__, "Voto della recensione non valido");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
         $rating = floatval($_POST["rating"]);
         if ($rating < 0.5 || $rating > 5 || intval($rating * 2) != ($rating * 2.0)) {
             setPageError(__FILE__, "Il voto della recensione deve essere compreso tra 0.5 e 5");
-            header("Location: " . $redirectTo);
+            redirectTo($redirectLoc);
             exit;
         }
 
@@ -51,21 +52,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         setPageError(__FILE__, "Azione sconosciuta");
     }
-    header("Location: drink.php?id=" . $drink->getId());
+    redirectTo($redirectLoc);
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
-    header("Location: index.php");
+    redirectTo("index.php");
     exit;
 }
 
 if (isset($_GET["action"])) {
     // per qualsiasi azione l'utente deve essere loggato
     if ($user === null) {
-        header("Location: login.php");
+        redirectTo("login.php?from=drink.php?id=" . $drink->getId());
         exit;
     }
 
-    $redirectTo = "drink.php?id=" . $drink->getId();
+    $redirectLoc = "drink.php?id=" . $drink->getId();
     if ($_GET["action"] === "addFavourite") {
         try {
             $drinkDao->addUserFavourite($user->getId(), $drink->getId());
@@ -81,7 +82,7 @@ if (isset($_GET["action"])) {
     } elseif ($_GET["action"] === "delete" && $user->getId() === $drink->getCreator()->getId()) {
         try {
             $drinkDao->delete($drink);
-            $redirectTo = "/";
+            $redirectLoc = "index.php";
         } catch (PDOException $e) {
             setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile eliminare il <span lang="en">drink</span>.');
         }
@@ -100,7 +101,7 @@ if (isset($_GET["action"])) {
         setPageError(__FILE__, "Azione sconosciuta");
     }
 
-    header("Location: " . $redirectTo);
+    redirectTo($redirectLoc);
     exit;
 }
 

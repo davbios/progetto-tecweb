@@ -1,6 +1,15 @@
 <?php
 require_once dirname(__FILE__) . "/app/global.php";
 
+$page = 1;
+if (isset($_GET["pagina"]) && is_numeric($_GET["pagina"])) {
+    $page = intval($_GET["pagina"]);
+}
+if ($page < 1) {
+    redirectTo("esplora.php?pagina=1");
+    exit;
+}
+
 $template = getTemplate("layout");
 $template = str_replace("[title]", "Esplora | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Il ricettario social per i tuoi drink. Cerca ispirazione tra il nostro catalogo e le creazioni degli altri utenti.", $template);
@@ -8,14 +17,6 @@ $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alco
 $template = str_replace("[navbar]", getNavbar(__FILE__, "pagina=" . $page, isset($_SESSION["user_id"])), $template);
 
 $content = getTemplate("esplora");
-
-$page = 1;
-if (isset($_GET["pagina"]) && is_numeric($_GET["pagina"])) {
-    $page = intval($_GET["pagina"]);
-}
-if ($page < 1) {
-    $page = 1;
-}
 
 $result = null;
 $drinksPerPage = 9;

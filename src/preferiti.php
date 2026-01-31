@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 $user = getLoggedUser();
 
 if (!isset($user)) {
-    header("Location: login.php");
+    redirectTo("login.php?from=preferiti.php");
     exit;
 }
 

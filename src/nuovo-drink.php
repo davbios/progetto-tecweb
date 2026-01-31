@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 $user = getLoggedUser();
 
 if (!isset($user)) {
-    header("Location: index.php");
+    redirectTo("login.php?from=nuovo-drink.php");
     exit;
 }
 
@@ -34,34 +34,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     $form->setValue("ingredients", $ingredients);
 
+    $redirectLoc = "nuovo-drink.php";
     $poster = handleImageUpload("poster", "drink");
     if (!isset($poster)) {
         setPageError(__FILE__, "Immagine non valida.", "poster");
-        header("Location: nuovo-drink.php");
+        redirectTo($redirectLoc);
         exit;
     }
 
     if (!isset($_POST["category"]) || !is_numeric($_POST["category"])) {
         setPageError(__FILE__, "Categoria non trovata.", "category");
-        header("Location: nuovo-drink.php");
+        redirectTo($redirectLoc);
         exit;
     }
     $category = $categoryDao->findById($_POST["category"]);
     if ($category === null) {
         setPageError(__FILE__, "Categoria non trovata.", "category");
-        header("Location: nuovo-drink.php");
+        redirectTo($redirectLoc);
         exit;
     }
 
     if (!isset($_POST["name"]) || empty(trim($_POST["name"]))) {
         setPageError(__FILE__, "Il nome non può essere vuoto.", "name");
-        header("Location: nuovo-drink.php");
+        redirectTo($redirectLoc);
         exit;
     }
 
     if (!isset($_POST["description"]) || empty(trim($_POST["description"]))) {
         setPageError(__FILE__, "La descrizione non può essere vuota.", "description");
-        header("Location: nuovo-drink.php");
+        redirectTo($redirectLoc);
         exit;
     }
 
@@ -80,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $drink = $drinkDao->insert($drink);
     } catch (PDOException $e) {
         setPageError(__FILE__, 'Si è verificato un errore nel salvare il <span lang="en">drink</span>: ' . $e->getMessage());
-        header("Location: nuovo-drink.php");
+        redirectTo($redirectLoc);
         exit;
     }
 
@@ -89,14 +90,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stepDao->insert(new Step($key + 1, $step, $drink->getId(), null, null, null));
         } catch (PDOException $e) {
             setPageError(__FILE__, "Si è verificato un errore nel salvare i passaggi della preparazione: " . $e->getMessage());
-            header("Location: nuovo-drink.php");
+            redirectTo($redirectLoc);
             exit;
         }
     }
 
     if (count($_POST["ingredient-names"]) !== count($_POST["ingredient-quantities"])) {
         setPageError(__FILE__, "Il numero di ingredienti e le quantità non coincidono.");
-        header("Location: nuovo-drink.php");
+        redirectTo($redirectLoc);
         exit;
     }
     foreach ($_POST["ingredient-names"] as $key => $name) {
@@ -104,16 +105,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $ingredientDao->insert(new Ingredient($name, intval($_POST["ingredient-quantities"][$key]), $drink->getId(), null, null, null));
         } catch (PDOException $e) {
             setPageError(__FILE__, "Si è verificato un errore nel salvare gli ingredienti: " . $e->getMessage());
-            header("Location: nuovo-drink.php");
+            redirectTo($redirectLoc);
             exit;
         }
     }
 
     $form->clearSession();
-    header("Location: drink.php?id=" . $drink->getId());
+    redirectTo("drink.php?id=" . $drink->getId());
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
-    header("Location: index.php");
+    redirectTo("index.php");
     exit;
 }
 
