@@ -40,7 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["user_id"] = $user->getId();
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = $user->isAdmin();
-            $redirectTo = "index.php";
+            if (isset($_GET["from"])) {
+                $redirectTo = $_GET["from"];
+            } else {
+                $redirectTo = "index.php";
+            }
         } else {
             setPageError(__FILE__, $errorMessage, "login");
             $_SESSION['form_data'] = $formData;
@@ -101,6 +105,7 @@ $template = str_replace("[register_username]", htmlspecialchars($formData['regis
 $template = str_replace("[register_pct]", "", $template);
 $template = str_replace("[reg_btn_tabindex]", ($activeForm === 'register') ? 'tabindex="-1"' : '', $template);
 $template = str_replace("[login_btn_tabindex]", ($activeForm === 'login') ? 'tabindex="-1"' : '', $template);
+$template = str_replace("[form_param]", isset($_GET["from"]) ? '?from='. $_GET["from"] : '', $template);
 
 $template = displayFormError(__FILE__, "login", $template);
 $template = displayFormError(__FILE__, "login_username", $template);

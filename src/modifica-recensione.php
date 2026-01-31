@@ -77,7 +77,7 @@ $template = getTemplate("layout");
 $template = str_replace("[title]", "Modifica Recensione | Arte del Cocktail", $template);
 $template = str_replace("[description]", "", $template);
 $template = str_replace("[keywords]", "", $template);
-$template = str_replace("[navbar]", getNavbar("modifica-recensione", true), $template);
+$template = str_replace("[navbar]", getNavbar(__FILE__, "", true), $template);
 $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » <a href="esplora.php">Esplora</a> » <a href="drink.php?id=' . $drink->getId() . '">' . $drink->name . '</a> » Modifica Recensione', $template);
 
 $content = getTemplate("modifica_recensione");

@@ -5,7 +5,7 @@ $template = getTemplate("layout");
 $template = str_replace("[title]", "Esplora | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Il ricettario social per i tuoi drink. Cerca ispirazione tra il nostro catalogo e le creazioni degli altri utenti.", $template);
 $template = str_replace("[keywords]", "drink, cocktails, alcolici, ricette, alcol, bar, ingredienti, come fare", $template);
-$template = str_replace("[navbar]", getNavbar("esplora", isset($_SESSION["user_id"])), $template);
+$template = str_replace("[navbar]", getNavbar(__FILE__, "pagina=" . $page, isset($_SESSION["user_id"])), $template);
 
 $content = getTemplate("esplora");
 

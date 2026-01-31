@@ -22,7 +22,7 @@ $template = getTemplate("layout");
 $template = str_replace("[title]", $profileUser->getUsername() . " | Profilo | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Profilo di " . $profileUser->getUsername() . ". Scopri le sue creazioni e i cocktail preferiti.", $template);
 $template = str_replace("[keywords]", "profilo, " . $profileUser->getUsername() . ", cocktail, drink, utente", $template);
-$template = str_replace("[navbar]", getNavbar($isOwnProfile ? "profilo" : "profilo_altro", true), $template);
+$template = str_replace("[navbar]", getNavbar(__FILE__, $isOwnProfile ? '' : "altro", true), $template);
 $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » ' . "Profilo", $template);
 
 $content = getTemplate("profilo");

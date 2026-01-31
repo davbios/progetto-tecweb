@@ -99,7 +99,7 @@ $template = getTemplate("layout");
 $template = str_replace("[title]", "Modifica Profilo | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Modifica il tuo profilo.", $template);
 $template = str_replace("[keywords]", "", $template);
-$template = str_replace("[navbar]", getNavbar("modifica-profilo", true), $template);
+$template = str_replace("[navbar]", getNavbar(__FILE__, "", true), $template);
 $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » <a href="profilo.php" lang="en">Profilo</a> » Modifica Profilo', $template);
 
 $content = getTemplate("modifica_profilo");
