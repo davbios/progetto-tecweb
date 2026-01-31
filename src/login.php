@@ -19,7 +19,7 @@ if (isset($_SESSION['form_data'])) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $action = $_POST["action"] ?? null;
-    $redirectLoc = "login.php";
+    $redirectLoc = "login.php?" . $_SERVER['QUERY_STRING'];
 
     if ($action === "login") {
         $errorMessage = "L'username e/o password inseriti sono errati. Si prega di riprovare.";
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["username"] = $user->getUsername();
             $_SESSION["is_admin"] = $user->isAdmin();
             if (isset($_GET["from"])) {
-                $redirectLoc = $_GET["from"];
+                $redirectLoc = urldecode($_GET["from"]);
             } else {
                 $redirectLoc = "index.php";
             }

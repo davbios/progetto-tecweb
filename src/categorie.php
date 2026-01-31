@@ -17,16 +17,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($_POST["action"] === "create") {
         $form->saveValues($_POST);
 
+        $redirectLoc = "categorie.php";
         $poster = handleImageUpload("poster", "category");
         if (!isset($poster)) {
             setPageError(__FILE__, "Immagine non valida.", "poster");
-            header("Location: categorie.php");
+            redirectTo($redirectLoc);
             exit;
         }
 
         if (empty(trim($_POST["name"]))) {
             setPageError(__FILE__, "Nome della categoria non valido.", "name");
-            header("Location: categorie.php");
+            redirectTo($redirectLoc);
             exit;
         }
 
@@ -40,10 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         setPageError(__FILE__, "Azione sconosciuta");
     }
     $form->clearSession();
-    header("Location: categorie.php");
+    redirectTo($redirectLoc);
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
-    header("Location: categorie.php");
+    redirectTo($redirectLoc);
     exit;
 }
 
@@ -53,7 +54,7 @@ if (
 ) {
     $category = $categoryDao->findById(intval($_GET["id"]));
     $categoryDao->delete($category);
-    header("Location: categorie.php");
+    redirectTo($redirectLoc);
     exit;
 }
 

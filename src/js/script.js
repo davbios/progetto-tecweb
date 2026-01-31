@@ -90,9 +90,6 @@ function showRegisterForm() {
 }
 
 function onLoad() {
-    const container = document.getElementById('container');
-    if (!container) return;
-
     const updateChangeInputs = document.getElementsByClassName('update-change');
     for (const el of updateChangeInputs) {
         el.addEventListener('change', (event) => {
@@ -103,6 +100,9 @@ function onLoad() {
             }
         })
     }
+
+    const container = document.getElementById('container');
+    if (!container) return;
 
     const regbtn = document.getElementById('reg-btn');
     const loginbtn = document.getElementById('login-btn');

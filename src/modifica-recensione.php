@@ -9,7 +9,7 @@ if (!isset($user)) {
 }
 
 if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
-    redirectTo("index.php");
+    redirectNotFound();
     exit;
 }
 
@@ -31,25 +31,26 @@ $form->loadDataFromSession();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $redirectLoc = "modifica-recensione.php?id=" . $review->getId();
+    $redirectLoc = "modifica-recensione.php";
+    $redirectParam = ["id" => $review->getId()];
     // Salva il contenuto del form nella sessione in modo che nel caso ci fossero errori 
     // i valori inseriti dall'utente possono essere recuperati.
     $form->saveValues($_POST);
 
     if (!isset($_POST["text"]) || empty(trim($_POST["text"]))) {
         setPageError(__FILE__, "Descrizione non valida", "text");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
     if (!isset($_POST["rating"]) || !is_numeric($_POST["rating"])) {
         setPageError(__FILE__, "Voto non valido", "rating");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
     $rating = floatval($_POST["rating"]);
     if ($rating < 0.5 || $rating > 5 || intval($rating * 2) != ($rating * 2.0)) {
         setPageError(__FILE__, "Il voto deve essere compreso tra 0.5 e 5", "rating");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
 
@@ -58,13 +59,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         $reviewDao->update($review);
-        $redirectLoc = "drink.php?id=" . $review->getDrinkId();
+        $redirectLoc = "drink.php";
+        $redirectParam['id'] = $review->getDrinkId();
     } catch (PDOException $e) {
         setPageError(__FILE__, $e->getMessage());
     }
 
     $form->clearSession();
-    redirectTo($redirectLoc);
+    redirectTo($redirectLoc, $redirectParam);
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
     redirectTo("index.php");

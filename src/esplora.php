@@ -6,7 +6,7 @@ if (isset($_GET["pagina"]) && is_numeric($_GET["pagina"])) {
     $page = intval($_GET["pagina"]);
 }
 if ($page < 1) {
-    redirectTo("esplora.php?pagina=1");
+    redirectTo("esplora.php", ["pagina" => "1"]);
     exit;
 }
 
@@ -30,6 +30,11 @@ if (isset($_GET["q"])) {
     $place = 'Ricerca';
 } elseif (isset($_GET["category"]) && is_numeric($_GET["category"])) {
     $category = $categoryDao->findById(intval($_GET["category"]));
+    if (!isset($category)) {
+        redirectNotFound();
+        exit;
+    }
+
     $result = $drinkDao->getAllInCategoryAndCount($category->getId(), $drinksPerPage, $offset);
     $subtitle = '<span lang="en">Drink</span> ' . $category->name;
     $place = '<a href="categorie.php">Categorie</a> » <span lang="en">Drink</span> ' . $category->name;
@@ -42,6 +47,9 @@ $content = str_replace("[subtitle]", $subtitle, $content);
 $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » ' . $place, $template);
 
 $drinksListContent = '';
+$totalPages = 1;
+$prevPageContent = '';
+$nextPageContent = '';
 if ($result->count > 0) {
     $drinksListContent = '<ul class="drink-list">';
     foreach ($result->drinks as $drink) {
@@ -55,22 +63,28 @@ if ($result->count > 0) {
     $drinksListContent .= '</ul>';
 
     $totalPages = (int) ceil($result->count / $drinksPerPage);
-    $content = str_replace("[page]", $page, $content);
-    $content = str_replace("[total_pages]", $totalPages, $content);
-    $content = str_replace(
-        "[page_prev]",
-        ($page > 1) ? '<a href="esplora.php?pagina=' . ($page - 1) . '" class="page-prev">Precedente</a>' : '',
-        $content
-    );
-    $content = str_replace(
-        "[page_next]",
-        ($page < $totalPages) ? '<a href="esplora.php?pagina=' . ($page + 1) . '" class="page-next">Successiva</a>' : '',
-        $content
-    );
+    if ($page > 1) {
+        $prevPageContent = '<a href="esplora.php?pagina=' . ($page - 1) . '" class="page-prev">Precedente</a>';
+    }
+    if ($page < $totalPages) {
+        $nextPageContent = '<a href="esplora.php?pagina=' . ($page + 1) . '" class="page-next">Successiva</a>';
+    }
 } else {
     $drinksListContent = '<p class="empty-result">Nessun risultato</p>';
 }
+$content = str_replace("[page]", $page, $content);
+$content = str_replace("[total_pages]", $totalPages, $content);
 $content = str_replace("[drinks]", $drinksListContent, $content);
+$content = str_replace(
+    "[page_prev]",
+    $prevPageContent,
+    $content
+);
+$content = str_replace(
+    "[page_next]",
+    $nextPageContent,
+    $content
+);
 
 $template = str_replace("[content]", $content, $template);
 

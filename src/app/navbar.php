@@ -24,7 +24,7 @@ function getNavbar(string $file, string $query, bool $userIsLogged): string
         $content .= '<li id="profileNav"' . ($current === "profilo.php" ? ' class="current" >Profilo' : '><a href="profilo.php">Profilo</a>') . '</li>';
         $content .= '<li id="logoutNav"><a href="logout.php" lang="en">Logout</a></li>';
     } else {
-        $content .= '<li id="loginNav"><a href="login.php?from=' . $current . '?' . $query . '">Entra o Registrati</a></li>';
+        $content .= '<li id="loginNav"><a href="login.php?from=' . $current . '?' . urlencode($query) . '">Entra o Registrati</a></li>';
     }
 
     $content .= '</ul>

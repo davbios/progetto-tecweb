@@ -54,8 +54,13 @@ class Form
     {
         foreach ($this->data as $field => $value) {
             if (isset($input[$field])) {
-                $this->data[$field] = htmlspecialchars($input[$field]);
-                $_SESSION[$this->sessionKey()][$field] = htmlspecialchars($input[$field]);
+                if (is_string($input[$field])) {
+                    $this->data[$field] = htmlspecialchars($input[$field]);
+                    $_SESSION[$this->sessionKey()][$field] = htmlspecialchars($input[$field]);
+                } else {
+                    $this->data[$field] = $input[$field];
+                    $_SESSION[$this->sessionKey()][$field] = $input[$field];
+                }
             }
         }
     }

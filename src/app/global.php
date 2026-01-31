@@ -89,8 +89,15 @@ function handleImageUpload(string $name, string $type): ?string
     return $uploadPath;
 }
 
-function redirectTo(string $location): void
+function redirectTo(string $location, array $params = []): void
 {
+    if (!empty($params)) {
+        $location .= "?";
+        foreach ($params as $key => $value) {
+            $location .= $key . '=' . urlencode($value) . '&';
+        }
+        $location = substr($location, 0, -1);
+    }
     header("Location: " . $location);
 }
 

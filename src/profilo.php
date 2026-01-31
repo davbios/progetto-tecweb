@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 
 $user = getLoggedUser();
 if (!isset($user)) {
-    redirectTo("login.php?from=profilo.php");
+    redirectTo("login.php", ["from" => "profilo.php"]);
     exit;
 }
 
@@ -11,6 +11,10 @@ $profileUser = $user;
 $isOwnProfile = true;
 if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     $profileUser = $userDao->findById(intval($_GET["id"]));
+    if (!isset($profileUser)) {
+        redirectNotFound();
+        exit;
+    }
     $isOwnProfile = false;
 }
 

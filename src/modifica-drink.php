@@ -4,19 +4,32 @@ require_once dirname(__FILE__) . "/app/global.php";
 $user = getLoggedUser();
 
 if (!isset($user)) {
-    redirectTo("login.php", ["from" => "nuovo-drink.php"]);
+    redirectTo("login.php");
     exit;
 }
+
+if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
+    redirectNotFound();
+    exit;
+}
+
+$drink = $drinkDao->findById(intval($_GET["id"]));
+if (!isset($drink)) {
+    redirectNotFound();
+    exit;
+}
+$drinkIngredients = $ingredientDao->getAllForDrink($drink->getId());
+$drinkSteps = $stepDao->getAllForDrink($drink->getId());
 
 $form = new Form(
     __FILE__,
     "",
     [
-        "category" => "",
-        "name" => "",
-        "description" => "",
-        "ingredients" => [],
-        "steps" => [],
+        "category" => $drink->getCategory()->getId(),
+        "name" => $drink->name,
+        "description" => $drink->description,
+        "ingredients" => $drinkIngredients,
+        "steps" => $drinkSteps,
     ]
 );
 $form->loadDataFromSession();
@@ -34,78 +47,80 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     $form->setValue("ingredients", $ingredients);
 
-    $redirectLoc = "nuovo-drink.php";
+    $redirectLoc = "modifica-drink.php";
+    $redirectParam = ["id" => $drink->getId()];
     $poster = handleImageUpload("poster", "drink");
     if (!isset($poster)) {
         setPageError(__FILE__, "Immagine non valida.", "poster");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
 
     if (!isset($_POST["category"]) || !is_numeric($_POST["category"])) {
         setPageError(__FILE__, "Categoria non trovata.", "category");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
     $category = $categoryDao->findById($_POST["category"]);
     if ($category === null) {
         setPageError(__FILE__, "Categoria non trovata.", "category");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
 
     if (!isset($_POST["name"]) || empty(trim($_POST["name"]))) {
         setPageError(__FILE__, "Il nome non può essere vuoto.", "name");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
 
     if (!isset($_POST["description"]) || empty(trim($_POST["description"]))) {
         setPageError(__FILE__, "La descrizione non può essere vuota.", "description");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
 
-    $drink = new Drink(
-        htmlspecialchars(trim($_POST["name"])),
-        htmlspecialchars(trim($_POST["description"])),
-        $poster,
-        $user,
-        null,
-        $category,
-        null,
-        null,
-        null
-    );
+    $drink->name = htmlspecialchars(trim($_POST["name"]));
+    $drink->description = htmlspecialchars(trim($_POST["description"]));
+    $drink->poster = $poster;
+    $drink->category = $category;
     try {
-        $drink = $drinkDao->insert($drink);
+        $drinkDao->update($drink);
     } catch (PDOException $e) {
         setPageError(__FILE__, 'Si è verificato un errore nel salvare il <span lang="en">drink</span>: ' . $e->getMessage());
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
     }
 
+    // Per semplicita' nell'aggiornamento del link i passi di preparazione e gli ingredienti vengono e eliminati e ricreati
+
+    foreach ($drinkSteps as $step) {
+        $stepDao->delete($step);
+    }
     foreach ($_POST["steps"] as $key => $step) {
         try {
             $stepDao->insert(new Step($key + 1, $step, $drink->getId(), null, null, null));
         } catch (PDOException $e) {
             setPageError(__FILE__, "Si è verificato un errore nel salvare i passaggi della preparazione: " . $e->getMessage());
-            redirectTo($redirectLoc);
+            redirectTo($redirectLoc, $redirectParam);
             exit;
         }
     }
 
     if (count($_POST["ingredient-names"]) !== count($_POST["ingredient-quantities"])) {
         setPageError(__FILE__, "Il numero di ingredienti e le quantità non coincidono.");
-        redirectTo($redirectLoc);
+        redirectTo($redirectLoc, $redirectParam);
         exit;
+    }
+    foreach ($drinkIngredients as $ingredient) {
+        $ingredientDao->delete($ingredient);
     }
     foreach ($_POST["ingredient-names"] as $key => $name) {
         try {
             $ingredientDao->insert(new Ingredient($name, $_POST["ingredient-quantities"][$key], $drink->getId(), null, null, null));
         } catch (PDOException $e) {
             setPageError(__FILE__, "Si è verificato un errore nel salvare gli ingredienti: " . $e->getMessage());
-            redirectTo($redirectLoc);
+            redirectTo($redirectLoc, $redirectParam);
             exit;
         }
     }
@@ -119,17 +134,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 $template = getTemplate("layout");
-$template = str_replace("[title]", "Nuovo drink | Arte del Cocktail", $template);
-$template = str_replace("[description]", "Crea un nuovo drink.", $template);
+$template = str_replace("[title]", "Modifica drink | Arte del Cocktail", $template);
+$template = str_replace("[description]", "Modifica il drink " . $drink->name . ".", $template);
 $template = str_replace("[keywords]", "", $template);
-$template = str_replace("[navbar]", getNavbar(__FILE__, "", true), $template);
-$template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » Nuovo drink', $template);
+$template = str_replace("[navbar]", getNavbar(__FILE__, "id=" . $drink->getId(), true), $template);
+$template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » <a href="esplora.php">Esplora</a> » <a href="drink.php?id=' . $drink->getId() . '">' . $drink->name . '</a> » Modifica <span class="en">drink</span>', $template);
 
 $content = getTemplate("nuovo_drink");
-$content = str_replace("[page_title]", 'Nuovo <span lang="en">drink</span>', $content);
-$content = str_replace("[cancel_link]", 'index.php', $content);
-$content = str_replace("[submit_text]", 'Crea', $content);
-$content = str_replace("[form_url]", "nuovo-drink.php", $content);
+$content = str_replace("[page_title]", 'Modifica <span lang="en">drink</span>', $content);
+$content = str_replace("[cancel_link]", 'drink.php?id=' . $drink->getId(), $content);
+$content = str_replace("[submit_text]", 'Salva', $content);
+$content = str_replace("[form_url]", "modifica-drink.php?id=" . $drink->getId(), $content);
 
 $error = getPageError(__FILE__);
 $content = str_replace(
@@ -151,32 +166,21 @@ foreach ($categories as $category) {
 }
 $content = str_replace("[categories]", $categoriesContent, $content);
 
-if (empty($form->getValue("ingredients"))) {
-    $form->setValue("ingredients", [
-        [
-            "quantity" => "",
-            "name" => "",
-        ]
-    ]);
-}
 $ingredientsListContent = "";
-foreach ($form->getValue("ingredients") as $id => $ingredient) {
+foreach ($drinkIngredients as $ingredient) {
     $ingredientContent = getTemplate("drink_form_ingredient");
-    $ingredientContent = str_replace("[id]", $id, $ingredientContent);
-    $ingredientContent = str_replace("[quantity]", $ingredient["quantity"], $ingredientContent);
-    $ingredientContent = str_replace("[name]", $ingredient["name"], $ingredientContent);
+    $ingredientContent = str_replace("[id]", $ingredient->getId(), $ingredientContent);
+    $ingredientContent = str_replace("[quantity]", $ingredient->quantity, $ingredientContent);
+    $ingredientContent = str_replace("[name]", $ingredient->name, $ingredientContent);
     $ingredientsListContent .= $ingredientContent;
 }
 $content = str_replace("[ingredients]", $ingredientsListContent, $content);
 
-if (empty($form->getValue("steps"))) {
-    $form->setValue("steps", [""]);
-}
 $stepsListContent = "";
-foreach ($form->getValue("steps") as $id => $value) {
+foreach ($drinkSteps as $step) {
     $stepContent = getTemplate("drink_form_step");
-    $stepContent = str_replace("[id]", $id, $stepContent);
-    $stepContent = str_replace("[value]", $value, $stepContent);
+    $stepContent = str_replace("[id]", $step->getId(), $stepContent);
+    $stepContent = str_replace("[value]", $step->description, $stepContent);
     $stepsListContent .= $stepContent;
 }
 $content = str_replace("[steps]", $stepsListContent, $content);

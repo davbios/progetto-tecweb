@@ -8,7 +8,7 @@ class Drink extends BaseModel
     public string $poster;
     private User $creator;
     private ?float $avgRating;
-    private ?Category $category;
+    public ?Category $category;
 
     public function __construct(string $name, string $description, string $poster, User $creator, ?float $avgRating, ?Category $category, ?int $id, ?DateTime $created_at, ?DateTime $updated_at)
     {

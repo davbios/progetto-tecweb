@@ -2,7 +2,7 @@
 <section class="page">
     <h2>[page_title]</h2>
 
-    <form enctype="multipart/form-data" action="nuovo-drink.php" method="POST" class="drink-form" autocomplete="off">
+    <form enctype="multipart/form-data" action="[form_url]" method="POST" class="drink-form" autocomplete="off">
         <fieldset class="flex-fieldset">
             <legend>Informazioni generali</legend>
 
@@ -59,6 +59,7 @@
             <button type="button" class="btn-add" onclick="addStep()">Aggiungi</button>
         </fieldset>
 
-        <button type="submit" class="btn-submit">Crea</button>
+        <a href="[cancel_link]" class="btn btn-cancel">Annulla</a>
+        <button type="submit" class="btn-submit">[submit_text]</button>
     </form>
 </section>

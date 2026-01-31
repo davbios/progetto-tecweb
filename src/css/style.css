@@ -259,7 +259,6 @@ main {
     color: var(--color-1);
     background-color: var(--color-error);
     border-radius: var(--border-radius);
-    font-weight: 900;
 }
 
 /* PAGINA HOME */
@@ -483,6 +482,7 @@ a.btn-icon {
     height: 20em;
     padding: 1em;
     text-align: center;
+    overflow: hidden;
 }
 
 .drink-image img {
@@ -618,6 +618,7 @@ a.btn-icon {
     padding: 0.4em 0.7em 0.4em 2.5em;
     display: inline-block;
 }
+
 .review-actions #btnDeleteReview {
     margin-right: 0.5em;
 }
@@ -840,7 +841,8 @@ button:hover {
     flex-basis: 100%;
 }
 
-form button {
+form button,
+form .btn {
     color: var(--color-1);
     border: 2px solid var(--color-3);
     -webkit-border-radius: var(--border-radius);
@@ -886,7 +888,8 @@ form button:active {
 }
 
 .list-fieldset .btn-add,
-form .btn-submit {
+form .btn-submit,
+form a.btn-cancel {
     font-size: 1em;
     padding: 0.5em 2em;
     display: inline-block;
