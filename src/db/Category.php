@@ -17,7 +17,7 @@ class Category extends BaseModel
 interface CategoryDao
 {
     /** @return Category[] */
-    public function getAll(int $limit = 10, int $offset = 0): array;
+    public function getAll(): array;
     public function findById(int $id): ?Category;
     public function insert(Category $category): Category;
     public function update(Category $category): Category;
@@ -45,11 +45,9 @@ class PdoCategoryDao implements CategoryDao
     }
 
     /** @return Category[] */
-    public function getAll(int $limit = 10, int $offset = 0): array
+    public function getAll(): array
     {
-        $stmt = $this->pdo->prepare("SELECT id, name, poster, created_at, updated_at FROM categories LIMIT :lmt OFFSET :os;");
-        $stmt->bindParam("lmt", $limit, PDO::PARAM_INT);
-        $stmt->bindParam("os", $offset, PDO::PARAM_INT);
+        $stmt = $this->pdo->prepare("SELECT id, name, poster, created_at, updated_at FROM categories;");
         $stmt->execute();
         $users = [];
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {

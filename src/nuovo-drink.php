@@ -140,7 +140,7 @@ $content = str_replace(
 
 $content = displayFormError(__FILE__, "poster", $content);
 
-$categories = $categoryDao->getAll(100, 0);
+$categories = $categoryDao->getAll();
 $categoriesContent = "";
 foreach ($categories as $category) {
     $categoriesContent .= '<option value="' . $category->getId() . '"';

@@ -74,14 +74,7 @@ if (isset($user) && $user->isAdmin()) {
 }
 $content = str_replace("[create_form]", $formContent, $content);
 
-$page = 1;
-if (isset($_GET["pagina"]) && is_numeric($_GET["pagina"])) {
-    $page = intval($_GET["pagina"]);
-}
-if ($page < 1) {
-    $page = 1;
-}
-$categories = $categoryDao->getAll(21, $page - 1);
+$categories = $categoryDao->getAll();
 $categoriesListContent = "";
 foreach ($categories as $category) {
     $drinkCard = getTemplate("category_card");
