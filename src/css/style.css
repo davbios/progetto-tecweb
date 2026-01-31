@@ -253,6 +253,29 @@ main {
     margin-bottom: 2em;
 }
 
+#backToTop {
+    position: fixed;
+    right: 1.5em;
+    bottom: 1.5em;
+    text-indent: -999em;
+    background-image: url(../img/arrow-up.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 3em;
+    display: none;
+    width: 4em;
+    height: 4em;
+    background-color: var(--color-2);
+    color: var(--color-1);
+    border: 2px solid var(--color-3);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+#backToTop.show {
+    display: inline;
+}
+
 .error-wrapper p {
     font-size: 1.1em;
     padding: 1em;
