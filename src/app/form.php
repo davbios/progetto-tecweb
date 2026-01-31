@@ -16,7 +16,11 @@ class Form
     public function render(string $layout): string
     {
         foreach ($this->data as $field => $value) {
-            $layout = str_replace('[' . $this->prefix . $field . ']', $value, $layout);
+            $compValue = "";
+            if (!is_array($value)) {
+                $compValue = $value;
+            }
+            $layout = str_replace('[' . $this->prefix . $field . ']', $compValue, $layout);
             $layout = displayFormError($this->page, $this->prefix . $field, $layout);
         }
         return $layout;
@@ -38,7 +42,7 @@ class Form
     public function setValue($field, $value): void
     {
         $this->data[$field] = $value;
-        $_SESSION[$this->sessionKey()][$field] = htmlspecialchars($value);
+        $_SESSION[$this->sessionKey()][$field] = $value;
     }
 
     public function getValue($field): mixed

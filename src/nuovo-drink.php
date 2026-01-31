@@ -125,6 +125,7 @@ $template = str_replace("[navbar]", getNavbar("nuovo", true), $template);
 $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » Nuovo drink', $template);
 
 $content = getTemplate("nuovo_drink");
+$content = str_replace("[page_title]", 'Nuovo <span lang="en">drink</span>', $content);
 
 $error = getPageError(__FILE__);
 $content = str_replace(
@@ -145,8 +146,6 @@ foreach ($categories as $category) {
     $categoriesContent .= '>' . $category->name . "</option>\n";
 }
 $content = str_replace("[categories]", $categoriesContent, $content);
-
-$content = $form->render($content);
 
 if (empty($form->getValue("ingredients"))) {
     $form->setValue("ingredients", [
@@ -177,6 +176,8 @@ foreach ($form->getValue("steps") as $id => $value) {
     $stepsListContent .= $stepContent;
 }
 $content = str_replace("[steps]", $stepsListContent, $content);
+
+$content = $form->render($content);
 
 $template = str_replace("[content]", $content, $template);
 
