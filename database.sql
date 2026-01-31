@@ -95,46 +95,46 @@ INSERT INTO users (username, email, bio, picture, password, is_admin) VALUES
 ('party_planner', 'feste@events.com', '', NULL, '$2y$12$0T0GjlFAzcJLy0xBOYQZG.cG1Xj4Ru6UyDSFTOTegAoYkw3vD.J6u', 0);
 
 INSERT INTO categories (name, poster) VALUES 
-('Felici', 'img/categorie/1.png'),
-('Classici', 'img/categorie/2.png'),
-('Arrabbiati', 'img/categorie/3.png'),
-('Playlist', 'img/categorie/4.png'),
-('Festa', 'img/categorie/5.png'),
-('Assurdi', 'img/categorie/6.png');
+('Felici', 'uploads/category/1.png'),
+('Classici', 'uploads/category/2.png'),
+('Arrabbiati', 'uploads/category/3.png'),
+('Playlist', 'uploads/category/4.png'),
+('Festa', 'uploads/category/5.png'),
+('Assurdi', 'uploads/category/6.png');
 
 INSERT INTO drinks (name, description, poster, creator_id, category_id) VALUES
 -- CAT 1: DRINK FELICI (ID 1)
-('Pina Colada', 'Ananas, cocco e rum: un sorso e sei subito in vacanza col sorriso.', 'img/drink/Pina_Colada.png', 11, 1),
-('Aperol Spritz', 'Arancione come il sole al tramonto, porta allegria immediata.', 'img/drink/Aperol_Spritz.png', 10, 1),
-('Tequila Sunrise', 'I colori dell\'alba nel bicchiere per iniziare la serata con ottimismo.', 'img/drink/Tequila_Sunrise.png', 1, 1),
-('Bellini', 'Prosecco e polpa di pesca fresca. Dolce, frizzante e felice.', 'img/drink/Bellini.png', 5, 1),
+('Pina Colada', 'Ananas, cocco e rum: un sorso e sei subito in vacanza col sorriso.', 'uploads/drink/Pina_Colada.png', 11, 1),
+('Aperol Spritz', 'Arancione come il sole al tramonto, porta allegria immediata.', 'uploads/drink/Aperol_Spritz.png', 10, 1),
+('Tequila Sunrise', 'I colori dell\'alba nel bicchiere per iniziare la serata con ottimismo.', 'uploads/drink/Tequila_Sunrise.png', 1, 1),
+('Bellini', 'Prosecco e polpa di pesca fresca. Dolce, frizzante e felice.', 'uploads/drink/Bellini.png', 5, 1),
 
 -- CAT 2: DRINK CLASSICI (ID 2)
-('Martini Dry', 'Agitato, non mescolato. L\'eleganza fatta a bicchiere.', 'img/drink/Martini_Dry.png', 2, 2),
-('Gin Tonic', 'Poche chiacchiere, tanta classe. Il drink che non delude mai.', 'img/drink/Gin_Tonic.png', 1, 2),
-('Negroni', 'Il re dell\'aperitivo italiano: Gin, Vermouth e Campari in parti uguali.', 'img/drink/Negroni.png', 3, 2),
-('Manhattan', 'Whisky e Vermouth rosso, un gusto deciso che attraversa i secoli.', 'img/drink/Manhattan.png', 4, 2),
+('Martini Dry', 'Agitato, non mescolato. L\'eleganza fatta a bicchiere.', 'uploads/drink/Martini_Dry.png', 2, 2),
+('Gin Tonic', 'Poche chiacchiere, tanta classe. Il drink che non delude mai.', 'uploads/drink/Gin_Tonic.png', 1, 2),
+('Negroni', 'Il re dell\'aperitivo italiano: Gin, Vermouth e Campari in parti uguali.', 'uploads/drink/Negroni.png', 3, 2),
+('Manhattan', 'Whisky e Vermouth rosso, un gusto deciso che attraversa i secoli.', 'uploads/drink/Manhattan.png', 4, 2),
 
 -- CAT 3: DRINK ARRABBIATI (ID 3)
-('Angelo Azzurro', 'Gin e Cointreau per una gradazione che non perdona. Fortissimo.', 'img/drink/Angelo_Azzurro.png', 1, 3),
-('Long Island Iced Tea', 'Sembra innocuo tè freddo, ma contiene 4 tipi di alcol diversi. Attento.', 'img/drink/Long_Island_Iced_Tea.png', 5, 3),
-('Assenzio', 'La fata verde che ha fatto impazzire i poeti. Non per deboli di cuore.', 'img/drink/Assenzio.png', 6, 3),
+('Angelo Azzurro', 'Gin e Cointreau per una gradazione che non perdona. Fortissimo.', 'uploads/drink/Angelo_Azzurro.png', 1, 3),
+('Long Island Iced Tea', 'Sembra innocuo tè freddo, ma contiene 4 tipi di alcol diversi. Attento.', 'uploads/drink/Long_Island_Iced_Tea.png', 5, 3),
+('Assenzio', 'La fata verde che ha fatto impazzire i poeti. Non per deboli di cuore.', 'uploads/drink/Assenzio.png', 6, 3),
 
 -- CAT 4: DRINK PLAYLIST (ID 4)
-('Whisky Sour', 'L\'equilibrio perfetto tra dolce e aspro, come un buon pezzo Jazz.', 'img/drink/Whisky_Sour.png', 7, 4),
-('Irish Coffee', 'Caffè corretto Whiskey e panna. Per restare svegli ad ascoltare musica.', 'img/drink/Irish_Coffee.png', 8, 4),
-('Cuba Libre', 'Rum e Cola. Il ritmo dei Caraibi nel tuo bicchiere.', 'img/drink/Cuba_Libre.png', 1, 4),
+('Whisky Sour', 'L\'equilibrio perfetto tra dolce e aspro, come un buon pezzo Jazz.', 'uploads/drink/Whisky_Sour.png', 7, 4),
+('Irish Coffee', 'Caffè corretto Whiskey e panna. Per restare svegli ad ascoltare musica.', 'uploads/drink/Irish_Coffee.png', 8, 4),
+('Cuba Libre', 'Rum e Cola. Il ritmo dei Caraibi nel tuo bicchiere.', 'uploads/drink/Cuba_Libre.png', 1, 4),
 
 -- CAT 5: DRINK FESTA (ID 5)
-('Mojito Cubano', 'Menta pestata e ghiaccio: impossibile non ballare con questo in mano.', 'img/drink/Mojito_Cubano.png', 9, 5),
-('Red Bull Vodka', 'Il carburante della discoteca. Per chi vuole vedere l\'alba.', 'img/drink/Red_Bull_Vodka.png', 2, 5),
-('Shot Tequila e Sale', 'Non si sorseggia, si butta giù. Il via ufficiale a ogni festa.', 'img/drink/Shot_Tequila_e_Sale.png', 12, 5),
-('Caipirinha', 'Lime e zucchero di canna direttamente dal Brasile. Festa assicurata.', 'img/drink/Caipirinha.png', 13, 5),
+('Mojito Cubano', 'Menta pestata e ghiaccio: impossibile non ballare con questo in mano.', 'uploads/drink/Mojito_Cubano.png', 9, 5),
+('Red Bull Vodka', 'Il carburante della discoteca. Per chi vuole vedere l\'alba.', 'uploads/drink/Red_Bull_Vodka.png', 2, 5),
+('Shot Tequila e Sale', 'Non si sorseggia, si butta giù. Il via ufficiale a ogni festa.', 'uploads/drink/Shot_Tequila_e_Sale.png', 12, 5),
+('Caipirinha', 'Lime e zucchero di canna direttamente dal Brasile. Festa assicurata.', 'uploads/drink/Caipirinha.png', 13, 5),
 
 -- CAT 6: DRINK ASSURDI (ID 6)
-('Cervello di Scimmia', 'Un mix di Baileys e sciroppo che crea un effetto visivo... particolare.', 'img/drink/Cervello_di_Scimmia.png', 14, 6),
-('Drink Diego', 'La leggenda narra che nessuno ricordi gli ingredienti il giorno dopo. Un mix segreto e potente.', 'img/drink/Drink_Diego.png', 8, 6),
-('Bloody Mary', 'Succo di pomodoro, tabasco e vodka. Praticamente una zuppa alcolica.', 'img/drink/Bloody_Mary.png', 15, 6);
+('Cervello di Scimmia', 'Un mix di Baileys e sciroppo che crea un effetto visivo... particolare.', 'uploads/drink/Cervello_di_Scimmia.png', 14, 6),
+('Drink Diego', 'La leggenda narra che nessuno ricordi gli ingredienti il giorno dopo. Un mix segreto e potente.', 'uploads/drink/Drink_Diego.png', 8, 6),
+('Bloody Mary', 'Succo di pomodoro, tabasco e vodka. Praticamente una zuppa alcolica.', 'uploads/drink/Bloody_Mary.png', 15, 6);
 
 INSERT INTO reviews (drink_id, user_id, rate, text) VALUES
 -- 1. PINA COLADA
