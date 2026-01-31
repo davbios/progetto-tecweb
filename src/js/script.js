@@ -40,6 +40,17 @@ function showRegisterForm() {
 }
 
 function onLoad() {
+    const updateChangeInputs = document.getElementsByClassName('update-change');
+    for (const el of updateChangeInputs) {
+        el.addEventListener('change', (event) => {
+            const targetName = event.target.getAttribute("name");
+            const errorEl = document.getElementById('errorMessage' + targetName);
+            if (errorEl) {
+                errorEl.style.display = 'none';
+            }
+        })
+    }
+
     const container = document.getElementById('container');
     const regbtn = document.getElementById('reg-btn');
     const loginbtn = document.getElementById('login-btn');

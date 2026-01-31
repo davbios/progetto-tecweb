@@ -24,16 +24,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($action === "review") {
-        if (empty($_POST["text"]) || !is_numeric($_POST["rating"])) {
-            setPageError(__FILE__, 'Recensione non valida.');
-        } else {
-            $rate = intval(floatval($_POST["rating"]) * 2);
-            $review = new Review($_POST["text"], $rate, $user, $drink->getId(), null, null, null);
-            try {
-                $reviewDao->insert($review);
-            } catch (PDOException $e) {
-                setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile creare la recensione.');
-            }
+        if (!isset($_POST["text"]) || empty(trim($_POST["text"]))) {
+            setPageError(__FILE__, "Descrizione della recensione non valida");
+            header("Location: " . $redirectTo);
+            exit;
+        }
+        if (!isset($_POST["rating"]) || !is_numeric($_POST["rating"])) {
+            setPageError(__FILE__, "Voto della recensione non valido");
+            header("Location: " . $redirectTo);
+            exit;
+        }
+        $rating = floatval($_POST["rating"]);
+        if ($rating < 0.5 || $rating > 5 || intval($rating * 2) != ($rating * 2.0)) {
+            setPageError(__FILE__, "Il voto della recensione deve essere compreso tra 0.5 e 5");
+            header("Location: " . $redirectTo);
+            exit;
+        }
+
+        $rate = intval(floatval($_POST["rating"]) * 2);
+        $review = new Review($_POST["text"], $rate, $user, $drink->getId(), null, null, null);
+        try {
+            $reviewDao->insert($review);
+        } catch (PDOException $e) {
+            setPageError(__FILE__, 'Si è verificato un errore: non è stato possibile creare la recensione.');
         }
     } else {
         setPageError(__FILE__, "Azione sconosciuta");
@@ -173,11 +186,16 @@ foreach ($reviewDao->getAllForDrink($drink->getId()) as $review) {
     $reviewCard = str_replace("[user_icon]", $review->getAuthor()->getPicture() ?? "img/user-default-icon.jpg", $reviewCard);
     $reviewCard = str_replace("[user_id]", $review->getAuthor()->getId(), $reviewCard);
 
+    $actionsContent = '';
     if (isset($user) && $user->getId() === $review->getAuthor()->getId()) {
-        $reviewCard = str_replace("[actions]", '<a href="drink.php?id=' . $drink->getId() . '&action=deleteReview&reviewId=' . $review->getId() . '" class="btn btn-icon btn-danger" id="btnDeleteReview">Elimina</a>', $reviewCard);
-    } else {
-        $reviewCard = str_replace("[actions]", "", $reviewCard);
+        $actionsContent = '<div class="review-actions">';
+        $actionsContent .= '<a href="drink.php?id=' . $drink->getId() . '&action=deleteReview&reviewId=' . $review->getId() . '" 
+        class="btn btn-icon btn-danger" id="btnDeleteReview" role="button" aria-label="Elimina questa recensione">Elimina</a>';
+        $actionsContent .= '<a href="modifica-recensione.php?id=' . $review->getId() . '" class="btn btn-icon btn-warning" 
+        id="btnEditReview" role="button" aria-label="Modifica questa recensione">Modifica</a>';
+        $actionsContent .= '</div>';
     }
+    $reviewCard = str_replace("[actions]", $actionsContent, $reviewCard);
     $reviewsContent .= $reviewCard;
 }
 $content = str_replace("[reviews]", $reviewsContent, $content);

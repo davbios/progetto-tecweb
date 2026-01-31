@@ -8,21 +8,16 @@ if (!isset($user)) {
     exit;
 }
 
-$formData = [
-    "username" => $user->username,
-    "email" => $user->email,
-    "bio" => $user->bio,
-];
-$sessionFormDataKey = "edit_user_form_data";
-if (isset($_SESSION[$sessionFormDataKey])) {
-    $formData = $_SESSION[$sessionFormDataKey];
-    unset($_SESSION[$sessionFormDataKey]);
-}
-function saveFormDataValue(string $key, string|array $value): void
-{
-    global $sessionFormDataKey;
-    $_SESSION[$sessionFormDataKey][$key] = htmlspecialchars($value);
-}
+$formInfo = new Form(
+    __FILE__,
+    "",
+    [
+        "username" => $user->username,
+        "email" => $user->email,
+        "bio" => $user->bio,
+    ]
+);
+$formInfo->loadDataFromSession();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -30,60 +25,59 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($_POST["action"] === "info") {
         // Salva il contenuto del form nella sessione in modo che nel caso ci fossero errori 
         // i valori inseriti dall'utente possono essere recuperati.
-        saveFormDataValue("username", $_POST["username"]);
-        saveFormDataValue("email", $_POST["email"]);
-        saveFormDataValue("bio", $_POST["bio"]);
+        $formInfo->saveValues($_POST);
 
-        if (empty(trim($_POST["username"]))) {
+        if (!isset($_POST["username"]) || empty(trim($_POST["username"]))) {
             setPageError(__FILE__, "Nome utente non valido", "username");
-            header("Location: modifica-profilo.php");
+            header("Location: " . $redirectTo);
             exit;
         }
-        if (empty(trim($_POST["email"])) || filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) === false) {
+        if (!isset($_POST["email"]) || empty(trim($_POST["email"])) || filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) === false) {
             setPageError(__FILE__, "Email non valida", "email");
-            header("Location: modifica-profilo.php");
+            header("Location: " . $redirectTo);
             exit;
         }
-        if (empty(trim($_POST["bio"]))) {
+        if (!isset($_POST["bio"]) || empty(trim($_POST["bio"]))) {
             setPageError(__FILE__, "Bio non valida", "bio");
-            header("Location: modifica-profilo.php");
+            header("Location: " . $redirectTo);
             exit;
         }
 
-        $user->username = trim($_POST["username"]);
-        $user->email = $_POST["email"];
-        $user->bio = trim($_POST["bio"]);
+        $user->username = htmlspecialchars(trim($_POST["username"]));
+        $user->email = htmlspecialchars($_POST["email"]);
+        $user->bio = htmlspecialchars(trim($_POST["bio"]));
+        $formInfo->clearSession();
     } elseif ($_POST["action"] === "picture") {
         $image = handleImageUpload("picture", "user");
         if (!isset($image)) {
             setPageError(__FILE__, "Immagine non valida.", "picture");
-            header("Location: modifica-profilo.php");
+            header("Location: " . $redirectTo);
             exit;
         }
         $user->picture = $image;
     } elseif ($_POST["action"] === "password") {
         if (!password_verify($_POST["oldpassword"], $user->getPassword())) {
             setPageError(__FILE__, "Password errata", "oldusername");
-            header("Location: modifica-profilo.php");
+            header("Location: " . $redirectTo);
             exit;
         }
 
-        if (empty($_POST["password"])) {
+        if (!isset($_POST["password"]) || empty($_POST["password"])) {
             setPageError(__FILE__, "Password non valida", "username");
-            header("Location: modifica-profilo.php");
+            header("Location: " . $redirectTo);
             exit;
         }
 
         if ($_POST["password"] !== $_POST["repassword"]) {
             setPageError(__FILE__, "Le password non coincidono non valida", "repassword");
-            header("Location: modifica-profilo.php");
+            header("Location: " . $redirectTo);
             exit;
         }
 
         $user->setPassword($_POST["password"]);
     } else {
         setPageError(__FILE__, "Azione sconosciuta");
-        header("Location: modifica-profilo.php");
+        header("Location: " . $redirectTo);
         exit;
     }
 
@@ -94,7 +88,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         setPageError(__FILE__, $e->getMessage());
     }
 
-    unset($_SESSION[$sessionFormDataKey]);
     header("Location: " . $redirectTo);
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
@@ -120,12 +113,7 @@ $content = str_replace(
 
 $content = displayFormError(__FILE__, "picture", $content);
 
-$content = str_replace("[username]", $formData["username"], $content);
-$content = displayFormError(__FILE__, "username", $content);
-$content = str_replace("[email]", $formData["email"], $content);
-$content = displayFormError(__FILE__, "email", $content);
-$content = str_replace("[bio]", $formData["bio"], $content);
-$content = displayFormError(__FILE__, "bio", $content);
+$content = $formInfo->render($content);
 
 $content = displayFormError(__FILE__, "oldpassword", $content);
 $content = displayFormError(__FILE__, "password", $content);

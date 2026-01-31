@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . "/navbar.php";
+require_once dirname(__FILE__) . "/form.php";
 require_once dirname(__FILE__, 2) . "/db/db.php";
 session_start();
 
@@ -44,7 +45,7 @@ function displayFormError(string $page, string $field, string $template): string
     $error = getPageError($page, $field);
     return str_replace(
         "[error_" . $field . "]",
-        (isset($error) ? '<p role="alert" class="input-error">' . $error . '</p>' : ''),
+        (isset($error) ? '<p role="alert" class="input-error" id="errorMessage' . $field . '">' . $error . '</p>' : ''),
         $template
     );
 }

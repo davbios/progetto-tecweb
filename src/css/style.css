@@ -234,7 +234,8 @@ main:not(.login-main-container) {
     background-image: url("../img/trash.svg");
 }
 
-#btnEdit {
+#btnEdit,
+#btnEditReview {
     background-image: url("../img/edit.svg");
 }
 
@@ -430,7 +431,8 @@ main {
     display: flex;
 }
 
-.btn, a.btn {
+.btn,
+a.btn {
     border: none;
     -webkit-border-radius: var(--border-radius);
     -moz-border-radius: var(--border-radius);
@@ -458,7 +460,8 @@ main {
     cursor: pointer;
 }
 
-.btn-icon, a.btn-icon {
+.btn-icon,
+a.btn-icon {
     padding: 0.75em 0.75em 0.75em 2.75em;
     background-repeat: no-repeat;
     background-position: 0.75em center;
@@ -610,15 +613,20 @@ main {
     width: 10em;
 }
 
-.review-body .btn-danger {
+.review-actions .btn {
     font-size: 0.85em;
-    text-decoration: none;
+    padding: 0.4em 0.7em 0.4em 2.5em;
     display: inline-block;
 }
+.review-actions #btnDeleteReview {
+    margin-right: 0.5em;
+}
+
 .review-author {
     font-weight: 700;
     text-decoration: none;
 }
+
 .review-author:hover {
     text-decoration: underline;
 }
@@ -717,16 +725,19 @@ main {
 .pagination {
     text-align: center;
 }
+
 .pagination a {
     display: inline-block;
     background-repeat: no-repeat;
 }
+
 .pagination .page-prev {
     padding-left: 1.5em;
     background-image: url('../img/chevron-left.svg');
     background-position: left center;
     margin-right: 1em;
 }
+
 .pagination .page-next {
     padding-right: 1.5em;
     background-image: url('../img/chevron-right.svg');

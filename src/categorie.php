@@ -3,8 +3,20 @@ require_once dirname(__FILE__) . "/app/global.php";
 
 $user = getLoggedUser();
 
+$form = new Form(
+    __FILE__,
+    "",
+    [
+        "name" => "",
+        "poster" => "",
+    ]
+);
+$form->loadDataFromSession();
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($_POST["action"] === "create") {
+        $form->saveValues($_POST);
+
         $poster = handleImageUpload("poster", "category");
         if (!isset($poster)) {
             setPageError(__FILE__, "Immagine non valida.", "poster");
@@ -18,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
 
-        $category = new Category(trim($_POST["name"]), $poster, null, null, null);
+        $category = new Category(htmlspecialchars(trim($_POST["name"])), $poster, null, null, null);
         try {
             $categoryDao->insert($category);
         } catch (PDOException $e) {
@@ -27,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         setPageError(__FILE__, "Azione sconosciuta");
     }
+    $form->clearSession();
     header("Location: categorie.php");
     exit;
 } elseif ($_SERVER["REQUEST_METHOD"] !== "GET") {
@@ -56,8 +69,7 @@ $content = getTemplate("categorie");
 $formContent = "";
 if (isset($user) && $user->isAdmin()) {
     $formContent = getTemplate("category_form");
-    $formContent = displayFormError(__FILE__, "poster", $formContent);
-    $formContent = displayFormError(__FILE__, "name", $formContent);
+    $formContent = $form->render($formContent);
 }
 $content = str_replace("[create_form]", $formContent, $content);
 

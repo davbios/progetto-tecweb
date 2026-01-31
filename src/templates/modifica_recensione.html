@@ -1,0 +1,24 @@
+[error]
+<section class="page">
+    <h2>Modifica Recensione</h2>
+
+    <form action="modifica-recensione.php?id=[review_id]" method="POST" class="review-form" autocomplete="off">
+        <fieldset>
+            <legend>Modifica recensione</legend>
+
+            <div class="form-group">
+                <label for="rating">Voto</label>
+                <input type="number" class="update-change" id="rating" name="rating" step="0.5" max="5" min="0.5"
+                    required placeholder="Da 1 a 5" value="[rating]">
+                [error_rating]
+            </div>
+            <div class="form-group">
+                <label for="text">Descrizione</label>
+                <textarea id="text" name="text" required class="update-change"
+                    placeholder="Racconta la tua esperienza con questo drink">[text]</textarea>
+                [error_text]
+            </div>
+            <button type="submit" class="btn" id="btnSubmit">Salva</button>
+        </fieldset>
+    </form>
+</section>

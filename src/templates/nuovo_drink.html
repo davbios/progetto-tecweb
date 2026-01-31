@@ -8,7 +8,7 @@
 
             <div class="form-group input-category">
                 <label for="category">Categoria</label>
-                <select name="category" id="category" required="">
+                <select class="update-change" name="category" id="category" required="">
                     <option disabled="" selected="" value="">Nessuna</option>
                     [categories]
                 </select>
@@ -17,14 +17,15 @@
 
             <div class="form-group input-name">
                 <label for="name">Nome</label>
-                <input type="text" id="name" name="name" placeholder="es. Gin Tonic" value="[drink_name]" required="">
+                <input type="text" class="update-change" id="name" name="name" placeholder="es. Gin Tonic"
+                    value="[name]" required="">
                 [error_name]
             </div>
 
             <div class="form-group input-description">
                 <label for="description">Descrizione</label>
-                <textarea id="description" name="description" placeholder="es. Un grande classico"
-                    required="">[drink_description]</textarea>
+                <textarea id="description" class="update-change" name="description" placeholder="es. Un grande classico"
+                    required="">[description]</textarea>
                 [error_description]
             </div>
         </fieldset>
@@ -33,7 +34,8 @@
             <legend>Immagine</legend>
 
             <label for="poster">Carica un file</label>
-            <input type="file" id="poster" name="poster" accept="image/jpeg,image/png,image/webp" required="">
+            <input type="file" class="update-change" id="poster" name="poster" accept="image/jpeg,image/png,image/webp"
+                required="">
             [error_poster]
         </fieldset>
 
