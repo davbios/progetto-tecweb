@@ -128,6 +128,12 @@ $content = str_replace("[poster]", $drink->poster, $content);
 $content = str_replace("[name]", $drink->name, $content);
 $content = str_replace("[description]", $drink->description, $content);
 
+$categoryContent = "";
+if (isset($drink->category)) {
+    $categoryContent = '<p>Categoria: <a href="categorie.php?id=' . $drink->category->getId() . '">' . $drink->category->name . '</a></p>';
+}
+$content = str_replace("[category]", $categoryContent, $content);
+
 $isDrinkUserFavourite = false;
 if ($user !== null) {
     $isDrinkUserFavourite = $userDao->hasUserFavouriteDrink($user->getId(), $drink->getId());
