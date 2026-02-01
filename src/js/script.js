@@ -9,57 +9,6 @@ function toggleNavbar(e) {
     const isOpen = menu.classList.toggle('active');
     toggle.setAttribute('aria-expanded', isOpen);
 }
-function Tab_Index() {
-    const isRegisterActive = container.classList.contains('active');
-    const loginUsername = document.getElementById('login-username');
-    const loginPassword = document.getElementById('login-password');
-    const loginSubmit = document.getElementById('login-submit');
-    const regEmail = document.getElementById('reg-email');
-    const regUsername = document.getElementById('reg-username');
-    const regPassword = document.getElementById('reg-password');
-    const regSubmit = document.getElementById('reg-submit');
-    if (isRegisterActive) {
-        const elements = [
-            { element: loginUsername, tabIndex: -1 },
-            { element: loginPassword, tabIndex: -1 },
-            { element: loginSubmit, tabIndex: -1 },
-            { element: regEmail, tabIndex: 0 },
-            { element: regUsername, tabIndex: 0 },
-            { element: regPassword, tabIndex: 0 },
-            { element: regSubmit, tabIndex: 0 },
-            { element: regbtn, tabIndex: -1 }
-        ];
-        elements.forEach(({ element, tabIndex }) => {
-            if (element) element.tabIndex = tabIndex;
-        });
-        if (loginbtn) {
-            loginbtn.tabIndex = 0;
-            loginbtn.disabled = false;
-        }
-    }
-    else {
-        const elements = [
-            { element: regEmail, tabIndex: -1 },
-            { element: regUsername, tabIndex: -1 },
-            { element: regPassword, tabIndex: -1 },
-            { element: regSubmit, tabIndex: -1 },
-            { element: regEmail, tabIndex: 0 },
-            { element: loginUsername, tabIndex: 0 },
-            { element: loginPassword, tabIndex: 0 },
-            { element: loginSubmit, tabIndex: 0 },
-            { element: loginbtn, tabIndex: -1 }
-        ];
-
-        elements.forEach(({ element, tabIndex }) => {
-            if (element) element.tabIndex = tabIndex;
-        });
-
-        if (regbtn) {
-            regbtn.tabIndex = 0;
-            regbtn.disabled = false;
-        }
-    }
-}
 
 function showLoginForm() {
     document.querySelector('.box.login').style.display = 'flex';
@@ -101,10 +50,6 @@ function onLoad() {
         })
     }
 
-    const backTopButton = document.getElementById("backToTop");
-    backTopButton.addEventListener('click', (e) => {
-        document.getElementById("title").focus();
-    });
     window.addEventListener('scroll', (e) => {
         if (window.scrollY > 20) {
             backTopButton.classList.add("show");
@@ -233,6 +178,62 @@ function onLoad() {
         }
     });
 }
+function Tab_Index() {
+    const container = document.getElementById('container');
+    if (!container) return;
+    const regbtn = document.getElementById('reg-btn');
+    const loginbtn = document.getElementById('login-btn');
+    const isRegisterActive = container.classList.contains('active');
+    const loginUsername = document.getElementById('login-username');
+    const loginPassword = document.getElementById('login-password');
+    const loginSubmit = document.getElementById('login-submit');
+    const regEmail = document.getElementById('reg-email');
+    const regUsername = document.getElementById('reg-username');
+    const regPassword = document.getElementById('reg-password');
+    const regSubmit = document.getElementById('reg-submit');
+    if (isRegisterActive) {
+        const elements = [
+            { element: loginUsername, tabIndex: -1 },
+            { element: loginPassword, tabIndex: -1 },
+            { element: loginSubmit, tabIndex: -1 },
+            { element: regEmail, tabIndex: 0 },
+            { element: regUsername, tabIndex: 0 },
+            { element: regPassword, tabIndex: 0 },
+            { element: regSubmit, tabIndex: 0 },
+            { element: regbtn, tabIndex: -1 }
+        ];
+        elements.forEach(({ element, tabIndex }) => {
+            if (element) element.tabIndex = tabIndex;
+        });
+        if (loginbtn) {
+            loginbtn.tabIndex = 0;
+            loginbtn.disabled = false;
+        }
+    }
+    else {
+        const elements = [
+            { element: regEmail, tabIndex: -1 },
+            { element: regUsername, tabIndex: -1 },
+            { element: regPassword, tabIndex: -1 },
+            { element: regSubmit, tabIndex: -1 },
+            { element: regEmail, tabIndex: 0 },
+            { element: loginUsername, tabIndex: 0 },
+            { element: loginPassword, tabIndex: 0 },
+            { element: loginSubmit, tabIndex: 0 },
+            { element: loginbtn, tabIndex: -1 }
+        ];
+
+        elements.forEach(({ element, tabIndex }) => {
+            if (element) element.tabIndex = tabIndex;
+        });
+
+        if (regbtn) {
+            regbtn.tabIndex = 0;
+            regbtn.disabled = false;
+        }
+    }
+}
+
 
 
 
