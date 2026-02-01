@@ -54,7 +54,7 @@ if (
 ) {
     $category = $categoryDao->findById(intval($_GET["id"]));
     $categoryDao->delete($category);
-    redirectTo($redirectLoc);
+    redirectTo("categorie.php");
     exit;
 }
 
