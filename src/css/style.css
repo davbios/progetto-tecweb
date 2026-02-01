@@ -67,7 +67,7 @@
     --color-3: #200229;
     --color-4: #111;
     --color-5: #1978d4;
-    --color-6: #009dff;
+    --color-6: #0a5c2f;
     --color-error: #ff0000d7;
 
     --border-radius: 0.5em;
@@ -1202,7 +1202,6 @@ form a.btn-cancel {
 }
 
 /*  PROFILO   */
-/* Stili provvisori per la pagina profilo */
 
 .profile-card {
     display: flex;
