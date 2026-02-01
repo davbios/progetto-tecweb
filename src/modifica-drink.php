@@ -13,13 +13,25 @@ if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
     exit;
 }
 
-$drink = $drinkDao->findById(intval($_GET["id"]));
-if (!isset($drink)) {
-    redirectNotFound();
-    exit;
+$drink = null;
+try {
+    $drink = $drinkDao->findById(intval($_GET["id"]));
+    if (!isset($drink)) {
+        redirectNotFound();
+        exit;
+    }
+} catch (PDOException $e) {
+    setPageError(__FILE__, $e->getMessage());
 }
-$drinkIngredients = $ingredientDao->getAllForDrink($drink->getId());
-$drinkSteps = $stepDao->getAllForDrink($drink->getId());
+
+$drinkIngredients = [];
+$drinkSteps = [];
+try {
+    $drinkIngredients = $ingredientDao->getAllForDrink($drink->getId());
+    $drinkSteps = $stepDao->getAllForDrink($drink->getId());
+} catch (PDOException $e) {
+    setPageError(__FILE__, $e->getMessage());
+}
 
 $form = new Form(
     __FILE__,
@@ -95,7 +107,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Per semplicita' nell'aggiornamento del link i passi di preparazione e gli ingredienti vengono e eliminati e ricreati
 
     foreach ($drinkSteps as $step) {
-        $stepDao->delete($step);
+        try {
+            $stepDao->delete($step);
+        } catch (PDOException $e) {
+            setPageError(__FILE__, $e->getMessage());
+            redirectTo($redirectLoc, $redirectParam);
+            exit;
+        }
     }
     foreach ($_POST["steps"] as $key => $step) {
         try {
@@ -113,7 +131,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
     foreach ($drinkIngredients as $ingredient) {
-        $ingredientDao->delete($ingredient);
+        try {
+            $ingredientDao->delete($ingredient);
+        } catch (PDOException $e) {
+            setPageError(__FILE__, $e->getMessage());
+            redirectTo($redirectLoc, $redirectParam);
+            exit;
+        }
     }
     foreach ($_POST["ingredient-names"] as $key => $name) {
         try {
@@ -146,16 +170,14 @@ $content = str_replace("[cancel_link]", 'drink.php?id=' . $drink->getId(), $cont
 $content = str_replace("[submit_text]", 'Salva', $content);
 $content = str_replace("[form_url]", "modifica-drink.php?id=" . $drink->getId(), $content);
 
-$error = getPageError(__FILE__);
-$content = str_replace(
-    "[error]",
-    isset($error) ? str_replace("[message]", $error, getTemplate("section_error")) : "",
-    $content
-);
-
 $content = displayFormError(__FILE__, "poster", $content);
 
-$categories = $categoryDao->getAll();
+$categories = [];
+try {
+    $categories = $categoryDao->getAll();
+} catch (PDOException $e) {
+    setPageError(__FILE__, $e->getMessage());
+}
 $categoriesContent = "";
 foreach ($categories as $category) {
     $categoriesContent .= '<option value="' . $category->getId() . '"';
@@ -165,6 +187,13 @@ foreach ($categories as $category) {
     $categoriesContent .= '>' . $category->name . "</option>\n";
 }
 $content = str_replace("[categories]", $categoriesContent, $content);
+
+$error = getPageError(__FILE__);
+$content = str_replace(
+    "[error]",
+    isset($error) ? str_replace("[message]", $error, getTemplate("section_error")) : "",
+    $content
+);
 
 $ingredientsListContent = "";
 foreach ($drinkIngredients as $ingredient) {

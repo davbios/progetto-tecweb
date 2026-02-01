@@ -52,8 +52,17 @@ if (
     isset($user) && $user->isAdmin() &&
     isset($_GET["action"]) && $_GET["action"] === "delete" && isset($_GET["id"]) && is_numeric($_GET["id"])
 ) {
-    $category = $categoryDao->findById(intval($_GET["id"]));
-    $categoryDao->delete($category);
+    try {
+        $category = $categoryDao->findById(intval($_GET["id"]));
+        if (!isset($categoy)) {
+            redirectNotFound();
+            exit;
+        }
+        $categoryDao->delete($category);
+    } catch (PDOException $e) {
+        setPageError(__FILE__, $e->getMessage());
+    }
+
     redirectTo("categorie.php");
     exit;
 }
@@ -67,6 +76,20 @@ $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> 
 
 $content = getTemplate("categorie");
 
+$categories = [];
+try {
+    $categories = $categoryDao->getAll();
+} catch (PDOException $e) {
+    setPageError(__FILE__, $e->getMessage());
+}
+
+$error = getPageError(__FILE__);
+$content = str_replace(
+    "[error]",
+    isset($error) ? str_replace("[message]", $error, getTemplate("section_error")) : "",
+    $content
+);
+
 $formContent = "";
 if (isset($user) && $user->isAdmin()) {
     $formContent = getTemplate("category_form");
@@ -74,7 +97,6 @@ if (isset($user) && $user->isAdmin()) {
 }
 $content = str_replace("[create_form]", $formContent, $content);
 
-$categories = $categoryDao->getAll();
 $categoriesListContent = "";
 foreach ($categories as $category) {
     $drinkCard = getTemplate("category_card");

@@ -18,9 +18,15 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     $isOwnProfile = false;
 }
 
-$result = $drinkDao->getAllByUserAndCount($profileUser->getId(), 100, 0);
-$userDrinks = $result->drinks;
-$favoriteDrinks = $drinkDao->getUserFavourites($profileUser->getId());
+$userDrinks = [];
+$favoriteDrinks = [];
+try {
+    $result = $drinkDao->getAllByUserAndCount($profileUser->getId(), 100, 0);
+    $userDrinks = $result->drinks;
+    $favoriteDrinks = $drinkDao->getUserFavourites($profileUser->getId());
+} catch (PDOException $e) {
+    setPageError(__FILE__, $e->getMessage());
+}
 
 $template = getTemplate("layout");
 $template = str_replace("[title]", $profileUser->getUsername() . " | Profilo | Arte del Cocktail", $template);
@@ -75,6 +81,13 @@ if ($userDrinks && count($userDrinks) > 0) {
 }
 $content = str_replace('[creations_list]', $creationsHtml, $content);
 $content = str_replace('[creations_pronom]', $isOwnProfile ? 'mie' : 'sue', $content);
+
+$error = getPageError(__FILE__);
+$content = str_replace(
+    "[error]",
+    isset($error) ? str_replace("[message]", $error, getTemplate("section_error")) : "",
+    $content
+);
 
 $template = str_replace("[content]", $content, $template);
 
