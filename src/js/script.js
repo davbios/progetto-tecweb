@@ -50,6 +50,10 @@ function onLoad() {
         })
     }
 
+    const backTopButton = document.getElementById("backToTop");
+    backTopButton.addEventListener('click', (e) => {
+        document.getElementById("title").focus();
+    });
     window.addEventListener('scroll', (e) => {
         if (window.scrollY > 20) {
             backTopButton.classList.add("show");
