@@ -196,9 +196,10 @@ $content = str_replace(
 );
 
 $ingredientsListContent = "";
-foreach ($drinkIngredients as $ingredient) {
+foreach ($drinkIngredients as $number => $ingredient) {
     $ingredientContent = getTemplate("drink_form_ingredient");
     $ingredientContent = str_replace("[id]", $ingredient->getId(), $ingredientContent);
+    $ingredientContent = str_replace("[number]", $number, $ingredientContent);
     $ingredientContent = str_replace("[quantity]", $ingredient->quantity, $ingredientContent);
     $ingredientContent = str_replace("[name]", $ingredient->name, $ingredientContent);
     $ingredientsListContent .= $ingredientContent;
@@ -206,9 +207,10 @@ foreach ($drinkIngredients as $ingredient) {
 $content = str_replace("[ingredients]", $ingredientsListContent, $content);
 
 $stepsListContent = "";
-foreach ($drinkSteps as $step) {
+foreach ($drinkSteps as $number => $step) {
     $stepContent = getTemplate("drink_form_step");
     $stepContent = str_replace("[id]", $step->getId(), $stepContent);
+    $stepContent = str_replace("[number]", $number, $stepContent);
     $stepContent = str_replace("[value]", $step->description, $stepContent);
     $stepsListContent .= $stepContent;
 }

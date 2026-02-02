@@ -163,6 +163,7 @@ $ingredientsListContent = "";
 foreach ($form->getValue("ingredients") as $id => $ingredient) {
     $ingredientContent = getTemplate("drink_form_ingredient");
     $ingredientContent = str_replace("[id]", $id, $ingredientContent);
+    $ingredientContent = str_replace("[number]", $id+1, $ingredientContent);
     $ingredientContent = str_replace("[quantity]", $ingredient["quantity"], $ingredientContent);
     $ingredientContent = str_replace("[name]", $ingredient["name"], $ingredientContent);
     $ingredientsListContent .= $ingredientContent;
@@ -176,6 +177,7 @@ $stepsListContent = "";
 foreach ($form->getValue("steps") as $id => $value) {
     $stepContent = getTemplate("drink_form_step");
     $stepContent = str_replace("[id]", $id, $stepContent);
+    $stepContent = str_replace("[number]", $id+1, $stepContent);
     $stepContent = str_replace("[value]", $value, $stepContent);
     $stepsListContent .= $stepContent;
 }

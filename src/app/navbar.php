@@ -9,7 +9,7 @@ function getNavbar(string $file, string $query, bool $userIsLogged): string
                 aria-label="Apri menu"
                 aria-expanded="false"
                 aria-controls="nav-menus" onclick="toggleNavbar(event)">
-            Menu
+            Menù
         </button>
         <div id="nav-menus" class="nav-menus">
             <ul class="main-navbar">';

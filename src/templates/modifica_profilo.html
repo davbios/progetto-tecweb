@@ -9,7 +9,7 @@
             <input type="hidden" name="action" value="info">
 
             <div class="form-group input-username">
-                <label for="username">Username</label>
+                <label for="username" lang="en">Username</label>
                 <input type="text" class="update-change" id="username" name="username" value="[username]" required="">
                 [error_username]
             </div>
@@ -27,7 +27,7 @@
             </div>
         </fieldset>
 
-        <button type="submit" class="btn-submit">Salva</button>
+        <button type="submit" class="btn-submit" aria-label="Salva informazioni generali">Salva</button>
     </form>
 
 
@@ -43,7 +43,7 @@
                 [error_picture]
             </fieldset>
 
-            <button type="submit" class="btn-submit">Salva</button>
+            <button type="submit" class="btn-submit" aria-label="Salva foto profilo">Salva</button>
         </form>
         <form enctype="multipart/form-data" action="modifica-profilo.php" method="POST" class="password-form">
             <fieldset class="info-fieldset">
@@ -70,7 +70,7 @@
                 </div>
             </fieldset>
 
-            <button type="submit" class="btn-submit">Salva</button>
+            <button type="submit" class="btn-submit" aria-label="Salva password">Salva</button>
         </form>
     </div>
 </section>
