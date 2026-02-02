@@ -9,7 +9,7 @@ if (empty($_GET["id"]) || !is_numeric($_GET["id"])) {
 $user = getLoggedUser();
 
 $drink = $drinkDao->findById(intval($_GET["id"]));
-if (!isset($drink)) {
+if ($drink === null) {
     redirectNotFound();
     exit;
 }

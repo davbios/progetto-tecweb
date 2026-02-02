@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 
 $user = getLoggedUser();
 
-if (!isset($user)) {
+if ($user === null) {
     redirectTo("login.php");
     exit;
 }
@@ -16,7 +16,7 @@ if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
 $drink = null;
 try {
     $drink = $drinkDao->findById(intval($_GET["id"]));
-    if (!isset($drink)) {
+    if ($drink === null) {
         redirectNotFound();
         exit;
     }
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $redirectLoc = "modifica-drink.php";
     $redirectParam = ["id" => $drink->getId()];
     $poster = handleImageUpload("poster", "drink");
-    if (!isset($poster)) {
+    if ($poster === null) {
         setPageError(__FILE__, "Immagine non valida.", "poster");
         redirectTo($redirectLoc, $redirectParam);
         exit;

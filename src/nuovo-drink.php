@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 
 $user = getLoggedUser();
 
-if (!isset($user)) {
+if ($user === null) {
     redirectTo("login.php", ["from" => "nuovo-drink.php"]);
     exit;
 }
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $redirectLoc = "nuovo-drink.php";
     $poster = handleImageUpload("poster", "drink");
-    if (!isset($poster)) {
+    if ($poster === null) {
         setPageError(__FILE__, "Immagine non valida.", "poster");
         redirectTo($redirectLoc);
         exit;
@@ -131,16 +131,14 @@ $content = str_replace("[cancel_link]", 'index.php', $content);
 $content = str_replace("[submit_text]", 'Crea', $content);
 $content = str_replace("[form_url]", "nuovo-drink.php", $content);
 
-$error = getPageError(__FILE__);
-$content = str_replace(
-    "[error]",
-    isset($error) ? str_replace("[message]", $error, getTemplate("section_error")) : "",
-    $content
-);
-
 $content = displayFormError(__FILE__, "poster", $content);
 
-$categories = $categoryDao->getAll();
+$categories = [];
+try {
+    $categories = $categoryDao->getAll();
+} catch (PDOException $e) {
+    setPageError(__FILE__, $e->getMessage());
+}
 $categoriesContent = "";
 foreach ($categories as $category) {
     $categoriesContent .= '<option value="' . $category->getId() . '"';
@@ -163,7 +161,7 @@ $ingredientsListContent = "";
 foreach ($form->getValue("ingredients") as $id => $ingredient) {
     $ingredientContent = getTemplate("drink_form_ingredient");
     $ingredientContent = str_replace("[id]", $id, $ingredientContent);
-    $ingredientContent = str_replace("[number]", $id+1, $ingredientContent);
+    $ingredientContent = str_replace("[number]", $id + 1, $ingredientContent);
     $ingredientContent = str_replace("[quantity]", $ingredient["quantity"], $ingredientContent);
     $ingredientContent = str_replace("[name]", $ingredient["name"], $ingredientContent);
     $ingredientsListContent .= $ingredientContent;
@@ -177,13 +175,20 @@ $stepsListContent = "";
 foreach ($form->getValue("steps") as $id => $value) {
     $stepContent = getTemplate("drink_form_step");
     $stepContent = str_replace("[id]", $id, $stepContent);
-    $stepContent = str_replace("[number]", $id+1, $stepContent);
+    $stepContent = str_replace("[number]", $id + 1, $stepContent);
     $stepContent = str_replace("[value]", $value, $stepContent);
     $stepsListContent .= $stepContent;
 }
 $content = str_replace("[steps]", $stepsListContent, $content);
 
 $content = $form->render($content);
+
+$error = getPageError(__FILE__);
+$content = str_replace(
+    "[error]",
+    isset($error) ? str_replace("[message]", $error, getTemplate("section_error")) : "",
+    $content
+);
 
 $template = str_replace("[content]", $content, $template);
 

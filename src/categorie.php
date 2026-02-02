@@ -54,7 +54,7 @@ if (
 ) {
     try {
         $category = $categoryDao->findById(intval($_GET["id"]));
-        if (!isset($categoy)) {
+        if ($category === null) {
             redirectNotFound();
             exit;
         }

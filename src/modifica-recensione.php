@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . "/app/global.php";
 
 $user = getLoggedUser();
 
-if (!isset($user)) {
+if ($user === null) {
     redirectTo("login.php");
     exit;
 }
@@ -14,7 +14,7 @@ if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
 }
 
 $review = $reviewDao->findById(intval($_GET["id"]));
-if (!isset($review) || $review->getAuthor()->getId() !== $user->getId()) {
+if ($review === null || $review->getAuthor()->getId() !== $user->getId()) {
     header("Location: 400.html", true, 400);
     exit;
 }
