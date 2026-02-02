@@ -6,7 +6,7 @@ function getNavbar(string $file, string $query, bool $userIsLogged): string
     $content = '<nav class="navbar" aria-label="Menu principale">
         <button class="nav-toggle"
                 id="nav-toggle" 
-                aria-label="Apri menu"
+                aria-label="Menù"
                 aria-expanded="false"
                 aria-controls="nav-menus" onclick="toggleNavbar(event)">
             Menù
