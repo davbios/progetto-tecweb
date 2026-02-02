@@ -1,11 +1,10 @@
-ErrorDocument 400 /400.html
-ErrorDocument 403 /404.html
-ErrorDocument 404 /404.html
-ErrorDocument 500 /500.html
-ErrorDocument 501 /500.html
-ErrorDocument 502 /500.html
-ErrorDocument 503 /500.html
-ErrorDocument 504 /500.html
-ErrorDocument 505 /500.html
-ErrorDocument 507 /500.html
-Options -Indexes
+ErrorDocument 400 /dtestoli/400.html
+ErrorDocument 403 /dtestoli/404.html
+ErrorDocument 404 /dtestoli/404.html
+ErrorDocument 500 /dtestoli/500.html
+ErrorDocument 501 /dtestoli/500.html
+ErrorDocument 502 /dtestoli/500.html
+ErrorDocument 503 /dtestoli/500.html
+ErrorDocument 504 /dtestoli/500.html
+ErrorDocument 505 /dtestoli/500.html
+ErrorDocument 507 /dtestoli/500.html
