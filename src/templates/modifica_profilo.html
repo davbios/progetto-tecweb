@@ -25,9 +25,9 @@
                 <textarea id="bio" class="update-change" name="bio" required="">[bio]</textarea>
                 [error_bio]
             </div>
-        </fieldset>
 
-        <button type="submit" class="btn-submit" aria-label="Salva informazioni generali">Salva</button>
+            <button type="submit" class="btn-submit" aria-label="Salva informazioni generali">Salva</button>
+        </fieldset>
     </form>
 
 
@@ -38,12 +38,15 @@
 
                 <input type="hidden" name="action" value="picture">
 
-                <label for="picture">Carica un file</label>
-                <input type="file" class="update-change" id="picture" name="picture" accept="image/jpeg,image/png,image/webp" required="">
-                [error_picture]
-            </fieldset>
+                <div class="form-group">
+                    <label for="picture">Carica un file</label>
+                    <input type="file" class="update-change" id="picture" name="picture"
+                        accept="image/jpeg,image/png,image/webp" required="">
+                    [error_picture]
+                </div>
 
-            <button type="submit" class="btn-submit" aria-label="Salva foto profilo">Salva</button>
+                <button type="submit" class="btn-submit">Salva</button>
+            </fieldset>
         </form>
         <form enctype="multipart/form-data" action="modifica-profilo.php" method="POST" class="password-form">
             <fieldset class="info-fieldset">
@@ -68,9 +71,9 @@
                     <input type="password" class="update-change" id="repassword" name="repassword" required="">
                     [error_repassword]
                 </div>
-            </fieldset>
 
-            <button type="submit" class="btn-submit" aria-label="Salva password">Salva</button>
+                <button type="submit" class="btn-submit">Salva</button>
+            </fieldset>
         </form>
     </div>
 </section>

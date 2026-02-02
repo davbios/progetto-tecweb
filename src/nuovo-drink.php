@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $template = getTemplate("layout");
 $template = str_replace("[title]", "Nuovo drink | Arte del Cocktail", $template);
 $template = str_replace("[description]", "Crea un nuovo drink.", $template);
-$template = str_replace("[keywords]", "", $template);
+$template = str_replace("[keywords]", "nuovo drink, nuovo cocktails, alcolici", $template);
 $template = str_replace("[navbar]", getNavbar(__FILE__, "", true), $template);
 $template = str_replace("[breadcrumb]", '<a href="index.php" lang="en">Home</a> » Nuovo drink', $template);
 
